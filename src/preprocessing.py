@@ -12,10 +12,10 @@ def build_preprocessor() -> ColumnTransformer:
     '''Build preprocessing pipeline for simple Titanic features.'''
 
     continuous_cols = ['Age']
-    discrete_cols = ['FamilySize', 'IsAlone', 'CabinKnown']
+    discrete_cols_binary = ['IsAlone', 'CabinKnown']
+    discrete_cols_count = ['FamilySize', ]
     ordinal_cols = ['Pclass']
     categorical_cols = ['Sex', 'Title', 'Embarked', 'Deck']
-    custom_cols = []
 
     preprocessor = ColumnTransformer([
         ('cont', Pipeline([
@@ -26,13 +26,21 @@ def build_preprocessor() -> ColumnTransformer:
             ),
         ]), continuous_cols),
 
-        ('disc', Pipeline([
+        ('disc_binary', Pipeline([
             ('imputer', SimpleImputer(strategy='median')),
             ('scaler', 
             # 'passthrough',
             StandardScaler()
             ),
-        ]), discrete_cols),
+        ]), discrete_cols_binary),
+
+        ('disc_count', Pipeline([
+            ('imputer', SimpleImputer(strategy='median')),
+            ('scaler', 
+            # 'passthrough',
+            StandardScaler()
+            ),
+        ]), discrete_cols_count),
 
         ('ord', Pipeline([
             ('imputer', SimpleImputer(strategy='most_frequent')),
@@ -48,16 +56,6 @@ def build_preprocessor() -> ColumnTransformer:
             ('encoder', OneHotEncoder(handle_unknown='ignore')),
         ]), categorical_cols),
 
-        ('cust', Pipeline([
-            ('imputer', SimpleImputer(strategy='median')),
-            ('transform', QuantileTransformer(
-                output_distribution='normal',
-                random_state=config.general.seed,
-            )),
-        ]), custom_cols),
-
-    ],  
-    # verbose=True, # Вывод информации о выполнении шагов
-    )
+    ])
 
     return preprocessor
