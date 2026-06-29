@@ -65,3 +65,40 @@ class IsAloneCreator(BaseEstimator, TransformerMixin):
         ).astype(int)
 
         return features
+
+
+class CabinKnownCreator(BaseEstimator, TransformerMixin):
+    '''Create CabinKnown from Cabin column.'''
+
+    def fit(self,features, labels=None):
+        return self
+
+    def transform(self, features):
+        features = features.copy()
+
+        # Create binary feature: 1 -> Cabin value is known; 0 -> Cabin value is missing
+        features['CabinKnown'] = (
+            features['Cabin'].notna()
+        ).astype(int)
+
+        return features
+
+
+class DeckExtractor(BaseEstimator, TransformerMixin):
+    '''Extract Deck feature from Cabin column.'''
+
+    def fit(self, features, labels=None):
+        return self
+
+    def transform(self, features):
+        features = features.copy()
+
+        # Extract the first letter from Cabin.
+        # Example: 'C85' -> 'C', missing Cabin -> 'Unknown'.
+        features['Deck'] = (
+            features['Cabin']
+            .str[0]
+            .fillna('Unknown')
+        )
+
+        return features
