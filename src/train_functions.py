@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
 from src.preprocessing import build_preprocessor
-from src.feature_engineering import TitleExtractor, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
+from src.feature_engineering import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
 
 
 def build_logreg_pipeline(config) -> Pipeline:
@@ -18,6 +18,7 @@ def build_logreg_pipeline(config) -> Pipeline:
 
     pipe = Pipeline([
         ('title_extractor', TitleExtractor()),
+        ('title_median_age_imputer', TitleMedianAgeImputer()),
         ('family_size_creator', FamilySizeCreator()),
         ('is_alone_creator', IsAloneCreator()),
         ('cabin_known_creator', CabinKnownCreator()),

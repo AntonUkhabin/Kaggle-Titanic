@@ -5,7 +5,7 @@ from config import config
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, QuantileTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler, RobustScaler, QuantileTransformer, PowerTransformer
 
 
 def build_preprocessor() -> ColumnTransformer:
@@ -22,7 +22,11 @@ def build_preprocessor() -> ColumnTransformer:
             ('imputer', SimpleImputer(strategy='median')),
             ('scaler', 
             # 'passthrough',
-            StandardScaler()
+            StandardScaler(),
+            # RobustScaler(),
+            # MinMaxScaler(),
+            # QuantileTransformer(random_state=config.general.seed, n_quantiles=100, output_distribution='normal'),
+            # PowerTransformer(method='yeo-johnson')
             ),
         ]), continuous_cols),
 

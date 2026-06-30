@@ -33,6 +33,30 @@ class TitleExtractor(BaseEstimator, TransformerMixin):
         return features
 
 
+class TitleMedianAgeImputer(BaseEstimator, TransformerMixin):
+    '''Fill missing Age values using median Age by mapped Title.'''
+
+    def fit(self, features, labels=None):
+        self.age_medians_ = features.groupby('Title')['Age'].median()
+        self.global_median_ = features['Age'].median()
+
+        return self
+
+    def transform(self, features):
+        features = features.copy()
+
+        missing_age_mask = features['Age'].isna()
+
+        features.loc[missing_age_mask, 'Age'] = (
+            features
+            .loc[missing_age_mask, 'Title']
+            .map(self.age_medians_)
+            .fillna(self.global_median_)
+        )
+
+        return features
+
+
 class FamilySizeCreator(BaseEstimator, TransformerMixin):
     '''Create FamilySize feature from SibSp and Parch.'''
 
