@@ -10,6 +10,7 @@ class TitleExtractor(BaseEstimator, TransformerMixin):
     def transform(self, features):
         features = features.copy()
 
+        # Extract title from passenger name, for example: 'Mr.', 'Mrs.', 'Miss.'.
         features['Title'] = features['Name'].str.extract(r'([A-Za-z]+)\.')
 
         title_map = {
@@ -28,6 +29,7 @@ class TitleExtractor(BaseEstimator, TransformerMixin):
             'Dr': 'Other',
         }
 
+        # Group rare titles to reduce noise and category sparsity.
         features['Title'] = features['Title'].replace(title_map)
 
         return features
@@ -37,6 +39,7 @@ class TitleMedianAgeImputer(BaseEstimator, TransformerMixin):
     '''Fill missing Age values using median Age by mapped Title.'''
 
     def fit(self, features, labels=None):
+        # Learn Age medians from training data only to avoid data leakage.
         self.age_medians_ = features.groupby('Title')['Age'].median()
         self.global_median_ = features['Age'].median()
 
@@ -47,6 +50,8 @@ class TitleMedianAgeImputer(BaseEstimator, TransformerMixin):
 
         missing_age_mask = features['Age'].isna()
 
+        # Fill missing Age with Title-specific median.
+        # Fallback to global median if an unseen Title appears.
         features.loc[missing_age_mask, 'Age'] = (
             features
             .loc[missing_age_mask, 'Title']
