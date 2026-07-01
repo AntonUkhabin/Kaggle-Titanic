@@ -1,5 +1,4 @@
 import pandas as pd
-from sklearn.base import clone
 
 from config import config
 from sklearn.metrics import accuracy_score

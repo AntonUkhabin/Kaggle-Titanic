@@ -1,17 +1,15 @@
-import pandas as pd
-
 from config import config
 
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler, RobustScaler, QuantileTransformer, PowerTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 def build_preprocessor() -> ColumnTransformer:
     '''Build preprocessing pipeline for simple Titanic features.'''
 
-    continuous_cols = ['Age']
+    continuous_cols = ['Age', 'Fare']
     discrete_cols_binary = ['IsAlone', 'CabinKnown']
     discrete_cols_count = ['FamilySize', ]
     ordinal_cols = ['Pclass']
@@ -23,10 +21,6 @@ def build_preprocessor() -> ColumnTransformer:
             ('scaler', 
             # 'passthrough',
             StandardScaler(),
-            # RobustScaler(),
-            # MinMaxScaler(),
-            # QuantileTransformer(random_state=config.general.seed, n_quantiles=100, output_distribution='normal'),
-            # PowerTransformer(method='yeo-johnson')
             ),
         ]), continuous_cols),
 
@@ -49,10 +43,6 @@ def build_preprocessor() -> ColumnTransformer:
         ('ord', Pipeline([
             ('imputer', SimpleImputer(strategy='most_frequent')),
             ('encoder', OneHotEncoder(handle_unknown='ignore')),
-            # ('scaler', 
-            # 'passthrough',
-            # # StandardScaler()
-            # ),
         ]), ordinal_cols),
 
         ('cat', Pipeline([
