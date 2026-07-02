@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 
 from config import config
 from sklearn.metrics import accuracy_score
@@ -10,10 +11,15 @@ from src.preprocessing import build_preprocessor
 from src.feature_engineering import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
 
 
-def build_logreg_pipeline(config) -> Pipeline:
+def build_logreg_pipeline(config, model_params=None) -> Pipeline:
     '''Build Logistic Regression pipeline.'''
 
     preprocessor = build_preprocessor()
+
+    params = dict(config.model.params)
+
+    if model_params is not None:
+        params.update(model_params)
 
     pipe = Pipeline([
         ('title_extractor', TitleExtractor()),
@@ -24,18 +30,10 @@ def build_logreg_pipeline(config) -> Pipeline:
         ('deck_extractor', DeckExtractor()),
         ('preprocessor', preprocessor),
         ('model', LogisticRegression(
-            max_iter=500,
+            **params,
             random_state=config.general.seed,
-            C=1,
-            solver='lbfgs',
-            l1_ratio=0, # 0->l2, 1->l1
-            class_weight=None,
-            # verbose=10, # можно поставить 1 или 10
-            ),
-        ),
-    ], 
-    # verbose=True,
-    )
+        )),
+    ])
 
     return pipe
 
@@ -53,6 +51,14 @@ def log_logreg_model(pipe) -> None:
 
     coef = model.coef_[0]
 
+    total_coef = len(coef)
+    zero_coef = (coef == 0).sum()
+    non_zero_coef = (coef != 0).sum()
+
+    print(f'Total coefficients: {total_coef}')
+    print(f'Zero coefficients: {zero_coef}')
+    print(f'Non-zero coefficients: {non_zero_coef}')
+
     coef_df = pd.DataFrame({
         'feature': feature_names,
         'coef': coef,
@@ -60,6 +66,60 @@ def log_logreg_model(pipe) -> None:
     }).sort_values('abs_coef', ascending=False)
 
     print(coef_df)
+
+
+def log_experiment_results(experiment_name, pipe, cv_score, cv_std, holdout_score, path_to_experiments, path_to_coefficients) -> None:
+    '''Save experiment results and Logistic Regression coefficients.'''
+
+    model = pipe.named_steps['model']
+
+    feature_names = pipe.named_steps[
+        'preprocessor'
+    ].get_feature_names_out()
+
+    coef = model.coef_[0]
+
+    total_coef = len(coef)
+    zero_coef = (coef == 0).sum()
+    non_zero_coef = (coef != 0).sum()
+
+    experiment_row = pd.DataFrame([{
+        'experiment_name': config.general.experiment_name,
+        'C': model.C,
+        'l1_ratio': model.l1_ratio,
+        'solver': model.solver,
+        'cv_score': cv_score,
+        'cv_std': cv_std,
+        'holdout_score': holdout_score,
+        'total_coef': total_coef,
+        'zero_coef': zero_coef,
+        'non_zero_coef': non_zero_coef,
+    }])
+
+    coefficients_df = pd.DataFrame({
+        'experiment_name': config.general.experiment_name,
+        'feature': feature_names,
+        'coef': coef,
+        'abs_coef': abs(coef),
+        'is_zero': coef == 0,
+    }).sort_values('abs_coef', ascending=False)
+
+    path_to_experiments = Path(path_to_experiments)
+    path_to_coefficients = Path(path_to_coefficients)
+
+    experiment_row.to_csv(
+        path_to_experiments,
+        mode='a',
+        header=not path_to_experiments.exists(),
+        index=False,
+    )
+
+    coefficients_df.to_csv(
+        path_to_coefficients,
+        mode='a',
+        header=not path_to_coefficients.exists(),
+        index=False,
+    )
 
 
 def cross_validate_model(train_cv_df, target_col, pipe, config):

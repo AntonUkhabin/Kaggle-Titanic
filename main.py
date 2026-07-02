@@ -10,6 +10,7 @@ from src.train_functions import (
     cross_validate_model,
     build_logreg_pipeline,
     log_logreg_model,
+    log_experiment_results,
     )
 
 
@@ -31,7 +32,17 @@ def main() -> None:
     )
 
     # Build full pipeline: preprocessing + Logistic Regression.
-    pipe = build_logreg_pipeline(config)
+    pipe = build_logreg_pipeline(
+        config,
+        model_params={
+            'C': 0.7,
+            'l1_ratio': 1.0,
+            'solver': 'liblinear',
+            'max_iter': 1000,
+        },
+    )
+
+    print(f'Experiment: {config.general.experiment_name}')
 
     # Run cross-validation on train_cv_df.
     scores = cross_validate_model(
@@ -70,6 +81,16 @@ def main() -> None:
     )
 
     print(f'\nHoldout Accuracy: {holdout_score:.4f}')
+
+    log_experiment_results(
+    experiment_name=config.general.experiment_name,
+    pipe=pipe,
+    cv_score=cv_score,
+    cv_std=cv_std,
+    holdout_score=holdout_score,
+    path_to_experiments=config.paths.path_to_experiments,
+    path_to_coefficients=config.paths.path_to_coefficients,
+)
 
     # Generate predictions for Kaggle test.csv.
     kaggle_test_preds = pipe.predict(kaggle_test_df)
