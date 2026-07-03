@@ -11,15 +11,12 @@ from src.preprocessing import build_preprocessor
 from src.feature_engineering import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
 
 
-def build_logreg_pipeline(config, model_params=None) -> Pipeline:
+def build_logreg_pipeline(config) -> Pipeline:
     '''Build Logistic Regression pipeline.'''
 
     preprocessor = build_preprocessor()
 
     params = dict(config.model.params)
-
-    if model_params is not None:
-        params.update(model_params)
 
     pipe = Pipeline([
         ('title_extractor', TitleExtractor()),
@@ -29,10 +26,7 @@ def build_logreg_pipeline(config, model_params=None) -> Pipeline:
         ('cabin_known_creator', CabinKnownCreator()),
         ('deck_extractor', DeckExtractor()),
         ('preprocessor', preprocessor),
-        ('model', LogisticRegression(
-            **params,
-            random_state=config.general.seed,
-        )),
+        ('model', LogisticRegression(**params)),
     ])
 
     return pipe

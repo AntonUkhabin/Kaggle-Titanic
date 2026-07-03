@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': 'l1_C_0.7_liblinear',
+        'experiment_name': '48_l1_ratio_saga = 0.5, С=0.7',
     },
     'paths': {
         'path_to_csv':'./data/train.csv',
@@ -37,11 +37,12 @@ config = {
     'model': {
         'name': 'logistic_regression',
         'params': {
-            'C': 1.0,
-            'l1_ratio': 0.0,
-            'solver': 'lbfgs',
+            'C': 0.7,
+            'l1_ratio': 0.5,
+            'solver': 'saga',
             'max_iter': 500,
             'class_weight': None,
+            'random_state': 0xC0FFEE,
         },
     },
 }

@@ -32,15 +32,7 @@ def main() -> None:
     )
 
     # Build full pipeline: preprocessing + Logistic Regression.
-    pipe = build_logreg_pipeline(
-        config,
-        model_params={
-            'C': 0.7,
-            'l1_ratio': 1.0,
-            'solver': 'liblinear',
-            'max_iter': 1000,
-        },
-    )
+    pipe = build_logreg_pipeline(config)
 
     print(f'Experiment: {config.general.experiment_name}')
 
