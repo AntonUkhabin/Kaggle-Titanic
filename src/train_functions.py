@@ -5,18 +5,33 @@ from config import config
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 
 from src.preprocessing import build_preprocessor
 from src.feature_engineering import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
 
 
-def build_logreg_pipeline(config) -> Pipeline:
-    '''Build Logistic Regression pipeline.'''
+def build_model(config):
+    '''Build estimator from config.'''
+
+    active_model = config.model.active
+    model_params = dict(config.model.models[active_model])
+
+    if active_model == 'logistic_regression':
+        return LogisticRegression(**model_params)
+
+    if active_model == 'knn':
+        return KNeighborsClassifier(**model_params)
+
+    raise ValueError(f'Unknown model name: {active_model}')
+
+
+def build_pipeline(config) -> Pipeline:
+    '''Build full machine learning pipeline.'''
 
     preprocessor = build_preprocessor()
-
-    params = dict(config.model.params)
+    model = build_model(config)
 
     pipe = Pipeline([
         ('title_extractor', TitleExtractor()),
@@ -26,80 +41,75 @@ def build_logreg_pipeline(config) -> Pipeline:
         ('cabin_known_creator', CabinKnownCreator()),
         ('deck_extractor', DeckExtractor()),
         ('preprocessor', preprocessor),
-        ('model', LogisticRegression(**params)),
+        ('model', model),
     ])
 
     return pipe
 
 
-def log_logreg_model(pipe) -> None:
-    '''Print fitted Logistic Regression information.'''
+def log_model_info(pipe, config) -> None:
+    '''Print fitted model information.'''
 
     model = pipe.named_steps['model']
+    active_model = config.model.active
 
-    print(f'Number of iterations: {model.n_iter_[0]}')
+    print(f'\nActive model: {active_model}')
+    print(model)
 
-    feature_names = pipe.named_steps[
-        'preprocessor'
-    ].get_feature_names_out()
+    if active_model == 'logistic_regression':
+        print(f'Number of iterations: {model.n_iter_[0]}')
 
-    coef = model.coef_[0]
+        feature_names = pipe.named_steps[
+            'preprocessor'
+        ].get_feature_names_out()
 
-    total_coef = len(coef)
-    zero_coef = (coef == 0).sum()
-    non_zero_coef = (coef != 0).sum()
+        coef = model.coef_[0]
 
-    print(f'Total coefficients: {total_coef}')
-    print(f'Zero coefficients: {zero_coef}')
-    print(f'Non-zero coefficients: {non_zero_coef}')
+        total_coef = len(coef)
+        zero_coef = (coef == 0).sum()
+        non_zero_coef = (coef != 0).sum()
 
-    coef_df = pd.DataFrame({
-        'feature': feature_names,
-        'coef': coef,
-        'abs_coef': abs(coef),
-    }).sort_values('abs_coef', ascending=False)
+        print(f'Total coefficients: {total_coef}')
+        print(f'Zero coefficients: {zero_coef}')
+        print(f'Non-zero coefficients: {non_zero_coef}')
 
-    print(coef_df)
+        coef_df = pd.DataFrame({
+            'feature': feature_names,
+            'coef': coef,
+            'abs_coef': abs(coef),
+        }).sort_values('abs_coef', ascending=False)
+
+        print(coef_df)
+
+    elif active_model == 'knn':
+        print(f'n_neighbors: {model.n_neighbors}')
+        print(f'weights: {model.weights}')
+        print(f'metric: {model.metric}')
+        print(f'p: {model.p}')
 
 
-def log_experiment_results(experiment_name, pipe, cv_score, cv_std, holdout_score, path_to_experiments, path_to_coefficients) -> None:
-    '''Save experiment results and Logistic Regression coefficients.'''
+def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_to_experiments) -> None:
+    '''Save universal experiment results.'''
 
+    active_model = config.model.active
     model = pipe.named_steps['model']
+    model_params = dict(config.model.models[active_model])
 
-    feature_names = pipe.named_steps[
-        'preprocessor'
-    ].get_feature_names_out()
-
-    coef = model.coef_[0]
-
-    total_coef = len(coef)
-    zero_coef = (coef == 0).sum()
-    non_zero_coef = (coef != 0).sum()
-
-    experiment_row = pd.DataFrame([{
+    experiment_data = {
         'experiment_name': config.general.experiment_name,
-        'C': model.C,
-        'l1_ratio': model.l1_ratio,
-        'solver': model.solver,
+        'model_name': active_model,
         'cv_score': cv_score,
         'cv_std': cv_std,
         'holdout_score': holdout_score,
-        'total_coef': total_coef,
-        'zero_coef': zero_coef,
-        'non_zero_coef': non_zero_coef,
-    }])
+    }
 
-    coefficients_df = pd.DataFrame({
-        'experiment_name': config.general.experiment_name,
-        'feature': feature_names,
-        'coef': coef,
-        'abs_coef': abs(coef),
-        'is_zero': coef == 0,
-    }).sort_values('abs_coef', ascending=False)
+    # Save model hyperparameters as separate columns.
+    for param_name, param_value in model_params.items():
+        experiment_data[f'model__{param_name}'] = param_value
+
+    experiment_row = pd.DataFrame([experiment_data])
 
     path_to_experiments = Path(path_to_experiments)
-    path_to_coefficients = Path(path_to_coefficients)
 
     experiment_row.to_csv(
         path_to_experiments,
@@ -107,6 +117,33 @@ def log_experiment_results(experiment_name, pipe, cv_score, cv_std, holdout_scor
         header=not path_to_experiments.exists(),
         index=False,
     )
+
+
+def log_coefficients(config, pipe, path_to_coefficients) -> None:
+    '''Save model coefficients if the model has coefficients.'''
+
+    model = pipe.named_steps['model']
+
+    if not hasattr(model, 'coef_'):
+        print('Model has no coefficients. Skipping coefficient logging.')
+        return
+
+    feature_names = pipe.named_steps[
+        'preprocessor'
+    ].get_feature_names_out()
+
+    coef = model.coef_[0]
+
+    coefficients_df = pd.DataFrame({
+        'experiment_name': config.general.experiment_name,
+        'model_name': config.model.active,
+        'feature': feature_names,
+        'coef': coef,
+        'abs_coef': abs(coef),
+        'is_zero': coef == 0,
+    }).sort_values('abs_coef', ascending=False)
+
+    path_to_coefficients = Path(path_to_coefficients)
 
     coefficients_df.to_csv(
         path_to_coefficients,

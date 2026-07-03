@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '48_l1_ratio_saga = 0.5, С=0.7',
+        'experiment_name': '58_knn_baseline_k5_uniform_euclidean',
     },
     'paths': {
         'path_to_csv':'./data/train.csv',
@@ -11,6 +11,7 @@ config = {
         'path_to_submission':'./outputs/submission.csv',
         'path_to_experiments': './outputs/experiments.csv',
         'path_to_coefficients': './outputs/coefficients.csv',
+        'path_to_logs': './outputs/logs',
     },
     'training': {
         'num_epochs': 200,
@@ -35,14 +36,23 @@ config = {
         },
     },
     'model': {
-        'name': 'logistic_regression',
-        'params': {
-            'C': 0.7,
-            'l1_ratio': 0.5,
-            'solver': 'saga',
-            'max_iter': 500,
-            'class_weight': None,
-            'random_state': 0xC0FFEE,
+        'active': 'knn',
+
+        'models': {
+            'logistic_regression': {
+                'solver': 'saga',
+                'l1_ratio': 0.5,
+                'C': 0.7,
+                'max_iter': 1000,
+                'random_state': 0xC0FFEE,
+            },
+            
+            'knn': {
+                'n_neighbors': 5,
+                'weights': 'uniform',
+                'metric': 'minkowski',
+                'p': 2,
+            },
         },
     },
 }
