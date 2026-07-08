@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '58_knn_baseline_k5_uniform_euclidean',
+        'experiment_name': '82_knn_remove_embarked_isalone',
     },
     'paths': {
         'path_to_csv':'./data/train.csv',
@@ -47,8 +47,8 @@ config = {
                 'random_state': 0xC0FFEE,
             },
             
-            'knn': {
-                'n_neighbors': 5,
+            'knn': { # Remove Embarked, IsAlone
+                'n_neighbors': 6,
                 'weights': 'uniform',
                 'metric': 'minkowski',
                 'p': 2,

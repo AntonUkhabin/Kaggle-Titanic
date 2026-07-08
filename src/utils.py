@@ -17,7 +17,9 @@ class TeeLogger:
     '''Write terminal output both to console and log file.'''
 
     def __init__(self, log_path):
+        # Save original terminal output stream.
         self.terminal = sys.stdout
+        # Open log file for writing.
         self.log_file = open(log_path, 'w', encoding='utf-8')
 
     def write(self, message):
@@ -42,6 +44,7 @@ def setup_run_logging(config):
 
     tee_logger = TeeLogger(log_path)
 
+    # Replace default stdout/stderr so every print() is written both to terminal and log file.
     sys.stdout = tee_logger
     sys.stderr = tee_logger
 

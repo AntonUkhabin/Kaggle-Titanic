@@ -10,10 +10,10 @@ def build_preprocessor() -> ColumnTransformer:
     '''Build preprocessing pipeline for simple Titanic features.'''
 
     continuous_cols = ['Age', 'Fare']
-    discrete_cols_binary = ['IsAlone', 'CabinKnown']
+    discrete_cols_binary = ['CabinKnown']
     discrete_cols_count = ['FamilySize', ]
     ordinal_cols = ['Pclass']
-    categorical_cols = ['Sex', 'Title', 'Embarked', 'Deck']
+    categorical_cols = ['Sex', 'Title', 'Deck']
 
     preprocessor = ColumnTransformer([
         ('cont', Pipeline([
