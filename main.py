@@ -1,20 +1,13 @@
 import numpy as np
 import sys
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection    import train_test_split
 
-from config import config
-from src.data import load_data
-from src.utils import setup_run_logging
-from src.train_functions import (
-    evaluate_model,
-    create_submission,
-    cross_validate_model,
-    build_pipeline,
-    log_model_info,
-    log_experiment_results,
-    log_coefficients,
-    )
+from config                     import config
+from src.data                   import load_data
+from src.utils                  import setup_run_logging
+from src.train_functions        import evaluate_model, create_submission, cross_validate_model, build_pipeline
+from src.experiment_logging     import print_section, print_model_info, log_experiment_results, log_coefficients
 
 
 def main() -> None:
@@ -41,9 +34,10 @@ def main() -> None:
         # Build full pipeline: feature engineering + preprocessing + model.
         pipe = build_pipeline(config)
 
-        print(f'Experiment: {config.general.experiment_name}')
+        print_section(f'Experiment: {config.general.experiment_name}')
 
         # Run cross-validation on train_cv_df.
+        print_section('Cross Validation')
         scores = cross_validate_model(
             train_cv_df=train_cv_df,
             target_col='Survived',
@@ -55,22 +49,24 @@ def main() -> None:
         cv_score = sum(scores) / len(scores)
         cv_std = np.std(scores)
 
-        print("\nCross-validation finished!")
-        print(f"CV Accuracy: {cv_score:.4f} ± {cv_std:.4f}")
+        print(f'\nMean CV Accuracy: {cv_score:.4f}')
+        print(f'CV STD: {cv_std:.4f}')
 
         # Split train_cv_df into features and target.
         features_train_cv = train_cv_df.drop(columns=['Survived'])
         labels_train_cv = train_cv_df['Survived']
 
         # Fit pipeline on the full train_cv_df.
+        print_section('Model Training')
         pipe.fit(features_train_cv, labels_train_cv)
-        log_model_info(pipe, config)
+        print_model_info(pipe, config)
 
         # Split holdout_df into features and target.
         features_holdout = holdout_df.drop(columns=['Survived'])
         labels_holdout = holdout_df['Survived']
 
         # Generate predictions for holdout_df.
+        print_section('Holdout Evaluation')
         holdout_preds = pipe.predict(features_holdout)
 
         # Calculate holdout accuracy.
@@ -81,6 +77,7 @@ def main() -> None:
 
         print(f'\nHoldout Accuracy: {holdout_score:.4f}')
 
+        print_section('Experiment Logging')
         log_experiment_results(
             config=config,
             pipe=pipe,
@@ -89,6 +86,7 @@ def main() -> None:
             holdout_score=holdout_score,
             path_to_experiments=config.paths.path_to_experiments,
         )
+        print('Experiment results saved.')
 
         log_coefficients(
             config=config,
@@ -97,6 +95,7 @@ def main() -> None:
         )
 
         # Generate predictions for Kaggle test.csv.
+        print_section('Kaggle Submission')
         kaggle_test_preds = pipe.predict(kaggle_test_df)
 
         # Create submission.csv for Kaggle.
