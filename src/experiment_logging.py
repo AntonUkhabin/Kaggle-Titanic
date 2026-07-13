@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 from sklearn.tree               import export_text, plot_tree
@@ -33,6 +34,9 @@ def print_model_info(pipe, config) -> None:
 
     elif active_model == 'decision_tree':
         print_decision_tree_info(pipe, config)
+    
+    elif active_model == 'random_forest':
+        print_random_forest_info(pipe)
 
     else:
         print('No model specific logging available.')
@@ -94,6 +98,50 @@ def print_decision_tree_info(pipe, config) -> None:
     print_feature_importance(model, feature_names)
     print_tree_structure(model, feature_names)
     save_tree_plot(config, pipe)
+
+
+def print_random_forest_info(pipe) -> None:
+    '''Print Random Forest information and feature importance.'''
+
+    model = pipe.named_steps['model']
+
+    feature_names = (
+        pipe.named_steps['preprocessor']
+        .get_feature_names_out()
+    )
+
+    tree_depths = [
+        estimator.get_depth()
+        for estimator in model.estimators_
+    ]
+
+    tree_leaves = [
+        estimator.get_n_leaves()
+        for estimator in model.estimators_
+    ]
+
+    print_section('Random Forest Summary')
+
+    print(f'Number of trees: {model.n_estimators}')
+    print(f'Criterion: {model.criterion}')
+    print(f'Max depth: {model.max_depth}')
+    print(f'Min samples split: {model.min_samples_split}')
+    print(f'Min samples leaf: {model.min_samples_leaf}')
+    print(f'Max features: {model.max_features}')
+    print(f'Bootstrap: {model.bootstrap}')
+    
+    if model.oob_score:
+        print(f'OOB Accuracy: {model.oob_score_:.4f}')
+    
+    print(f'Mean tree depth: {np.mean(tree_depths):.2f}')
+    print(f'Min tree depth: {np.min(tree_depths)}')
+    print(f'Max tree depth: {np.max(tree_depths)}')
+    print(f'Mean leaves per tree: {np.mean(tree_leaves):.2f}')
+
+    print_feature_importance(
+        model=model,
+        feature_names=feature_names,
+    )
 
 
 def print_tree_summary(model) -> None:

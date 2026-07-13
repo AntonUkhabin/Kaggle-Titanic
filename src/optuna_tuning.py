@@ -72,14 +72,13 @@ def create_objective(
             config=config,
         )
 
-        # Clone the full pipeline so every trial gets a fresh estimator.
+        # Create a fresh unfitted copy of the full pipeline for this trial.
         trial_pipe = clone(base_pipe)
 
         # Replace only Decision Tree hyperparameters.
         trial_pipe.set_params(**model_params)
 
-        # Evaluate the full feature engineering, preprocessing and model
-        # pipeline inside every cross-validation fold.
+        # Evaluate the full feature engineering, preprocessing and model pipeline inside every cross-validation fold.
         scores = cross_val_score(
             estimator=trial_pipe,
             X=features,
@@ -179,8 +178,7 @@ def build_trials_dataframe(study) -> pd.DataFrame:
 
     trials_df = trials_df.rename(columns=rename_columns)
 
-    # The list form is redundant because every fold is already stored
-    # in a separate numeric column.
+    # The list form is redundant because every fold is already stored in a separate numeric column.
     if 'user_attrs_fold_scores' in trials_df.columns:
         trials_df = trials_df.drop(
             columns=['user_attrs_fold_scores'],

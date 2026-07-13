@@ -7,6 +7,7 @@ from sklearn.linear_model       import LogisticRegression
 from sklearn.neighbors          import KNeighborsClassifier
 from sklearn.tree               import DecisionTreeClassifier
 from sklearn.pipeline           import Pipeline
+from sklearn.ensemble           import RandomForestClassifier
 
 from src.preprocessing          import build_preprocessor
 from src.feature_engineering    import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
@@ -24,8 +25,11 @@ def build_model(config):
     if active_model == 'knn':
         return KNeighborsClassifier(**model_params)
 
-    if config.model.active == 'decision_tree':
+    if active_model == 'decision_tree':
         return DecisionTreeClassifier(**model_params)
+
+    if active_model == 'random_forest':
+        return RandomForestClassifier(**model_params)
 
     raise ValueError(f'Unknown model name: {active_model}')
 

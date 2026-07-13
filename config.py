@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '136_decision_tree_optuna_final',
+        'experiment_name': '140_random_forest_max_depth_10',
     },
     'logging': {
         'save_tree_plot': True,
@@ -92,7 +92,7 @@ config = {
         },
     },
     'model': {
-        'active': 'decision_tree',
+        'active': 'random_forest',
 
         'models': {
             'logistic_regression': {
@@ -119,6 +119,20 @@ config = {
                 'ccp_alpha': 0,
                 'class_weight': None,
                 'random_state': 0xC0FFEE,
+            },
+
+            'random_forest': {
+                'n_estimators': 300,
+                'criterion': 'gini',
+                'max_depth': 10,
+                'min_samples_split': 2,
+                'min_samples_leaf': 1,
+                'max_features': 'sqrt',
+                'bootstrap': True,
+                'class_weight': None,
+                'random_state': 0xC0FFEE,
+                'n_jobs': -1,
+                'oob_score': True,
             },
         },
     },
