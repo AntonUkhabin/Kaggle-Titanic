@@ -30,6 +30,11 @@ class TeeLogger:
         self.terminal.flush()
         self.log_file.flush()
 
+    def isatty(self) -> bool:
+        '''Return whether the terminal stream is interactive.'''
+
+        return self.terminal.isatty()
+
     def close(self):
         self.log_file.close()
 
