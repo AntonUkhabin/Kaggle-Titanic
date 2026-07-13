@@ -101,6 +101,8 @@ def print_tree_summary(model) -> None:
 
     print_section('Tree Summary')
 
+    print(f'Criterion: {model.criterion}')
+    print(f'Max depth: {model.max_depth}')
     print(f'Depth: {model.get_depth()}')
     print(f'Leaves: {model.get_n_leaves()}')
     print(f'Nodes: {model.tree_.node_count}')
@@ -111,13 +113,13 @@ def print_feature_importance(model, feature_names) -> None:
 
     print_section('Feature Importance')
 
-    importance_df = pd.DataFrame({
-        'feature': feature_names,
-        'importance': model.feature_importances_,
-    })
-
     importance_df = (
-        importance_df
+        pd.DataFrame({
+            'feature': feature_names,
+            'importance': model.feature_importances_,
+        })
+        .query('importance > 0')
+        .assign(importance=lambda data: data['importance'].round(4))
         .sort_values('importance', ascending=False)
         .reset_index(drop=True)
     )
@@ -173,7 +175,7 @@ def save_tree_plot(config, pipe) -> None:
     )
 
     plt.tight_layout()
-    plt.savefig(output_path, dpi=200, bbox_inches='tight')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
 
     print(f'Tree plot saved: {output_path}')

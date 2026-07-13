@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '83_decision_tree_prepruning_baseline',
+        'experiment_name': '112_decision_tree_max_leaf_nodes_20',
     },
     'logging': {
         'save_tree_plot': True,
@@ -60,10 +60,11 @@ config = {
 
             'decision_tree': {
                 'criterion': 'gini',
-                'max_depth': 3,
-                'min_samples_split': 10,
+                'max_depth': 8,
+                'min_samples_split': 2,
                 'min_samples_leaf': 5,
-                'max_leaf_nodes': None,
+                'max_leaf_nodes': 20,
+                'ccp_alpha': 0,
                 'class_weight': None,
                 'random_state': 0xC0FFEE,
             },
