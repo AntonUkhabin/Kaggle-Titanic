@@ -21,15 +21,7 @@ def main() -> None:
     logger = setup_run_logging(config)
 
     try:
-        print_section(
-            f'Experiment: {config.general.experiment_name}'
-        )
-
-        if config.model.active != 'decision_tree':
-            raise ValueError(
-                'Optuna tuning currently supports only '
-                'Decision Tree.'
-            )
+        print_section(f'Experiment: {config.general.experiment_name}')
 
         # Load train.csv and Kaggle test.csv.
         train_df, _ = load_data(config)

@@ -9,10 +9,30 @@ from sklearn.base import clone
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 
+def suggest_model_params(trial, config) -> dict:
+    '''Suggest hyperparameters for the active model.'''
+
+    active_model = config.model.active
+
+    if active_model == 'decision_tree':
+        return suggest_decision_tree_params(
+            trial=trial,
+            config=config,
+        )
+
+    if active_model == 'random_forest':
+        return suggest_random_forest_params(
+            trial=trial,
+            config=config,
+        )
+
+    raise ValueError(f'Optuna tuning is not configured for: {active_model}')
+
+
 def suggest_decision_tree_params(trial, config) -> dict:
     '''Suggest Decision Tree hyperparameters for an Optuna trial.'''
 
-    search_space = config.optuna.search_space
+    search_space = config.optuna.search_spaces.decision_tree
 
     params = {
         'model__criterion': trial.suggest_categorical(
@@ -47,13 +67,58 @@ def suggest_decision_tree_params(trial, config) -> dict:
     return params
 
 
+def suggest_random_forest_params(trial, config) -> dict:
+    '''Suggest Random Forest hyperparameters for an Optuna trial.'''
+
+    search_space = config.optuna.search_spaces.random_forest
+
+    params = {
+        'model__criterion': trial.suggest_categorical(
+            'criterion',
+            list(search_space.criterion),
+        ),
+
+        'model__n_estimators': trial.suggest_int(
+            'n_estimators',
+            search_space.n_estimators.low,
+            search_space.n_estimators.high,
+            step=search_space.n_estimators.step,
+        ),
+
+        'model__max_depth': trial.suggest_int(
+            'max_depth',
+            search_space.max_depth.low,
+            search_space.max_depth.high,
+        ),
+
+        'model__min_samples_split': trial.suggest_int(
+            'min_samples_split',
+            search_space.min_samples_split.low,
+            search_space.min_samples_split.high,
+        ),
+
+        'model__min_samples_leaf': trial.suggest_int(
+            'min_samples_leaf',
+            search_space.min_samples_leaf.low,
+            search_space.min_samples_leaf.high,
+        ),
+
+        'model__max_features': trial.suggest_categorical(
+            'max_features',
+            list(search_space.max_features),
+        ),
+    }
+
+    return params
+
+
 def create_objective(
     train_cv_df,
     target_col,
     base_pipe,
     config,
 ):
-    '''Create an Optuna objective for Decision Tree tuning.'''
+    '''Create an Optuna objective for model tuning.'''
 
     features = train_cv_df.drop(columns=[target_col])
     labels = train_cv_df[target_col]
@@ -65,9 +130,9 @@ def create_objective(
     )
 
     def objective(trial) -> float:
-        '''Evaluate one Decision Tree hyperparameter combination.'''
+        '''Evaluate one hyperparameter combination.'''
 
-        model_params = suggest_decision_tree_params(
+        model_params = suggest_model_params(
             trial=trial,
             config=config,
         )
@@ -309,16 +374,17 @@ def print_optuna_results(
 
     print(f'\nTop {min(top_n, len(trials_df))} trials:')
 
+    parameter_columns = sorted([
+        column
+        for column in trials_df.columns
+        if column.startswith('params_')
+    ])
+
     columns_to_print = [
         'trial_number',
         'cv_score',
         'cv_std',
-        'params_criterion',
-        'params_max_depth',
-        'params_min_samples_split',
-        'params_min_samples_leaf',
-        'params_max_leaf_nodes',
-        'params_ccp_alpha',
+        *parameter_columns,
     ]
 
     existing_columns = [

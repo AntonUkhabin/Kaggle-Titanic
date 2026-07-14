@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '140_random_forest_max_depth_10',
+        'experiment_name': '163_random_forest_optuna_tuning',
     },
     'logging': {
         'save_tree_plot': True,
@@ -17,8 +17,8 @@ config = {
         'path_to_logs':                 './outputs/logs',
         'path_to_tree_plots':           './outputs/tree_plots',
 
-        'path_to_optuna_trials':        './outputs/optuna/135_decision_tree_optuna_100_trials.csv',
-        'path_to_optuna_best_params':   './outputs/optuna/135_decision_tree_optuna_100_trials_best_params.yaml',
+        'path_to_optuna_trials':        './outputs/optuna/163_random_forest_optuna_tuning.csv',
+        'path_to_optuna_best_params':   './outputs/optuna/163_random_forest_optuna_tuning_best_params.yaml',
     },
     'training': {
         'num_epochs': 200,
@@ -31,56 +31,7 @@ config = {
     'split': {
         'n_splits': 5,
         'test_size': 0.2,
-    },
-    'optuna': {
-        'study_name': 'decision_tree_tuning',
-        'direction': 'maximize',
-        'n_trials': 100,
-        'show_progress_bar': True,
-
-        'search_space': {
-            'criterion': [
-                'gini',
-                'entropy',
-                'log_loss',
-            ],
-            'max_depth': {
-                'low': 3,
-                'high': 12,
-            },
-            'min_samples_split': {
-                'low': 2,
-                'high': 30,
-            },
-            'min_samples_leaf': {
-                'low': 1,
-                'high': 15,
-            },
-            'max_leaf_nodes': [
-                None,
-                10,
-                15,
-                18,
-                20,
-                22,
-                25,
-                30,
-                35,
-                40,
-            ],
-            'ccp_alpha': [
-                0.0,
-                0.0005,
-                0.001,
-                0.0015,
-                0.002,
-                0.003,
-                0.004,
-                0.005,
-                0.01,
-            ],
-        },
-    },   
+    },  
     'loss': {
         'name': 'log_loss',
         'params': {
@@ -126,16 +77,105 @@ config = {
                 'criterion': 'gini',
                 'max_depth': 10,
                 'min_samples_split': 2,
-                'min_samples_leaf': 1,
+                'min_samples_leaf': 4,
                 'max_features': 'sqrt',
                 'bootstrap': True,
+                'oob_score': True,
                 'class_weight': None,
                 'random_state': 0xC0FFEE,
                 'n_jobs': -1,
-                'oob_score': True,
             },
         },
     },
+
+    'optuna': {
+        'study_name': 'random_forest_tuning',
+        'direction': 'maximize',
+        'n_trials': 100,
+        'show_progress_bar': True,
+
+        'search_spaces': {
+            
+            'decision_tree': {
+                'criterion': [
+                    'gini',
+                    'entropy',
+                    'log_loss',
+                ],
+                'max_depth': {
+                    'low': 3,
+                    'high': 12,
+                },
+                'min_samples_split': {
+                    'low': 2,
+                    'high': 30,
+                },
+                'min_samples_leaf': {
+                    'low': 1,
+                    'high': 15,
+                },
+                'max_leaf_nodes': [
+                    None,
+                    10,
+                    15,
+                    18,
+                    20,
+                    22,
+                    25,
+                    30,
+                    35,
+                    40,
+                ],
+                'ccp_alpha': [
+                    0.0,
+                    0.0005,
+                    0.001,
+                    0.0015,
+                    0.002,
+                    0.003,
+                    0.004,
+                    0.005,
+                    0.01,
+                ],
+            },
+
+            'random_forest': {
+                'criterion': [
+                    'gini',
+                    'entropy',
+                    'log_loss',
+                ],
+
+                'n_estimators': {
+                    'low': 200,
+                    'high': 700,
+                    'step': 50,
+                },
+
+                'max_depth': {
+                    'low': 6,
+                    'high': 14,
+                },
+
+                'min_samples_split': {
+                    'low': 2,
+                    'high': 20,
+                },
+
+                'min_samples_leaf': {
+                    'low': 2,
+                    'high': 8,
+                },
+
+                'max_features': [
+                    'sqrt',
+                    'log2',
+                    0.5,
+                    0.75,
+                ],
+            },
+        },
+    }, 
 }
 
 config = OmegaConf.create(config)
