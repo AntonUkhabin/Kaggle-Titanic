@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '163_random_forest_optuna_tuning',
+        'experiment_name': '164_random_forest_optuna_final',
     },
     'logging': {
         'save_tree_plot': True,
@@ -75,10 +75,10 @@ config = {
             'random_forest': {
                 'n_estimators': 300,
                 'criterion': 'gini',
-                'max_depth': 10,
-                'min_samples_split': 2,
-                'min_samples_leaf': 4,
-                'max_features': 'sqrt',
+                'max_depth': 13,
+                'min_samples_split': 5,
+                'min_samples_leaf': 3,
+                'max_features': 'log2',
                 'bootstrap': True,
                 'oob_score': True,
                 'class_weight': None,
