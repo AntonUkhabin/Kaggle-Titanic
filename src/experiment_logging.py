@@ -265,7 +265,7 @@ def log_coefficients(config, pipe, path_to_coefficients) -> None:
     )
 
 
-def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_to_experiments) -> None:
+def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_to_experiments, ensemble_size=None, best_iterations=None,) -> None:
     '''Save universal experiment results.'''
 
     active_model = config.model.active
@@ -278,6 +278,8 @@ def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_t
         'cv_score': cv_score,
         'cv_std': cv_std,
         'holdout_score': holdout_score,
+        'ensemble_size': ensemble_size,
+        'best_iterations': best_iterations,
     }
 
     # Save model hyperparameters as separate columns.
@@ -294,3 +296,74 @@ def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_t
         header=not path_to_experiments.exists(),
         index=False,
     )
+
+
+def save_oof_predictions(train_cv_df, oof_probabilities, experiment_name, output_dir) -> None:
+    '''Save detailed out-of-fold predictions and errors to CSV.'''
+
+    oof_predictions = (oof_probabilities >= 0.5).astype(int)
+
+    columns_to_save = [
+        'PassengerId',
+        'Survived',
+        'Pclass',
+        'Sex',
+        'Age',
+        'Fare',
+        'SibSp',
+        'Parch',
+        'Embarked',
+        'Name',
+        'Cabin',
+    ]
+
+    oof_df = train_cv_df[columns_to_save].copy()
+
+    oof_df['oof_probability'] = oof_probabilities
+    oof_df['oof_prediction'] = oof_predictions
+    oof_df['is_correct'] = oof_df['Survived'] == oof_df['oof_prediction']
+
+    oof_df['prediction_type'] = np.select(
+        [
+            (oof_df['Survived'] == 1) & (oof_df['oof_prediction'] == 1),
+            (oof_df['Survived'] == 0) & (oof_df['oof_prediction'] == 0),
+            (oof_df['Survived'] == 1) & (oof_df['oof_prediction'] == 0),
+            (oof_df['Survived'] == 0) & (oof_df['oof_prediction'] == 1),
+        ],
+        [
+            'true_positive',
+            'true_negative',
+            'false_negative',
+            'false_positive',
+        ],
+        default='unknown',
+    )
+
+    oof_df['confidence'] = np.where(
+        oof_df['oof_prediction'] == 1,
+        oof_df['oof_probability'],
+        1 - oof_df['oof_probability'],
+    )
+
+    oof_df['distance_to_threshold'] = (
+        oof_df['oof_probability'] - 0.5
+    ).abs()
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    oof_output_path = output_dir / f'{experiment_name}.csv'
+    errors_output_path = output_dir / f'{experiment_name}_errors.csv'
+
+    oof_df.to_csv(oof_output_path, index=False, sep=';', encoding='utf-8-sig')
+
+    errors_df = (
+        oof_df
+        .query('is_correct == False')
+        .sort_values('confidence', ascending=False)
+    )
+
+    errors_df.to_csv(errors_output_path, index=False, sep=';', encoding='utf-8-sig')
+
+    print(f'OOF predictions saved: {oof_output_path}')
+    print(f'OOF errors saved: {errors_output_path}')

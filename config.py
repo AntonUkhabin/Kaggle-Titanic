@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '165_catboost_single_baseline',
+        'experiment_name': '166_catboost_cv_ensemble',
     },
     'logging': {
         'save_tree_plot': True,
@@ -15,6 +15,7 @@ config = {
         'path_to_experiments':          './outputs/experiments.csv',
         'path_to_coefficients':         './outputs/coefficients.csv',
         'path_to_logs':                 './outputs/logs',
+        'path_to_oof':                  './outputs/oof',
         'path_to_tree_plots':           './outputs/tree_plots',
 
         'path_to_optuna_trials':        './outputs/optuna/163_random_forest_optuna_tuning.csv',

@@ -105,6 +105,9 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
 
     scores = []
     best_iterations = []
+    fold_models = []
+    oof_probabilities = np.zeros(len(features))
+
     best_accuracy_scores = []
     best_accuracy_iterations = []
 
@@ -152,9 +155,9 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
             use_best_model=True,
         )
 
-        labels_pred = model.predict(
-            features_val_transformed,
-        )
+        validation_probabilities = model.predict_proba(features_val_transformed)[:, 1]
+        oof_probabilities[val_idx] = validation_probabilities
+        labels_pred = model.predict(features_val_transformed)
 
         score = accuracy_score(
             labels_val,
@@ -191,10 +194,28 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
 
         scores.append(score)
         best_iterations.append(trees_built)
+        fold_models.append((preprocessing_pipe, model))
+
         best_accuracy_scores.append(best_accuracy)
         best_accuracy_iterations.append(best_accuracy_iteration + 1)
 
-    return scores, best_iterations
+    return scores, best_iterations, fold_models, oof_probabilities
+
+
+def predict_with_catboost_ensemble(features, fold_models, threshold=0.5):
+    '''Generate predictions by averaging fold-model probabilities.'''
+
+    fold_probabilities = []
+
+    for preprocessing_pipe, model in fold_models:
+        features_transformed = preprocessing_pipe.transform(features)
+        probabilities = model.predict_proba(features_transformed)[:, 1]
+        fold_probabilities.append(probabilities)
+
+    mean_probabilities = np.mean(fold_probabilities, axis=0)
+    predictions = (mean_probabilities >= threshold).astype(int)
+
+    return predictions, mean_probabilities
 
 
 def rule_based_model(data: pd.DataFrame) -> list[int]:
