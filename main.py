@@ -6,7 +6,7 @@ from sklearn.model_selection    import train_test_split
 from config                     import config
 from src.data                   import load_data
 from src.utils                  import setup_run_logging
-from src.train_functions        import evaluate_model, create_submission, cross_validate_model, build_pipeline
+from src.train_functions        import evaluate_model, create_submission, cross_validate_model, build_pipeline, cross_validate_model_with_early_stopping
 from src.experiment_logging     import print_section, print_model_info, log_experiment_results, log_coefficients
 
 
@@ -38,11 +38,12 @@ def main() -> None:
 
         # Run cross-validation on train_cv_df.
         print_section('Cross Validation')
-        scores = cross_validate_model(
-            train_cv_df=train_cv_df,
-            target_col='Survived',
-            pipe=pipe,
-            config=config,
+        scores, best_iterations = (
+            cross_validate_model_with_early_stopping(
+                train_cv_df=train_cv_df,
+                target_col='Survived',
+                config=config,
+            )
         )
 
         # Calculate mean and standard deviation of CV scores.
@@ -51,6 +52,14 @@ def main() -> None:
 
         print(f'\nMean CV Accuracy: {cv_score:.4f}')
         print(f'CV STD: {cv_std:.4f}')
+
+        print('Best iterations: ' f'{best_iterations}')
+        print('Median best iteration: ' f'{int(np.median(best_iterations))}')
+
+        final_iterations = int(np.median(best_iterations))
+        pipe.set_params(model__iterations=final_iterations)
+
+        print(f'Final number of iterations: {final_iterations}')
 
         # Split train_cv_df into features and target.
         features_train_cv = train_cv_df.drop(columns=['Survived'])

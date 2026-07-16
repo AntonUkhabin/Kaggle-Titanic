@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from config                     import config
 from sklearn.metrics            import accuracy_score
@@ -8,6 +9,7 @@ from sklearn.neighbors          import KNeighborsClassifier
 from sklearn.tree               import DecisionTreeClassifier
 from sklearn.pipeline           import Pipeline
 from sklearn.ensemble           import RandomForestClassifier
+from catboost                   import CatBoostClassifier
 
 from src.preprocessing          import build_preprocessor
 from src.feature_engineering    import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
@@ -31,13 +33,16 @@ def build_model(config):
     if active_model == 'random_forest':
         return RandomForestClassifier(**model_params)
 
+    if active_model == 'catboost':
+        return CatBoostClassifier(**model_params)
+
     raise ValueError(f'Unknown model name: {active_model}')
 
 
 def build_pipeline(config) -> Pipeline:
     '''Build full machine learning pipeline.'''
 
-    preprocessor = build_preprocessor()
+    preprocessor = build_preprocessor(config)
     model = build_model(config)
 
     pipe = Pipeline([
@@ -84,6 +89,112 @@ def cross_validate_model(train_cv_df, target_col, pipe, config):
         
 
     return scores.tolist()
+
+
+def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
+    '''Run cross-validation with fold-specific early stopping.'''
+
+    skf = StratifiedKFold(
+        n_splits=config.split.n_splits,
+        shuffle=config.dataloader_params.shuffle,
+        random_state=config.general.seed,
+    )
+
+    features = train_cv_df.drop(columns=[target_col])
+    labels = train_cv_df[target_col]
+
+    scores = []
+    best_iterations = []
+    best_accuracy_scores = []
+    best_accuracy_iterations = []
+
+    for fold, (train_idx, val_idx) in enumerate(
+        skf.split(features, labels)
+    ):
+        features_train = features.iloc[train_idx]
+        features_val = features.iloc[val_idx]
+
+        labels_train = labels.iloc[train_idx]
+        labels_val = labels.iloc[val_idx]
+
+        # Build a new unfitted pipeline for every fold.
+        fold_pipe = build_pipeline(config)
+
+        # Separate preprocessing from the final estimator.
+        preprocessing_pipe = fold_pipe[:-1]
+        model = fold_pipe.named_steps['model']
+
+        # Fit feature engineering and preprocessing only on fold_train.
+        features_train_transformed = (
+            preprocessing_pipe.fit_transform(
+                features_train,
+                labels_train,
+            )
+        )
+
+        # Apply the fitted transformations to fold_validation.
+        features_val_transformed = (
+            preprocessing_pipe.transform(
+                features_val,
+            )
+        )
+
+        model.fit(
+            features_train_transformed,
+            labels_train,
+            eval_set=(
+                features_val_transformed,
+                labels_val,
+            ),
+            early_stopping_rounds=(
+                config.training.early_stopping_rounds
+            ),
+            use_best_model=True,
+        )
+
+        labels_pred = model.predict(
+            features_val_transformed,
+        )
+
+        score = accuracy_score(
+            labels_val,
+            labels_pred,
+        )
+
+        best_iteration = model.get_best_iteration()
+        trees_built = model.tree_count_
+
+        evals_result = model.get_evals_result()
+
+        validation_logloss = evals_result['validation']['Logloss']
+        best_logloss_iteration = int(np.argmin(validation_logloss))
+        best_logloss = validation_logloss[best_logloss_iteration]
+        iterations_run = len(evals_result['validation']['Accuracy'])
+
+        validation_accuracy = evals_result['validation'].get('Accuracy')
+
+        if validation_accuracy is None:
+            available_metrics = list(evals_result['validation'])
+            raise KeyError(f'Accuracy is missing. Available metrics: {available_metrics}')
+
+        best_accuracy_iteration = int(np.argmax(validation_accuracy))
+        best_accuracy = validation_accuracy[best_accuracy_iteration]
+
+        print(f'Fold: {fold}')
+        print(f'Accuracy at best Logloss: {score:.4f}')
+        print(f'Best Accuracy: {best_accuracy:.4f}')
+        print(f'Best Accuracy iteration: {best_accuracy_iteration + 1}')
+        print(f'Best Logloss iteration: {best_iteration + 1}')
+        print(f'Best validation Logloss: {best_logloss:.4f}')
+        print(f'Iterations actually run: {iterations_run}')
+        print(f'Trees retained: {trees_built}')
+
+        scores.append(score)
+        best_iterations.append(trees_built)
+        best_accuracy_scores.append(best_accuracy)
+        best_accuracy_iterations.append(best_accuracy_iteration + 1)
+
+    return scores, best_iterations
 
 
 def rule_based_model(data: pd.DataFrame) -> list[int]:

@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '164_random_forest_optuna_final',
+        'experiment_name': '165_catboost_single_baseline',
     },
     'logging': {
         'save_tree_plot': True,
@@ -21,9 +21,7 @@ config = {
         'path_to_optuna_best_params':   './outputs/optuna/163_random_forest_optuna_tuning_best_params.yaml',
     },
     'training': {
-        'num_epochs': 200,
-        'early_stopping_epochs': 20,
-        'lr': 0.1,
+        'early_stopping_rounds': 100,
     },
     'dataloader_params': {
         'shuffle': True,
@@ -43,7 +41,7 @@ config = {
         },
     },
     'model': {
-        'active': 'random_forest',
+        'active': 'catboost',
 
         'models': {
             'logistic_regression': {
@@ -84,6 +82,27 @@ config = {
                 'class_weight': None,
                 'random_state': 0xC0FFEE,
                 'n_jobs': -1,
+            },
+
+            'catboost': {
+                'iterations': 2000,
+                'learning_rate': 0.03,
+                'depth': 6,
+                'loss_function': 'Logloss',
+                'eval_metric': 'Accuracy',
+                'custom_metric': ['Logloss'],
+                'cat_features': [
+                    'Pclass',
+                    'Sex',
+                    'Title',
+                    'Deck',
+                    'Embarked',
+                ],
+                'nan_mode': 'Min',
+                'random_seed': 0xC0FFEE,
+                'thread_count': -1,
+                'verbose': 0,
+                'allow_writing_files': False,
             },
         },
     },

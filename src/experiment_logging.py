@@ -270,7 +270,7 @@ def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_t
 
     active_model = config.model.active
     model = pipe.named_steps['model']
-    model_params = dict(config.model.models[active_model])
+    model_params = model.get_params()
 
     experiment_data = {
         'experiment_name': config.general.experiment_name,
