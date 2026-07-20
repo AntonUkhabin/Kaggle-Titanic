@@ -97,7 +97,7 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
     skf = StratifiedKFold(
         n_splits=config.split.n_splits,
         shuffle=config.dataloader_params.shuffle,
-        random_state=config.general.seed,
+        random_state=config.training.fold_seed,
     )
 
     features = train_cv_df.drop(columns=[target_col])

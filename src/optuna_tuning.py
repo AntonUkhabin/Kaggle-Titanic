@@ -6,7 +6,10 @@ import pandas as pd
 
 from omegaconf import OmegaConf
 from sklearn.base import clone
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score
+
+from src.train_functions import build_pipeline
 
 
 def suggest_model_params(trial, config) -> dict:
@@ -22,6 +25,12 @@ def suggest_model_params(trial, config) -> dict:
 
     if active_model == 'random_forest':
         return suggest_random_forest_params(
+            trial=trial,
+            config=config,
+        )
+
+    if active_model == 'catboost':
+        return suggest_catboost_params(
             trial=trial,
             config=config,
         )
@@ -112,13 +121,118 @@ def suggest_random_forest_params(trial, config) -> dict:
     return params
 
 
-def create_objective(
-    train_cv_df,
-    target_col,
-    base_pipe,
-    config,
-):
+def suggest_catboost_params(trial, config) -> dict:
+    '''Suggest CatBoost hyperparameters for an Optuna trial.'''
+
+    search_space = config.optuna.search_spaces.catboost
+
+    return {
+        'model__depth': trial.suggest_int(
+            'depth',
+            search_space.depth.low,
+            search_space.depth.high,
+        ),
+        'model__learning_rate': trial.suggest_float(
+            'learning_rate',
+            search_space.learning_rate.low,
+            search_space.learning_rate.high,
+            log=True,
+        ),
+        'model__l2_leaf_reg': trial.suggest_float(
+            'l2_leaf_reg',
+            search_space.l2_leaf_reg.low,
+            search_space.l2_leaf_reg.high,
+            log=True,
+        ),
+        'model__random_strength': trial.suggest_float(
+            'random_strength',
+            search_space.random_strength.low,
+            search_space.random_strength.high,
+        ),
+    }
+
+
+def create_catboost_objective(train_cv_df, target_col, config):
+    '''Create an Optuna objective with CatBoost early stopping.'''
+
+    features = train_cv_df.drop(columns=[target_col])
+    labels = train_cv_df[target_col]
+
+    skf = StratifiedKFold(
+        n_splits=config.split.n_splits,
+        shuffle=config.dataloader_params.shuffle,
+        random_state=config.general.seed,
+    )
+
+    def objective(trial):
+        '''Evaluate one CatBoost hyperparameter combination.'''
+
+        model_params = suggest_catboost_params(trial, config)
+
+        scores = []
+        best_iterations = []
+
+        for fold, (train_idx, val_idx) in enumerate(skf.split(features, labels)):
+            features_train = features.iloc[train_idx]
+            features_val = features.iloc[val_idx]
+            labels_train = labels.iloc[train_idx]
+            labels_val = labels.iloc[val_idx]
+
+            # Build a fresh pipeline for every fold.
+            fold_pipe = build_pipeline(config)
+            fold_pipe.set_params(**model_params)
+
+            preprocessing_pipe = fold_pipe[:-1]
+            model = fold_pipe.named_steps['model']
+
+            features_train_transformed = preprocessing_pipe.fit_transform(
+                features_train,
+                labels_train,
+            )
+
+            features_val_transformed = preprocessing_pipe.transform(features_val)
+
+            model.fit(
+                features_train_transformed,
+                labels_train,
+                eval_set=(features_val_transformed, labels_val),
+                early_stopping_rounds=config.training.early_stopping_rounds,
+                use_best_model=True,
+            )
+
+            labels_pred = model.predict(features_val_transformed)
+            score = accuracy_score(labels_val, labels_pred)
+            best_iteration = int(model.tree_count_)
+
+            scores.append(float(score))
+            best_iterations.append(best_iteration)
+
+            trial.set_user_attr(f'fold_{fold}_score', float(score))
+            trial.set_user_attr(f'fold_{fold}_best_iteration', best_iteration)
+
+        cv_mean = float(np.mean(scores))
+        cv_std = float(np.std(scores))
+        mean_best_iteration = float(np.mean(best_iterations))
+
+        trial.set_user_attr('cv_std', cv_std)
+        trial.set_user_attr('fold_scores', scores)
+        trial.set_user_attr('best_iterations', best_iterations)
+        trial.set_user_attr('mean_best_iteration', mean_best_iteration)
+
+        return cv_mean
+
+    return objective
+
+
+def create_objective(train_cv_df, target_col, base_pipe, config):
     '''Create an Optuna objective for model tuning.'''
+
+    if config.model.active == 'catboost':
+        return create_catboost_objective(
+            train_cv_df=train_cv_df,
+            target_col=target_col,
+            config=config,
+        )
 
     features = train_cv_df.drop(columns=[target_col])
     labels = train_cv_df[target_col]
@@ -192,6 +306,14 @@ def run_optuna_study(
         pruner=optuna.pruners.NopPruner(),
     )
 
+    if config.model.active == 'catboost':
+        study.enqueue_trial({
+            'depth': config.model.models.catboost.depth,
+            'learning_rate': config.model.models.catboost.learning_rate,
+            'l2_leaf_reg': config.model.models.catboost.l2_leaf_reg,
+            'random_strength': config.model.models.catboost.random_strength,
+        })
+
     objective = create_objective(
         train_cv_df=train_cv_df,
         target_col=target_col,
@@ -227,6 +349,7 @@ def build_trials_dataframe(study) -> pd.DataFrame:
         'number': 'trial_number',
         'value': 'cv_score',
         'user_attrs_cv_std': 'cv_std',
+        'user_attrs_mean_best_iteration': 'mean_best_iteration',
     })
 
     fold_columns = [
@@ -266,6 +389,7 @@ def build_trials_dataframe(study) -> pd.DataFrame:
         'trial_number',
         'cv_score',
         'cv_std',
+        'mean_best_iteration',
         *fold_columns,
         *parameter_columns,
         'state',

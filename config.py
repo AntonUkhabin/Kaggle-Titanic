@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '179_catboost_random_strength_0',
+        'experiment_name': '209_catboost_optuna_trial_94_cv_seed_2026_round',
     },
     'logging': {
         'save_tree_plot': True,
@@ -18,11 +18,12 @@ config = {
         'path_to_oof':                  './outputs/oof',
         'path_to_tree_plots':           './outputs/tree_plots',
 
-        'path_to_optuna_trials':        './outputs/optuna/163_random_forest_optuna_tuning.csv',
-        'path_to_optuna_best_params':   './outputs/optuna/163_random_forest_optuna_tuning_best_params.yaml',
+        'path_to_optuna_trials':        './outputs/optuna/199_catboost_optuna.csv',
+        'path_to_optuna_best_params':   './outputs/optuna/199_catboost_optuna_best_params.yaml',
     },
     'training': {
         'early_stopping_rounds': 100,
+        'fold_seed': 0xC0FFEE,
     },
     'dataloader_params': {
         'shuffle': True,
@@ -87,8 +88,9 @@ config = {
 
             'catboost': {
                 'iterations': 2000,
-                'learning_rate': 0.05,
-                'depth': 7,
+                'learning_rate': 0.09984993623369727,
+                'depth': 5,
+                'l2_leaf_reg': 3.1197576358329733,
                 'loss_function': 'Logloss',
                 'eval_metric': 'Accuracy',
                 'custom_metric': ['Logloss'],
@@ -101,22 +103,41 @@ config = {
                 ],
                 'nan_mode': 'Min',
                 'random_seed': 0xC0FFEE,
-                'thread_count': -1,
+                'thread_count': 8,
                 'verbose': 0,
                 'allow_writing_files': False,
-                'random_strength': 0,
+                'random_strength': 0.2403295819462555,
                 'bootstrap_type': 'MVS',
             },
         },
     },
 
     'optuna': {
-        'study_name': 'random_forest_tuning',
+        'study_name': 'catboost_tuning',
         'direction': 'maximize',
         'n_trials': 100,
         'show_progress_bar': True,
 
         'search_spaces': {
+
+        'catboost': {
+            'depth': {
+                'low': 4,
+                'high': 9,
+                },
+            'learning_rate': {
+                'low': 0.01,
+                'high': 0.10,
+                },
+            'l2_leaf_reg': {
+                'low': 1.0,
+                'high': 10.0,
+                },
+            'random_strength': {
+                'low': 0.0,
+                'high': 2.0,
+                },
+            },
             
             'decision_tree': {
                 'criterion': [
