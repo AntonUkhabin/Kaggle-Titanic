@@ -36,6 +36,8 @@ def main() -> None:
 
         print_section(f'Experiment: {config.general.experiment_name}')
 
+        print_model_info(pipe, config)
+
         # Run cross-validation on train_cv_df.
         print_section('Cross Validation')
         
@@ -48,7 +50,7 @@ def main() -> None:
         # Calculate mean and standard deviation of CV scores.
         cv_score = sum(scores) / len(scores)
         cv_std = np.std(scores)
-        oof_predictions = (oof_probabilities >= 0.5).astype(int)
+        oof_predictions = (oof_probabilities > 0.5).astype(int)
         oof_score = evaluate_model(train_cv_df['Survived'], oof_predictions)
 
         print(f'\nMean CV Accuracy: {cv_score:.4f}')

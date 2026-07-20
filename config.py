@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '166_catboost_cv_ensemble',
+        'experiment_name': '179_catboost_random_strength_0',
     },
     'logging': {
         'save_tree_plot': True,
@@ -87,8 +87,8 @@ config = {
 
             'catboost': {
                 'iterations': 2000,
-                'learning_rate': 0.03,
-                'depth': 6,
+                'learning_rate': 0.05,
+                'depth': 7,
                 'loss_function': 'Logloss',
                 'eval_metric': 'Accuracy',
                 'custom_metric': ['Logloss'],
@@ -104,6 +104,8 @@ config = {
                 'thread_count': -1,
                 'verbose': 0,
                 'allow_writing_files': False,
+                'random_strength': 0,
+                'bootstrap_type': 'MVS',
             },
         },
     },

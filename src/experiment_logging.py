@@ -301,7 +301,7 @@ def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_t
 def save_oof_predictions(train_cv_df, oof_probabilities, experiment_name, output_dir) -> None:
     '''Save detailed out-of-fold predictions and errors to CSV.'''
 
-    oof_predictions = (oof_probabilities >= 0.5).astype(int)
+    oof_predictions = (oof_probabilities > 0.5).astype(int)
 
     columns_to_save = [
         'PassengerId',
@@ -315,6 +315,7 @@ def save_oof_predictions(train_cv_df, oof_probabilities, experiment_name, output
         'Embarked',
         'Name',
         'Cabin',
+        'Ticket'
     ]
 
     oof_df = train_cv_df[columns_to_save].copy()
