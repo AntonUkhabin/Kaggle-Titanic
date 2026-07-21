@@ -16,6 +16,20 @@ def print_section(title: str) -> None:
     print('=' * 70)
 
 
+def print_classification_metrics(name, metrics):
+    '''Print classification and probability metrics.'''
+
+    print(f'{name} Accuracy: {metrics["accuracy"]:.4f}')
+    print(f'{name} Precision: {metrics["precision"]:.4f}')
+    print(f'{name} Recall: {metrics["recall"]:.4f}')
+    print(f'{name} F1: {metrics["f1"]:.4f}')
+    print(f'{name} ROC-AUC: {metrics["roc_auc"]:.4f}')
+    print(f'{name} PR-AUC: {metrics["pr_auc"]:.4f}')
+    print(f'{name} Logloss: {metrics["logloss"]:.4f}')
+    print(f'{name} Brier: {metrics["brier"]:.4f}')
+    print(f'{name} Confusion Matrix: TN={metrics["tn"]}, FP={metrics["fp"]}, FN={metrics["fn"]}, TP={metrics["tp"]}')
+
+
 def print_model_info(pipe, config) -> None:
     '''Print fitted model information.'''
 

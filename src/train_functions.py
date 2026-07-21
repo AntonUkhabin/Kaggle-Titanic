@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from config                     import config
-from sklearn.metrics            import accuracy_score
+from sklearn.metrics            import accuracy_score, average_precision_score, brier_score_loss, confusion_matrix, f1_score, log_loss, precision_score, recall_score, roc_auc_score
 from sklearn.model_selection    import StratifiedKFold
 from sklearn.linear_model       import LogisticRegression
 from sklearn.neighbors          import KNeighborsClassifier
@@ -59,7 +59,7 @@ def build_pipeline(config) -> Pipeline:
     return pipe
 
 
-def cross_validate_standard(train_cv_df, target_col, config):
+def cross_validate_standard(train_cv_df, target_col, config, keep_fold_models=False):
     '''Run standard cross-validation, generate OOF predictions and fit the final pipeline.'''
 
     features = train_cv_df.drop(columns=[target_col])
@@ -72,6 +72,7 @@ def cross_validate_standard(train_cv_df, target_col, config):
     )
 
     scores = []
+    fold_models = []
     oof_probabilities = np.zeros(len(features))
 
     for fold, (train_idx, val_idx) in enumerate(skf.split(features, labels)):
@@ -91,13 +92,19 @@ def cross_validate_standard(train_cv_df, target_col, config):
 
         scores.append(float(score))
 
+        if keep_fold_models:
+            fold_models.append(fold_pipe)
+
         print(f'Fold: {fold}')
         print(f'Fold Accuracy: {score:.4f}')
 
-    final_pipe = build_pipeline(config)
-    final_pipe.fit(features, labels)
+    if keep_fold_models:
+        result_pipe = fold_models[0]
+    else:
+        result_pipe = build_pipeline(config)
+        result_pipe.fit(features, labels)
 
-    return scores, final_pipe, oof_probabilities
+    return scores, result_pipe, fold_models, oof_probabilities
 
 
 def predict_with_pipeline(features, pipe):
@@ -107,6 +114,20 @@ def predict_with_pipeline(features, pipe):
     predictions = pipe.predict(features).astype(int)
 
     return predictions, probabilities
+
+
+def predict_with_pipeline_ensemble(features, fold_models, threshold=0.5):
+    '''Generate predictions by averaging fitted pipeline probabilities.'''
+
+    fold_probabilities = [
+        fold_pipe.predict_proba(features)[:, 1]
+        for fold_pipe in fold_models
+    ]
+
+    mean_probabilities = np.mean(fold_probabilities, axis=0)
+    predictions = (mean_probabilities > threshold).astype(int)
+
+    return predictions, mean_probabilities
 
 
 def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
@@ -261,6 +282,27 @@ def evaluate_model(labels_true: pd.Series, labels_pred: list[int]) -> float:
     score = accuracy_score(labels_true, labels_pred)
 
     return score
+
+
+def calculate_classification_metrics(labels, predictions, probabilities):
+    '''Calculate classification and probability metrics.'''
+
+    tn, fp, fn, tp = confusion_matrix(labels, predictions, labels=[0, 1]).ravel()
+
+    return {
+        'accuracy': accuracy_score(labels, predictions),
+        'precision': precision_score(labels, predictions, zero_division=0),
+        'recall': recall_score(labels, predictions, zero_division=0),
+        'f1': f1_score(labels, predictions, zero_division=0),
+        'roc_auc': roc_auc_score(labels, probabilities),
+        'pr_auc': average_precision_score(labels, probabilities),
+        'logloss': log_loss(labels, probabilities),
+        'brier': brier_score_loss(labels, probabilities),
+        'tn': int(tn),
+        'fp': int(fp),
+        'fn': int(fn),
+        'tp': int(tp),
+    }
 
 
 def create_submission(test_df: pd.DataFrame, test_preds: list[int], path_to_submission: str) -> pd.DataFrame:

@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '210_random_forest_standard_cv_oof',
+        'experiment_name': '218_catboost_fold_ensemble_207',
     },
     'logging': {
         'save_tree_plot': True,
@@ -25,12 +25,27 @@ config = {
         'early_stopping_rounds': 100,
         'fold_seed': 0xC0FFEE,
 
-        'strategy_by_model': {
-            'logistic_regression': 'standard_cv_full_fit',
-            'knn': 'standard_cv_full_fit',
-            'decision_tree': 'standard_cv_full_fit',
-            'random_forest': 'standard_cv_full_fit',
-            'catboost': 'early_stopping_cv_fold_ensemble',
+        'model_profiles': {
+            'logistic_regression': {
+                'cv_strategy': 'standard',
+                'inference_strategy': 'fold_ensemble',
+            },
+            'knn': {
+                'cv_strategy': 'standard',
+                'inference_strategy': 'fold_ensemble',
+            },
+            'decision_tree': {
+                'cv_strategy': 'standard',
+                'inference_strategy': 'fold_ensemble',
+            },
+            'random_forest': {
+                'cv_strategy': 'standard',
+                'inference_strategy': 'fold_ensemble',
+            },
+            'catboost': {
+                'cv_strategy': 'early_stopping',
+                'inference_strategy': 'fold_ensemble',
+            },
         },
     },
     'dataloader_params': {
@@ -51,7 +66,7 @@ config = {
         },
     },
     'model': {
-        'active': 'random_forest',
+        'active': 'catboost',
 
         'models': {
             'logistic_regression': {
