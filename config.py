@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '209_catboost_optuna_trial_94_cv_seed_2026_round',
+        'experiment_name': '210_random_forest_standard_cv_oof',
     },
     'logging': {
         'save_tree_plot': True,
@@ -24,6 +24,14 @@ config = {
     'training': {
         'early_stopping_rounds': 100,
         'fold_seed': 0xC0FFEE,
+
+        'strategy_by_model': {
+            'logistic_regression': 'standard_cv_full_fit',
+            'knn': 'standard_cv_full_fit',
+            'decision_tree': 'standard_cv_full_fit',
+            'random_forest': 'standard_cv_full_fit',
+            'catboost': 'early_stopping_cv_fold_ensemble',
+        },
     },
     'dataloader_params': {
         'shuffle': True,
@@ -43,7 +51,7 @@ config = {
         },
     },
     'model': {
-        'active': 'catboost',
+        'active': 'random_forest',
 
         'models': {
             'logistic_regression': {
@@ -88,9 +96,9 @@ config = {
 
             'catboost': {
                 'iterations': 2000,
-                'learning_rate': 0.09984993623369727,
+                'learning_rate': 0.1,
                 'depth': 5,
-                'l2_leaf_reg': 3.1197576358329733,
+                'l2_leaf_reg': 3.12,
                 'loss_function': 'Logloss',
                 'eval_metric': 'Accuracy',
                 'custom_metric': ['Logloss'],
@@ -106,7 +114,7 @@ config = {
                 'thread_count': 8,
                 'verbose': 0,
                 'allow_writing_files': False,
-                'random_strength': 0.2403295819462555,
+                'random_strength': 0.24,
                 'bootstrap_type': 'MVS',
             },
         },

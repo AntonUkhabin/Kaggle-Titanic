@@ -3,7 +3,7 @@ import numpy as np
 
 from config                     import config
 from sklearn.metrics            import accuracy_score
-from sklearn.model_selection    import StratifiedKFold, cross_val_score
+from sklearn.model_selection    import StratifiedKFold
 from sklearn.linear_model       import LogisticRegression
 from sklearn.neighbors          import KNeighborsClassifier
 from sklearn.tree               import DecisionTreeClassifier
@@ -59,36 +59,54 @@ def build_pipeline(config) -> Pipeline:
     return pipe
 
 
-def cross_validate_model(train_cv_df, target_col, pipe, config):
-    '''Run cross-validation for full sklearn pipeline.'''
+def cross_validate_standard(train_cv_df, target_col, config):
+    '''Run standard cross-validation, generate OOF predictions and fit the final pipeline.'''
+
+    features = train_cv_df.drop(columns=[target_col])
+    labels = train_cv_df[target_col]
 
     skf = StratifiedKFold(
         n_splits=config.split.n_splits,
         shuffle=config.dataloader_params.shuffle,
-        random_state=config.general.seed,      
+        random_state=config.training.fold_seed,
     )
 
-    # Split dataframe into features and labels for StratifiedKFold.
-    features = train_cv_df.drop(columns=[target_col])
-    labels = train_cv_df[target_col]
+    scores = []
+    oof_probabilities = np.zeros(len(features))
 
-    scores = cross_val_score(
-        estimator=pipe,
-        X=features,
-        y=labels,
-        cv=skf,
-        scoring='accuracy',
-        verbose=1,
-        error_score='raise', # Если в фолде будет ошибка, обучение остановится
-        # n_jobs=-10,
-    )
+    for fold, (train_idx, val_idx) in enumerate(skf.split(features, labels)):
+        features_train = features.iloc[train_idx]
+        features_val = features.iloc[val_idx]
+        labels_train = labels.iloc[train_idx]
+        labels_val = labels.iloc[val_idx]
 
-    for fold, score in enumerate(scores):
+        fold_pipe = build_pipeline(config)
+        fold_pipe.fit(features_train, labels_train)
+
+        validation_probabilities = fold_pipe.predict_proba(features_val)[:, 1]
+        labels_pred = fold_pipe.predict(features_val)
+
+        oof_probabilities[val_idx] = validation_probabilities
+        score = accuracy_score(labels_val, labels_pred)
+
+        scores.append(float(score))
+
         print(f'Fold: {fold}')
         print(f'Fold Accuracy: {score:.4f}')
-        
 
-    return scores.tolist()
+    final_pipe = build_pipeline(config)
+    final_pipe.fit(features, labels)
+
+    return scores, final_pipe, oof_probabilities
+
+
+def predict_with_pipeline(features, pipe):
+    '''Generate predictions with a fitted pipeline.'''
+
+    probabilities = pipe.predict_proba(features)[:, 1]
+    predictions = pipe.predict(features).astype(int)
+
+    return predictions, probabilities
 
 
 def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
