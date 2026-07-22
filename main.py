@@ -13,13 +13,15 @@ from src.train_functions        import (build_pipeline,
                                         predict_with_catboost_ensemble,
                                         predict_with_pipeline,
                                         calculate_classification_metrics,
-                                        predict_with_pipeline_ensemble,)
+                                        predict_with_pipeline_ensemble,
+                                        )
 from src.experiment_logging     import (log_coefficients,
                                         log_experiment_results,
                                         print_classification_metrics,
                                         print_model_info,
                                         print_section,
-                                        save_oof_predictions,)
+                                        save_oof_predictions,
+                                        )
 
 
 def main() -> None:
@@ -51,22 +53,13 @@ def main() -> None:
         print_section('Cross Validation')
 
         training_profile = config.training.model_profiles[config.model.active]
-        cv_strategy = training_profile.cv_strategy
-        inference_strategy = training_profile.inference_strategy
+        use_early_stopping = training_profile.early_stopping
+        use_fold_ensemble = training_profile.fold_ensemble
 
-        if cv_strategy == 'standard':
-            keep_fold_models = inference_strategy == 'fold_ensemble'
+        if use_early_stopping and not use_fold_ensemble:
+            raise ValueError('Early stopping currently requires fold ensemble.')
 
-            scores, pipe, fold_models, oof_probabilities = cross_validate_standard(
-                train_cv_df=train_cv_df,
-                target_col='Survived',
-                config=config,
-                keep_fold_models=keep_fold_models,
-            )
-
-            best_iterations = None
-
-        elif cv_strategy == 'early_stopping':
+        if use_early_stopping:
             scores, best_iterations, fold_models, oof_probabilities = cross_validate_model_with_early_stopping(
                 train_cv_df=train_cv_df,
                 target_col='Survived',
@@ -74,9 +67,16 @@ def main() -> None:
             )
 
         else:
-            raise ValueError(f'Unknown CV strategy: {cv_strategy}')
+            scores, pipe, fold_models, oof_probabilities = cross_validate_standard(
+                train_cv_df=train_cv_df,
+                target_col='Survived',
+                config=config,
+                keep_fold_models=use_fold_ensemble,
+            )
+
+            best_iterations = None
         
-        ensemble_size = len(fold_models) if inference_strategy == 'fold_ensemble' else 1
+        ensemble_size = len(fold_models) if use_fold_ensemble else 1
 
         print_model_info(pipe, config)
 
@@ -115,17 +115,23 @@ def main() -> None:
         # Generate predictions for holdout_df.
         print_section('Holdout Evaluation')
 
-        if inference_strategy == 'full_fit':
-            holdout_preds, holdout_probabilities = predict_with_pipeline(features_holdout, pipe)
+        if not use_fold_ensemble:
+            holdout_preds, holdout_probabilities = predict_with_pipeline(
+                features_holdout,
+                pipe,
+            )
 
-        elif inference_strategy == 'fold_ensemble' and cv_strategy == 'standard':
-            holdout_preds, holdout_probabilities = predict_with_pipeline_ensemble(features_holdout, fold_models)
-
-        elif inference_strategy == 'fold_ensemble' and cv_strategy == 'early_stopping':
-            holdout_preds, holdout_probabilities = predict_with_catboost_ensemble(features_holdout, fold_models)
+        elif use_early_stopping:
+            holdout_preds, holdout_probabilities = predict_with_catboost_ensemble(
+                features_holdout,
+                fold_models,
+            )
 
         else:
-            raise ValueError(f'Unsupported inference strategy: {inference_strategy}')
+            holdout_preds, holdout_probabilities = predict_with_pipeline_ensemble(
+                features_holdout,
+                fold_models,
+            )
 
         holdout_metrics = calculate_classification_metrics(labels_holdout, holdout_preds, holdout_probabilities)
         holdout_score = holdout_metrics['accuracy']
@@ -156,17 +162,23 @@ def main() -> None:
         # Generate predictions for Kaggle test.csv.
         print_section('Kaggle Submission')
 
-        if inference_strategy == 'full_fit':
-            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline(kaggle_test_df, pipe)
+        if not use_fold_ensemble:
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline(
+                kaggle_test_df,
+                pipe,
+            )
 
-        elif inference_strategy == 'fold_ensemble' and cv_strategy == 'standard':
-            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline_ensemble(kaggle_test_df, fold_models)
-
-        elif inference_strategy == 'fold_ensemble' and cv_strategy == 'early_stopping':
-            kaggle_test_preds, kaggle_test_probabilities = predict_with_catboost_ensemble(kaggle_test_df, fold_models)
+        elif use_early_stopping:
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_catboost_ensemble(
+                kaggle_test_df,
+                fold_models,
+            )
 
         else:
-            raise ValueError(f'Unsupported strategy combination: cv={cv_strategy}, inference={inference_strategy}')
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline_ensemble(
+                kaggle_test_df,
+                fold_models,
+            )
 
         print(f'Number of prediction models: {ensemble_size}')
         print(f'Mean predicted survival probability: {np.mean(kaggle_test_probabilities):.4f}')

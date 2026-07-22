@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '218_catboost_fold_ensemble_207',
+        'experiment_name': '219_refactoring_test',
     },
     'logging': {
         'save_tree_plot': True,
@@ -27,24 +27,28 @@ config = {
 
         'model_profiles': {
             'logistic_regression': {
-                'cv_strategy': 'standard',
-                'inference_strategy': 'fold_ensemble',
+                'early_stopping': False,
+                'fold_ensemble': False,
             },
             'knn': {
-                'cv_strategy': 'standard',
-                'inference_strategy': 'fold_ensemble',
+                'early_stopping': False,
+                'fold_ensemble': True,
             },
             'decision_tree': {
-                'cv_strategy': 'standard',
-                'inference_strategy': 'fold_ensemble',
+                'early_stopping': False,
+                'fold_ensemble': False,
             },
             'random_forest': {
-                'cv_strategy': 'standard',
-                'inference_strategy': 'fold_ensemble',
+                'early_stopping': False,
+                'fold_ensemble': True,
             },
             'catboost': {
-                'cv_strategy': 'early_stopping',
-                'inference_strategy': 'fold_ensemble',
+                'early_stopping': True,
+                'fold_ensemble': True,
+            },
+            'lightgbm': {
+                'early_stopping': True,
+                'fold_ensemble': True,
             },
         },
     },
