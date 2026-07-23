@@ -121,13 +121,6 @@ config = {
                 'loss_function': 'Logloss',
                 'eval_metric': 'Accuracy',
                 'custom_metric': ['Logloss'],
-                'cat_features': [
-                    'Pclass',
-                    'Sex',
-                    'Title',
-                    'Deck',
-                    'Embarked',
-                ],
                 'nan_mode': 'Min',
                 'random_seed': 0xC0FFEE,
                 'thread_count': 8,
@@ -135,6 +128,41 @@ config = {
                 'allow_writing_files': False,
                 'random_strength': 0.24,
                 'bootstrap_type': 'MVS',
+            },
+
+            'lightgbm': {
+                'boosting_type': 'gbdt',
+                'objective': 'binary',
+                'metric': 'binary_error',
+
+                'n_estimators': 2000,
+                'learning_rate': 0.03,
+
+                'num_leaves': 15,
+                'max_depth': 4,
+                'min_child_samples': 10,
+                'min_child_weight': 0.001,
+                'min_split_gain': 0.0,
+
+                'subsample': 1.0,
+                'subsample_freq': 0,
+                'colsample_bytree': 1.0,
+
+                'reg_alpha': 0.0,
+                'reg_lambda': 0.0,
+                'class_weight': None,
+
+                'cat_smooth': 10.0,
+                'cat_l2': 10.0,
+                'min_data_per_group': 100,
+                'max_cat_threshold': 32,
+                'max_cat_to_onehot': 4,
+
+                'random_state': 0xC0FFEE,
+                'n_jobs': 15,
+                'deterministic': True,
+                'force_row_wise': True,
+                'verbosity': -1,
             },
         },
     },

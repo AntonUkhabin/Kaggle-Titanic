@@ -15,7 +15,7 @@ from src.preprocessing          import build_preprocessor
 from src.feature_engineering    import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
 
 
-def build_model(config):
+def build_model(config, categorical_features=None):
     '''Build estimator from config.'''
 
     active_model = config.model.active
@@ -34,7 +34,10 @@ def build_model(config):
         return RandomForestClassifier(**model_params)
 
     if active_model == 'catboost':
-        return CatBoostClassifier(**model_params)
+        if categorical_features is None:
+            raise ValueError('Categorical features are required for CatBoost.')
+
+        return CatBoostClassifier(cat_features=list(categorical_features), **model_params)
 
     raise ValueError(f'Unknown model name: {active_model}')
 
@@ -43,7 +46,10 @@ def build_pipeline(config) -> Pipeline:
     '''Build full machine learning pipeline.'''
 
     preprocessor = build_preprocessor(config)
-    model = build_model(config)
+
+    categorical_features = getattr(preprocessor,'categorical_features', None)
+
+    model = build_model(config, categorical_features=categorical_features)
 
     pipe = Pipeline([
         ('title_extractor', TitleExtractor()),

@@ -25,13 +25,7 @@ def build_preprocessor(config):
         return build_tree_preprocessor()
 
     if active_model == 'catboost':
-        categorical_features = list(
-            config.model.models.catboost.cat_features
-        )
-
-        return CatBoostPreprocessor(
-            categorical_features=categorical_features,
-        )
+        return build_catboost_preprocessor()
 
     raise ValueError(f'Unknown preprocessor for model: {active_model}')
 
@@ -150,11 +144,30 @@ def build_tree_preprocessor() -> ColumnTransformer:
     return preprocessor
 
 
+def build_catboost_preprocessor():
+    '''Build preprocessing pipeline for CatBoost.'''
+
+    return CatBoostPreprocessor()
+
+
 class CatBoostPreprocessor(BaseEstimator, TransformerMixin):
     '''Prepare Titanic features for native CatBoost processing.'''
 
-    def __init__(self, categorical_features):
-        self.categorical_features = categorical_features
+    numeric_features = (
+        'Age',
+        'Fare',
+        'FamilySize',
+        'IsAlone',
+        'CabinKnown',
+    )
+
+    categorical_features = (
+        'Pclass',
+        'Sex',
+        'Title',
+        'Deck',
+        'Embarked',
+    )
 
     def fit(self, features, labels=None):
         self.is_fitted_ = True
@@ -162,25 +175,14 @@ class CatBoostPreprocessor(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, features):
-        features = features.copy()
+        numeric_features = list(self.numeric_features)
+        categorical_features = list(self.categorical_features)
+        selected_features = numeric_features + categorical_features
 
-        numeric_features = [
-            'Age',
-            'Fare',
-            'FamilySize',
-            'IsAlone',
-            'CabinKnown',
-        ]
+        features = features[selected_features].copy()
 
-        selected_features = (
-            numeric_features
-            + list(self.categorical_features)
-        )
-
-        features = features[selected_features]
-
-        features[self.categorical_features] = (
-            features[self.categorical_features]
+        features[categorical_features] = (
+            features[categorical_features]
             .fillna('Unknown')
             .astype(str)
         )
