@@ -10,6 +10,7 @@ from sklearn.tree               import DecisionTreeClassifier
 from sklearn.pipeline           import Pipeline
 from sklearn.ensemble           import RandomForestClassifier
 from catboost                   import CatBoostClassifier
+from lightgbm                   import LGBMClassifier, early_stopping, log_evaluation
 
 from src.preprocessing          import build_preprocessor
 from src.feature_engineering    import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
@@ -38,6 +39,9 @@ def build_model(config, categorical_features=None):
             raise ValueError('Categorical features are required for CatBoost.')
 
         return CatBoostClassifier(cat_features=list(categorical_features), **model_params)
+
+    if active_model == 'lightgbm':
+        return LGBMClassifier(**model_params)
 
     raise ValueError(f'Unknown model name: {active_model}')
 
@@ -136,6 +140,102 @@ def predict_with_pipeline_ensemble(features, fold_models, threshold=0.5):
     return predictions, mean_probabilities
 
 
+def fit_model_with_early_stopping(model, features_train, labels_train, features_val, labels_val, config):
+    '''Fit model with validation-based early stopping.'''
+
+    active_model = config.model.active
+
+    if active_model == 'catboost':
+        model.fit(
+            features_train,
+            labels_train,
+            eval_set=(features_val, labels_val),
+            early_stopping_rounds=config.training.early_stopping_rounds,
+            use_best_model=True,
+        )
+
+        return model
+
+    if active_model == 'lightgbm':
+        callbacks = [
+            early_stopping(
+                stopping_rounds=config.training.early_stopping_rounds,
+                first_metric_only=True,
+                verbose=False,
+            ),
+            log_evaluation(period=0),
+        ]
+
+        model.fit(
+            features_train,
+            labels_train,
+            eval_X=features_val,
+            eval_y=labels_val,
+            eval_names=['validation'],
+            callbacks=callbacks,
+        )
+
+        return model
+
+    raise ValueError(f'Early stopping is not supported for model: {active_model}')
+
+
+def report_early_stopping_results(model, score, fold, config):
+    '''Print early stopping results and return retained tree count.'''
+
+    active_model = config.model.active
+
+    if active_model == 'catboost':
+        best_iteration = model.get_best_iteration()
+        trees_built = model.tree_count_
+        evals_result = model.get_evals_result()
+
+        validation_logloss = evals_result['validation']['Logloss']
+        best_logloss_iteration = int(np.argmin(validation_logloss))
+        best_logloss = validation_logloss[best_logloss_iteration]
+        iterations_run = len(evals_result['validation']['Accuracy'])
+
+        validation_accuracy = evals_result['validation'].get('Accuracy')
+
+        if validation_accuracy is None:
+            available_metrics = list(evals_result['validation'])
+            raise KeyError(f'Accuracy is missing. Available metrics: {available_metrics}')
+
+        best_accuracy_iteration = int(np.argmax(validation_accuracy))
+        best_accuracy = validation_accuracy[best_accuracy_iteration]
+
+        print(f'Fold: {fold}')
+        print(f'Accuracy at best Logloss: {score:.4f}')
+        print(f'Best Accuracy: {best_accuracy:.4f}')
+        print(f'Best Accuracy iteration: {best_accuracy_iteration + 1}')
+        print(f'Best Logloss iteration: {best_iteration + 1}')
+        print(f'Best validation Logloss: {best_logloss:.4f}')
+        print(f'Iterations actually run: {iterations_run}')
+        print(f'Trees retained: {trees_built}')
+
+        return trees_built
+
+    if active_model == 'lightgbm':
+        validation_error = model.evals_result_['validation']['binary_error']
+        best_iteration = model.best_iteration_
+        best_error = model.best_score_['validation']['binary_error']
+        best_accuracy = 1.0 - best_error
+        iterations_run = len(validation_error)
+        trees_built = model.n_estimators_
+
+        print(f'Fold: {fold}')
+        print(f'Fold Accuracy: {score:.4f}')
+        print(f'Best Accuracy: {best_accuracy:.4f}')
+        print(f'Best Accuracy iteration: {best_iteration}')
+        print(f'Best binary error: {best_error:.4f}')
+        print(f'Iterations actually run: {iterations_run}')
+        print(f'Trees retained: {trees_built}')
+
+        return trees_built
+
+    raise ValueError(f'Early stopping results are not supported for model: {active_model}')
+
+
 def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
     '''Run cross-validation with fold-specific early stopping.'''
 
@@ -152,9 +252,6 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
     best_iterations = []
     fold_models = []
     oof_probabilities = np.zeros(len(features))
-
-    best_accuracy_scores = []
-    best_accuracy_iterations = []
 
     for fold, (train_idx, val_idx) in enumerate(
         skf.split(features, labels)
@@ -187,17 +284,13 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
             )
         )
 
-        model.fit(
-            features_train_transformed,
-            labels_train,
-            eval_set=(
-                features_val_transformed,
-                labels_val,
-            ),
-            early_stopping_rounds=(
-                config.training.early_stopping_rounds
-            ),
-            use_best_model=True,
+        model = fit_model_with_early_stopping(
+            model=model,
+            features_train=features_train_transformed,
+            labels_train=labels_train,
+            features_val=features_val_transformed,
+            labels_val=labels_val,
+            config=config,
         )
 
         validation_probabilities = model.predict_proba(features_val_transformed)[:, 1]
@@ -209,46 +302,22 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
             labels_pred,
         )
 
-        best_iteration = model.get_best_iteration()
-        trees_built = model.tree_count_
-
-        evals_result = model.get_evals_result()
-
-        validation_logloss = evals_result['validation']['Logloss']
-        best_logloss_iteration = int(np.argmin(validation_logloss))
-        best_logloss = validation_logloss[best_logloss_iteration]
-        iterations_run = len(evals_result['validation']['Accuracy'])
-
-        validation_accuracy = evals_result['validation'].get('Accuracy')
-
-        if validation_accuracy is None:
-            available_metrics = list(evals_result['validation'])
-            raise KeyError(f'Accuracy is missing. Available metrics: {available_metrics}')
-
-        best_accuracy_iteration = int(np.argmax(validation_accuracy))
-        best_accuracy = validation_accuracy[best_accuracy_iteration]
-
-        print(f'Fold: {fold}')
-        print(f'Accuracy at best Logloss: {score:.4f}')
-        print(f'Best Accuracy: {best_accuracy:.4f}')
-        print(f'Best Accuracy iteration: {best_accuracy_iteration + 1}')
-        print(f'Best Logloss iteration: {best_iteration + 1}')
-        print(f'Best validation Logloss: {best_logloss:.4f}')
-        print(f'Iterations actually run: {iterations_run}')
-        print(f'Trees retained: {trees_built}')
+        trees_built = report_early_stopping_results(
+            model=model,
+            score=score,
+            fold=fold,
+            config=config,
+        )
 
         scores.append(score)
         best_iterations.append(trees_built)
         fold_models.append((preprocessing_pipe, model))
 
-        best_accuracy_scores.append(best_accuracy)
-        best_accuracy_iterations.append(best_accuracy_iteration + 1)
-
     return scores, best_iterations, fold_models, oof_probabilities
 
 
-def predict_with_catboost_ensemble(features, fold_models, threshold=0.5):
-    '''Generate predictions by averaging fold-model probabilities.'''
+def predict_with_early_stopping_ensemble(features, fold_models, threshold=0.5):
+    '''Generate predictions by averaging early-stopping fold-model probabilities.'''
 
     fold_probabilities = []
 

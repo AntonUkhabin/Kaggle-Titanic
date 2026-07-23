@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '219_refactoring_test',
+        'experiment_name': '220_lightgbm_baseline',
     },
     'logging': {
         'save_tree_plot': True,
@@ -70,7 +70,7 @@ config = {
         },
     },
     'model': {
-        'active': 'catboost',
+        'active': 'lightgbm',
 
         'models': {
             'logistic_regression': {

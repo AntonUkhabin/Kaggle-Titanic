@@ -10,7 +10,7 @@ from src.train_functions        import (build_pipeline,
                                         create_submission,
                                         cross_validate_model_with_early_stopping,
                                         cross_validate_standard,
-                                        predict_with_catboost_ensemble,
+                                        predict_with_early_stopping_ensemble,
                                         predict_with_pipeline,
                                         calculate_classification_metrics,
                                         predict_with_pipeline_ensemble,
@@ -122,7 +122,7 @@ def main() -> None:
             )
 
         elif use_early_stopping:
-            holdout_preds, holdout_probabilities = predict_with_catboost_ensemble(
+            holdout_preds, holdout_probabilities = predict_with_early_stopping_ensemble(
                 features_holdout,
                 fold_models,
             )
@@ -169,7 +169,7 @@ def main() -> None:
             )
 
         elif use_early_stopping:
-            kaggle_test_preds, kaggle_test_probabilities = predict_with_catboost_ensemble(
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_early_stopping_ensemble(
                 kaggle_test_df,
                 fold_models,
             )

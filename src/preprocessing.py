@@ -27,6 +27,9 @@ def build_preprocessor(config):
     if active_model == 'catboost':
         return build_catboost_preprocessor()
 
+    if active_model == 'lightgbm':
+        return build_lightgbm_preprocessor()
+
     raise ValueError(f'Unknown preprocessor for model: {active_model}')
 
 
@@ -150,6 +153,12 @@ def build_catboost_preprocessor():
     return CatBoostPreprocessor()
 
 
+def build_lightgbm_preprocessor():
+    '''Build preprocessing pipeline for LightGBM.'''
+
+    return LightGBMPreprocessor()
+
+
 class CatBoostPreprocessor(BaseEstimator, TransformerMixin):
     '''Prepare Titanic features for native CatBoost processing.'''
 
@@ -186,5 +195,47 @@ class CatBoostPreprocessor(BaseEstimator, TransformerMixin):
             .fillna('Unknown')
             .astype(str)
         )
+
+        return features
+
+
+class LightGBMPreprocessor(BaseEstimator, TransformerMixin):
+    '''Prepare Titanic features for native LightGBM processing.'''
+
+    numeric_features = (
+        'Age',
+        'Fare',
+        'FamilySize',
+        'IsAlone',
+        'CabinKnown',
+    )
+
+    categorical_features = (
+        'Pclass',
+        'Sex',
+        'Title',
+        'Deck',
+        'Embarked',
+    )
+
+    def fit(self, features, labels=None):
+        self.is_fitted_ = True
+
+        return self
+
+    def transform(self, features):
+        numeric_features = list(self.numeric_features)
+        categorical_features = list(self.categorical_features)
+        selected_features = numeric_features + categorical_features
+
+        features = features[selected_features].copy()
+
+        for feature in categorical_features:
+            features[feature] = (
+                features[feature]
+                .astype('string')
+                .fillna('Unknown')
+                .astype('category')
+            )
 
         return features
