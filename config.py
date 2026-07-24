@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '220_lightgbm_baseline',
+        'experiment_name': '234_lightgbm_min_child_weight_1',
     },
     'logging': {
         'save_tree_plot': True,
@@ -81,7 +81,7 @@ config = {
                 'random_state': 0xC0FFEE,
             },
             
-            'knn': { # Remove Embarked, IsAlone
+            'knn': {
                 'n_neighbors': 6,
                 'weights': 'uniform',
                 'metric': 'minkowski',
@@ -136,12 +136,12 @@ config = {
                 'metric': 'binary_error',
 
                 'n_estimators': 2000,
-                'learning_rate': 0.03,
+                'learning_rate': 0.1,
 
-                'num_leaves': 15,
+                'num_leaves': 7,
                 'max_depth': 4,
-                'min_child_samples': 10,
-                'min_child_weight': 0.001,
+                'min_child_samples': 20,
+                'min_child_weight': 1,
                 'min_split_gain': 0.0,
 
                 'subsample': 1.0,

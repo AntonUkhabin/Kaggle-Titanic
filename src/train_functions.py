@@ -216,18 +216,18 @@ def report_early_stopping_results(model, score, fold, config):
         return trees_built
 
     if active_model == 'lightgbm':
-        validation_error = model.evals_result_['validation']['binary_error']
+        metric_name = config.model.models.lightgbm.metric
+        validation_metric = model.evals_result_['validation'][metric_name]
         best_iteration = model.best_iteration_
-        best_error = model.best_score_['validation']['binary_error']
-        best_accuracy = 1.0 - best_error
-        iterations_run = len(validation_error)
+        best_metric = model.best_score_['validation'][metric_name]
+        iterations_run = len(validation_metric)
         trees_built = model.n_estimators_
 
         print(f'Fold: {fold}')
         print(f'Fold Accuracy: {score:.4f}')
-        print(f'Best Accuracy: {best_accuracy:.4f}')
-        print(f'Best Accuracy iteration: {best_iteration}')
-        print(f'Best binary error: {best_error:.4f}')
+        print(f'Early stopping metric: {metric_name}')
+        print(f'Best validation {metric_name}: {best_metric:.4f}')
+        print(f'Best {metric_name} iteration: {best_iteration}')
         print(f'Iterations actually run: {iterations_run}')
         print(f'Trees retained: {trees_built}')
 
