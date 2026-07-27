@@ -41,6 +41,12 @@ def suggest_model_params(trial, config) -> dict:
             config=config,
         )
 
+    if active_model == 'xgboost':
+        return suggest_xgboost_params(
+            trial=trial,
+            config=config,
+        )
+
     raise ValueError(f'Optuna tuning is not configured for: {active_model}')
 
 
@@ -281,6 +287,52 @@ def suggest_lightgbm_params(trial, config) -> dict:
     return params
 
 
+def suggest_xgboost_params(trial, config) -> dict:
+    '''Suggest XGBoost hyperparameters for an Optuna trial.'''
+
+    search_space = config.optuna.search_spaces.xgboost
+
+    return {
+        'model__learning_rate': trial.suggest_float(
+            'learning_rate',
+            search_space.learning_rate.low,
+            search_space.learning_rate.high,
+            log=True,
+        ),
+
+        'model__max_depth': trial.suggest_int(
+            'max_depth',
+            search_space.max_depth.low,
+            search_space.max_depth.high,
+        ),
+
+        'model__subsample': trial.suggest_float(
+            'subsample',
+            search_space.subsample.low,
+            search_space.subsample.high,
+        ),
+
+        'model__colsample_bytree': trial.suggest_float(
+            'colsample_bytree',
+            search_space.colsample_bytree.low,
+            search_space.colsample_bytree.high,
+        ),
+
+        'model__reg_alpha': trial.suggest_float(
+            'reg_alpha',
+            search_space.reg_alpha.low,
+            search_space.reg_alpha.high,
+        ),
+
+        'model__reg_lambda': trial.suggest_float(
+            'reg_lambda',
+            search_space.reg_lambda.low,
+            search_space.reg_lambda.high,
+            log=True,
+        ),
+    }
+
+
 def create_catboost_objective(train_cv_df, target_col, config):
     '''Create an Optuna objective with CatBoost early stopping.'''
 
@@ -454,6 +506,107 @@ def create_lightgbm_objective(train_cv_df, target_col, config):
     return objective
 
 
+def create_xgboost_objective(train_cv_df, target_col, config):
+    '''Create a multi-seed Optuna objective with XGBoost early stopping.'''
+
+    features = train_cv_df.drop(columns=[target_col])
+    labels = train_cv_df[target_col]
+    fold_seeds = list(config.optuna.fold_seeds)
+
+    def objective(trial) -> float:
+        '''Evaluate one XGBoost hyperparameter combination.'''
+
+        model_params = suggest_xgboost_params(
+            trial=trial,
+            config=config,
+        )
+
+        all_scores = []
+        all_best_iterations = []
+        seed_cv_means = []
+        seed_cv_stds = []
+
+        for seed_index, fold_seed in enumerate(fold_seeds):
+            skf = StratifiedKFold(
+                n_splits=config.split.n_splits,
+                shuffle=config.dataloader_params.shuffle,
+                random_state=fold_seed,
+            )
+
+            seed_scores = []
+            seed_best_iterations = []
+
+            for fold, (train_idx, val_idx) in enumerate(skf.split(features, labels)):
+                features_train = features.iloc[train_idx]
+                features_val = features.iloc[val_idx]
+                labels_train = labels.iloc[train_idx]
+                labels_val = labels.iloc[val_idx]
+
+                fold_pipe = build_pipeline(config)
+                fold_pipe.set_params(**model_params)
+
+                preprocessing_pipe = fold_pipe[:-1]
+                model = fold_pipe.named_steps['model']
+
+                features_train_transformed = preprocessing_pipe.fit_transform(
+                    features_train,
+                    labels_train,
+                )
+                features_val_transformed = preprocessing_pipe.transform(features_val)
+
+                model = fit_model_with_early_stopping(
+                    model=model,
+                    features_train=features_train_transformed,
+                    labels_train=labels_train,
+                    features_val=features_val_transformed,
+                    labels_val=labels_val,
+                    config=config,
+                )
+
+                labels_pred = model.predict(features_val_transformed)
+                score = float(accuracy_score(labels_val, labels_pred))
+                best_iteration = int(model.best_iteration + 1)
+
+                seed_scores.append(score)
+                seed_best_iterations.append(best_iteration)
+                all_scores.append(score)
+                all_best_iterations.append(best_iteration)
+
+                global_fold = seed_index * config.split.n_splits + fold
+                trial.set_user_attr(f'fold_{global_fold}_score', score)
+                trial.set_user_attr(f'fold_{global_fold}_best_iteration', best_iteration)
+
+            seed_cv_mean = float(np.mean(seed_scores))
+            seed_cv_std = float(np.std(seed_scores))
+
+            seed_cv_means.append(seed_cv_mean)
+            seed_cv_stds.append(seed_cv_std)
+
+            trial.set_user_attr(f'seed_{seed_index}_fold_seed', int(fold_seed))
+            trial.set_user_attr(f'seed_{seed_index}_cv_mean', seed_cv_mean)
+            trial.set_user_attr(f'seed_{seed_index}_cv_std', seed_cv_std)
+            trial.set_user_attr(f'seed_{seed_index}_best_iterations', seed_best_iterations)
+
+        cv_mean = float(np.mean(seed_cv_means))
+        cv_std = float(np.std(all_scores))
+        seed_cv_std = float(np.std(seed_cv_means))
+        mean_best_iteration = float(np.mean(all_best_iterations))
+        median_best_iteration = float(np.median(all_best_iterations))
+
+        trial.set_user_attr('cv_std', cv_std)
+        trial.set_user_attr('seed_cv_std', seed_cv_std)
+        trial.set_user_attr('fold_scores', all_scores)
+        trial.set_user_attr('seed_cv_means', seed_cv_means)
+        trial.set_user_attr('seed_cv_stds', seed_cv_stds)
+        trial.set_user_attr('best_iterations', all_best_iterations)
+        trial.set_user_attr('mean_best_iteration', mean_best_iteration)
+        trial.set_user_attr('median_best_iteration', median_best_iteration)
+
+        return cv_mean
+
+    return objective
+
+
 def create_objective(train_cv_df, target_col, base_pipe, config):
     '''Create an Optuna objective for model tuning.'''
 
@@ -466,6 +619,13 @@ def create_objective(train_cv_df, target_col, base_pipe, config):
 
     if config.model.active == 'lightgbm':
         return create_lightgbm_objective(
+            train_cv_df=train_cv_df,
+            target_col=target_col,
+            config=config,
+        )
+
+    if config.model.active == 'xgboost':
+        return create_xgboost_objective(
             train_cv_df=train_cv_df,
             target_col=target_col,
             config=config,
@@ -553,6 +713,15 @@ def run_optuna_study(
 
     if config.model.active == 'lightgbm':
         for control_trial in config.optuna.enqueued_trials.lightgbm:
+            study.enqueue_trial(
+                OmegaConf.to_container(
+                    control_trial,
+                    resolve=True,
+                )
+            )
+
+    if config.model.active == 'xgboost':
+        for control_trial in config.optuna.enqueued_trials.xgboost:
             study.enqueue_trial(
                 OmegaConf.to_container(
                     control_trial,

@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '275_xgboost_subsample_0_9',
+        'experiment_name': '293_xgboost_optuna_trial_31',
     },
     'logging': {
         'save_tree_plot': True,
@@ -18,8 +18,8 @@ config = {
         'path_to_oof':                  './outputs/oof',
         'path_to_tree_plots':           './outputs/tree_plots',
 
-        'path_to_optuna_trials': './outputs/optuna/260_lightgbm_optuna_3_seeds_100_trials.csv',
-        'path_to_optuna_best_params': './outputs/optuna/260_lightgbm_optuna_3_seeds_100_trials_best_params.yaml',
+        'path_to_optuna_trials': './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials.csv',
+        'path_to_optuna_best_params': './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials_best_params.yaml',
     },
     'training': {
         'early_stopping_rounds': 500,
@@ -177,22 +177,22 @@ config = {
             'xgboost': {
                 # Core boosting parameters.
                 'n_estimators': 2000,
-                'learning_rate': 0.1,
+                'learning_rate': 0.11176949123089937,
                 'objective': 'binary:logistic',
                 'eval_metric': 'error',
 
                 # Tree complexity.
-                'max_depth': 3,
+                'max_depth': 2,
                 'min_child_weight': 1.0,
                 'gamma': 0.0,
 
                 # Row and feature sampling.
-                'subsample': 0.9,
-                'colsample_bytree': 1.0,
+                'subsample': 0.8364402681078542,
+                'colsample_bytree': 0.8244924870903084,
 
                 # L1 and L2 regularization.
-                'reg_alpha': 0.0,
-                'reg_lambda': 1.0,
+                'reg_alpha': 0.09960972038669126,
+                'reg_lambda': 0.5828846693956847,
 
                 # Tree construction.
                 'tree_method': 'hist',
@@ -207,7 +207,7 @@ config = {
     },
 
     'optuna': {
-        'study_name': 'lightgbm_tuning_3_seeds',
+        'study_name': 'xgboost_tuning_3_seeds',
         'direction': 'maximize',
         'n_trials': 100,
         'show_progress_bar': True,
@@ -219,6 +219,18 @@ config = {
         ],
 
         'enqueued_trials': {
+            
+            'xgboost': [
+                {
+                    'learning_rate': 0.1,
+                    'max_depth': 3,
+                    'subsample': 0.9,
+                    'colsample_bytree': 1.0,
+                    'reg_alpha': 0.0,
+                    'reg_lambda': 1.0,
+                },
+            ],
+            
             'lightgbm': [
                 {
                     'learning_rate': 0.1,
@@ -261,6 +273,38 @@ config = {
         },
 
         'search_spaces': {
+
+        'xgboost': {
+            'learning_rate': {
+                'low': 0.05,
+                'high': 0.12,
+            },
+
+            'max_depth': {
+                'low': 2,
+                'high': 4,
+            },
+
+            'subsample': {
+                'low': 0.8,
+                'high': 1.0,
+            },
+
+            'colsample_bytree': {
+                'low': 0.8,
+                'high': 1.0,
+            },
+
+            'reg_alpha': {
+                'low': 0.0,
+                'high': 0.2,
+            },
+
+            'reg_lambda': {
+                'low': 0.5,
+                'high': 3.0,
+            },
+        },
 
         'lightgbm': {
             'learning_rate': {
