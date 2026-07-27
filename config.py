@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '262_xgboost_baseline',
+        'experiment_name': '275_xgboost_subsample_0_9',
     },
     'logging': {
         'save_tree_plot': True,
@@ -22,7 +22,7 @@ config = {
         'path_to_optuna_best_params': './outputs/optuna/260_lightgbm_optuna_3_seeds_100_trials_best_params.yaml',
     },
     'training': {
-        'early_stopping_rounds': 200,
+        'early_stopping_rounds': 500,
         'fold_seed': 0xC0FFEE,
 
         'model_profiles': {
@@ -182,12 +182,12 @@ config = {
                 'eval_metric': 'error',
 
                 # Tree complexity.
-                'max_depth': 6,
+                'max_depth': 3,
                 'min_child_weight': 1.0,
                 'gamma': 0.0,
 
                 # Row and feature sampling.
-                'subsample': 1.0,
+                'subsample': 0.9,
                 'colsample_bytree': 1.0,
 
                 # L1 and L2 regularization.
