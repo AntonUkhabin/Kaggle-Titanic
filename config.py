@@ -18,11 +18,11 @@ config = {
         'path_to_oof':                  './outputs/oof',
         'path_to_tree_plots':           './outputs/tree_plots',
 
-        'path_to_optuna_trials':        './outputs/optuna/199_catboost_optuna.csv',
-        'path_to_optuna_best_params':   './outputs/optuna/199_catboost_optuna_best_params.yaml',
+        'path_to_optuna_trials': './outputs/optuna/260_lightgbm_optuna_3_seeds_100_trials.csv',
+        'path_to_optuna_best_params': './outputs/optuna/260_lightgbm_optuna_3_seeds_100_trials_best_params.yaml',
     },
     'training': {
-        'early_stopping_rounds': 100,
+        'early_stopping_rounds': 200,
         'fold_seed': 0xC0FFEE,
 
         'model_profiles': {
@@ -131,49 +131,207 @@ config = {
             },
 
             'lightgbm': {
-                'boosting_type': 'gbdt',
+                # Core boosting parameters.
+                'n_estimators': 2000,
+                'learning_rate': 0.1,
                 'objective': 'binary',
                 'metric': 'binary_error',
 
-                'n_estimators': 2000,
-                'learning_rate': 0.1,
-
+                # Tree complexity.
                 'num_leaves': 7,
                 'max_depth': 4,
+                'max_bin': 255,
+
+                # Leaf and split regularization.
                 'min_child_samples': 20,
-                'min_child_weight': 1,
+                'min_child_weight': 1.0,
                 'min_split_gain': 0.0,
 
+                # Row and feature sampling.
                 'subsample': 1.0,
                 'subsample_freq': 0,
                 'colsample_bytree': 1.0,
 
+                # L1 and L2 regularization.
                 'reg_alpha': 0.0,
                 'reg_lambda': 0.0,
-                'class_weight': None,
 
+                # Categorical feature handling.
                 'cat_smooth': 10.0,
                 'cat_l2': 10.0,
                 'min_data_per_group': 100,
                 'max_cat_threshold': 32,
                 'max_cat_to_onehot': 4,
 
+                # Reproducibility and performance.
                 'random_state': 0xC0FFEE,
                 'n_jobs': 15,
+                'verbosity': -1,
                 'deterministic': True,
                 'force_row_wise': True,
-                'verbosity': -1,
             },
         },
     },
 
     'optuna': {
-        'study_name': 'catboost_tuning',
+        'study_name': 'lightgbm_tuning_3_seeds',
         'direction': 'maximize',
         'n_trials': 100,
         'show_progress_bar': True,
 
+        'fold_seeds': [
+            0xC0FFEE,
+            42,
+            2026,
+        ],
+
+        'enqueued_trials': {
+            'lightgbm': [
+                {
+                    'learning_rate': 0.1,
+                    'num_leaves': 7,
+                    'max_depth': 4,
+                    'min_child_samples': 20,
+                    'min_child_weight': 1.0,
+                    'min_split_gain': 0.0,
+                    'subsample_freq': 0,
+                    'colsample_bytree': 1.0,
+                    'reg_alpha': 0.0,
+                    'reg_lambda': 0.0,
+                    'cat_smooth': 10.0,
+                    'cat_l2': 10.0,
+                    'min_data_per_group': 100,
+                    'max_cat_threshold': 32,
+                    'max_cat_to_onehot': 4,
+                    'max_bin': 255,
+                },
+                {
+                    'learning_rate': 0.11784745281602944,
+                    'num_leaves': 4,
+                    'max_depth': 7,
+                    'min_child_samples': 10,
+                    'min_child_weight': 0.43511604559295053,
+                    'min_split_gain': 0.08776787070217627,
+                    'subsample_freq': 1,
+                    'subsample': 0.9696707640811784,
+                    'colsample_bytree': 0.8869339873610533,
+                    'reg_alpha': 0.001,
+                    'reg_lambda': 0.05,
+                    'cat_smooth': 28.83549369109806,
+                    'cat_l2': 7.399983164441014,
+                    'min_data_per_group': 60,
+                    'max_cat_threshold': 8,
+                    'max_cat_to_onehot': 10,
+                    'max_bin': 127,
+                },
+            ],
+        },
+
         'search_spaces': {
+
+        'lightgbm': {
+            'learning_rate': {
+                'low': 0.03,
+                'high': 0.15,
+            },
+
+            'max_depth': {
+                'low': 3,
+                'high': 7,
+            },
+
+            'num_leaves': {
+                'low': 4,
+                'high': 31,
+            },
+
+            'min_child_samples': {
+                'low': 5,
+                'high': 50,
+                'step': 5,
+            },
+
+            'min_child_weight': {
+                'low': 0.001,
+                'high': 2.0,
+            },
+
+            'min_split_gain': {
+                'low': 0.0,
+                'high': 0.15,
+            },
+
+            'subsample_freq': [
+                0,
+                1,
+            ],
+
+            'subsample': {
+                'low': 0.7,
+                'high': 1.0,
+            },
+
+            'colsample_bytree': {
+                'low': 0.7,
+                'high': 1.0,
+            },
+
+            'reg_alpha': [
+                0.0,
+                0.001,
+                0.01,
+                0.05,
+                0.1,
+                0.5,
+                1.0,
+                2.0,
+            ],
+
+            'reg_lambda': [
+                0.0,
+                0.001,
+                0.01,
+                0.05,
+                0.1,
+                0.5,
+                1.0,
+                2.0,
+            ],
+
+            'cat_smooth': {
+                'low': 5.0,
+                'high': 30.0,
+            },
+
+            'cat_l2': {
+                'low': 1.0,
+                'high': 30.0,
+            },
+
+            'min_data_per_group': {
+                'low': 20,
+                'high': 120,
+                'step': 10,
+            },
+
+            'max_cat_to_onehot': [
+                4,
+                10,
+            ],
+
+            'max_cat_threshold': [
+                8,
+                16,
+                32,
+            ],
+
+            'max_bin': [
+                31,
+                63,
+                127,
+                255,
+            ],
+        },
 
         'catboost': {
             'depth': {
