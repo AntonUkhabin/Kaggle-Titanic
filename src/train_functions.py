@@ -11,6 +11,7 @@ from sklearn.pipeline           import Pipeline
 from sklearn.ensemble           import RandomForestClassifier
 from catboost                   import CatBoostClassifier
 from lightgbm                   import LGBMClassifier, early_stopping, log_evaluation
+from xgboost                    import XGBClassifier
 
 from src.preprocessing          import build_preprocessor
 from src.feature_engineering    import TitleExtractor, TitleMedianAgeImputer, FamilySizeCreator, IsAloneCreator, CabinKnownCreator, DeckExtractor
@@ -42,6 +43,9 @@ def build_model(config, categorical_features=None):
 
     if active_model == 'lightgbm':
         return LGBMClassifier(**model_params)
+
+    if active_model == 'xgboost':
+        return XGBClassifier(**model_params)
 
     raise ValueError(f'Unknown model name: {active_model}')
 
@@ -177,6 +181,20 @@ def fit_model_with_early_stopping(model, features_train, labels_train, features_
 
         return model
 
+    if active_model == 'xgboost':
+        model.set_params(
+            early_stopping_rounds=config.training.early_stopping_rounds,
+        )
+
+        model.fit(
+            features_train,
+            labels_train,
+            eval_set=[(features_val, labels_val)],
+            verbose=False,
+        )
+
+        return model
+
     raise ValueError(f'Early stopping is not supported for model: {active_model}')
 
 
@@ -232,6 +250,24 @@ def report_early_stopping_results(model, score, fold, config):
         print(f'Trees retained: {trees_built}')
 
         return trees_built
+
+    if active_model == 'xgboost':
+        metric_name = config.model.models.xgboost.eval_metric
+        validation_metric = model.evals_result()['validation_0'][metric_name]
+        best_iteration = model.best_iteration
+        best_metric = float(model.best_score)
+        iterations_run = len(validation_metric)
+        trees_used = best_iteration + 1
+
+        print(f'Fold: {fold}')
+        print(f'Fold Accuracy: {score:.4f}')
+        print(f'Early stopping metric: {metric_name}')
+        print(f'Best validation {metric_name}: {best_metric:.4f}')
+        print(f'Best {metric_name} iteration: {trees_used}')
+        print(f'Iterations actually run: {iterations_run}')
+        print(f'Trees used for prediction: {trees_used}')
+
+        return trees_used
 
     raise ValueError(f'Early stopping results are not supported for model: {active_model}')
 

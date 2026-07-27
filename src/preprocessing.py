@@ -30,6 +30,9 @@ def build_preprocessor(config):
     if active_model == 'lightgbm':
         return build_lightgbm_preprocessor()
 
+    if active_model == 'xgboost':
+        return build_tree_preprocessor()
+
     raise ValueError(f'Unknown preprocessor for model: {active_model}')
 
 

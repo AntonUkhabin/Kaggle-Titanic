@@ -3,7 +3,7 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '234_lightgbm_min_child_weight_1',
+        'experiment_name': '262_xgboost_baseline',
     },
     'logging': {
         'save_tree_plot': True,
@@ -50,6 +50,10 @@ config = {
                 'early_stopping': True,
                 'fold_ensemble': True,
             },
+            'xgboost': {
+                'early_stopping': True,
+                'fold_ensemble': True,
+            },
         },
     },
     'dataloader_params': {
@@ -70,7 +74,7 @@ config = {
         },
     },
     'model': {
-        'active': 'lightgbm',
+        'active': 'xgboost',
 
         'models': {
             'logistic_regression': {
@@ -169,6 +173,35 @@ config = {
                 'verbosity': -1,
                 'deterministic': True,
                 'force_row_wise': True,
+            },
+            'xgboost': {
+                # Core boosting parameters.
+                'n_estimators': 2000,
+                'learning_rate': 0.1,
+                'objective': 'binary:logistic',
+                'eval_metric': 'error',
+
+                # Tree complexity.
+                'max_depth': 6,
+                'min_child_weight': 1.0,
+                'gamma': 0.0,
+
+                # Row and feature sampling.
+                'subsample': 1.0,
+                'colsample_bytree': 1.0,
+
+                # L1 and L2 regularization.
+                'reg_alpha': 0.0,
+                'reg_lambda': 1.0,
+
+                # Tree construction.
+                'tree_method': 'hist',
+                'enable_categorical': False,
+
+                # Reproducibility and performance.
+                'random_state': 0xC0FFEE,
+                'n_jobs': 15,
+                'verbosity': 0,
             },
         },
     },
