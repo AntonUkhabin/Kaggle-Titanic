@@ -21,7 +21,9 @@ from src.experiment_logging     import (log_coefficients,
                                         print_model_info,
                                         print_section,
                                         save_oof_predictions,
+                                        save_torch_training_plots,
                                         )
+from src.torch_training         import cross_validate_neural_network, predict_with_neural_network_ensemble                                        
 
 
 def main() -> None:
@@ -46,39 +48,47 @@ def main() -> None:
         )
 
         # Build full pipeline: feature engineering + preprocessing + model.
-        pipe = build_pipeline(config)
+        is_torch_model = config.model.active in {'dnn', 'cnn'}
+        pipe = None if is_torch_model else build_pipeline(config)
 
         print_section(f'Experiment: {config.general.experiment_name}')
 
         print_section('Cross Validation')
 
-        training_profile = config.training.model_profiles[config.model.active]
-        use_early_stopping = training_profile.early_stopping
-        use_fold_ensemble = training_profile.fold_ensemble
+        if is_torch_model:
+            scores, best_epochs, fold_models, oof_probabilities, histories = cross_validate_neural_network(train_cv_df, 'Survived', config)
 
-        if use_early_stopping and not use_fold_ensemble:
-            raise ValueError('Early stopping currently requires fold ensemble.')
-
-        if use_early_stopping:
-            scores, best_iterations, fold_models, oof_probabilities = cross_validate_model_with_early_stopping(
-                train_cv_df=train_cv_df,
-                target_col='Survived',
-                config=config,
-            )
+            best_iterations = best_epochs
+            use_early_stopping = True
+            use_fold_ensemble = True
 
         else:
-            scores, pipe, fold_models, oof_probabilities = cross_validate_standard(
-                train_cv_df=train_cv_df,
-                target_col='Survived',
-                config=config,
-                keep_fold_models=use_fold_ensemble,
-            )
+            training_profile = config.training.model_profiles[config.model.active]
+            use_early_stopping = training_profile.early_stopping
+            use_fold_ensemble = training_profile.fold_ensemble
+            histories = None
 
-            best_iterations = None
+            if use_early_stopping and not use_fold_ensemble:
+                raise ValueError('Early stopping currently requires fold ensemble.')
+
+            if use_early_stopping:
+                scores, best_iterations, fold_models, oof_probabilities = cross_validate_model_with_early_stopping(train_cv_df=train_cv_df, target_col='Survived', config=config)
+
+            else:
+                scores, pipe, fold_models, oof_probabilities = cross_validate_standard(train_cv_df=train_cv_df, target_col='Survived', config=config, keep_fold_models=use_fold_ensemble)
+                best_iterations = None
         
         ensemble_size = len(fold_models) if use_fold_ensemble else 1
 
-        print_model_info(pipe, config)
+        if is_torch_model and config.logging.save_torch_plots:
+            save_torch_training_plots(histories, best_epochs, config.general.experiment_name, config.paths.path_to_torch_plots)
+        
+        if is_torch_model:
+            print_section('Model Information')
+            print(f'Active model: {config.model.active}')
+            print(fold_models[0][1])
+        else:
+            print_model_info(pipe, config)
 
         # Calculate mean and standard deviation of CV scores.
         cv_score = sum(scores) / len(scores)
@@ -103,8 +113,9 @@ def main() -> None:
         )
 
         if best_iterations is not None:
-            print(f'Best iterations: {best_iterations}')
-            print(f'Median best iteration: {int(np.median(best_iterations))}')
+            iteration_name = 'epochs' if is_torch_model else 'iterations'
+            print(f'Best {iteration_name}: {best_iterations}')
+            print(f'Median best {iteration_name[:-1]}: {int(np.median(best_iterations))}')
 
         print(f'Number of prediction models: {ensemble_size}')
 
@@ -115,70 +126,46 @@ def main() -> None:
         # Generate predictions for holdout_df.
         print_section('Holdout Evaluation')
 
-        if not use_fold_ensemble:
-            holdout_preds, holdout_probabilities = predict_with_pipeline(
-                features_holdout,
-                pipe,
-            )
+        if is_torch_model:
+            holdout_preds, holdout_probabilities = predict_with_neural_network_ensemble(features_holdout, fold_models, config)
+
+        elif not use_fold_ensemble:
+            holdout_preds, holdout_probabilities = predict_with_pipeline(features_holdout, pipe)
 
         elif use_early_stopping:
-            holdout_preds, holdout_probabilities = predict_with_early_stopping_ensemble(
-                features_holdout,
-                fold_models,
-            )
+            holdout_preds, holdout_probabilities = predict_with_early_stopping_ensemble(features_holdout, fold_models)
 
         else:
-            holdout_preds, holdout_probabilities = predict_with_pipeline_ensemble(
-                features_holdout,
-                fold_models,
-            )
+            holdout_preds, holdout_probabilities = predict_with_pipeline_ensemble(features_holdout, fold_models)
 
         holdout_metrics = calculate_classification_metrics(labels_holdout, holdout_preds, holdout_probabilities)
         holdout_score = holdout_metrics['accuracy']
 
         print_classification_metrics('Holdout', holdout_metrics)
 
-        print_section('Experiment Logging')
         
-        log_experiment_results(
-            config=config,
-            pipe=pipe,
-            cv_score=cv_score,
-            cv_std=cv_std,
-            holdout_score=holdout_score,
-            path_to_experiments=config.paths.path_to_experiments,
-            ensemble_size=ensemble_size,
-            best_iterations=best_iterations,
-        )
         
-        print('Experiment results saved.')
+        if not is_torch_model:
+            print_section('Experiment Logging')
+            log_experiment_results(config=config, pipe=pipe, cv_score=cv_score, cv_std=cv_std, holdout_score=holdout_score, path_to_experiments=config.paths.path_to_experiments, ensemble_size=ensemble_size, best_iterations=best_iterations)
+            print('Experiment results saved.')
+            log_coefficients(config=config, pipe=pipe, path_to_coefficients=config.paths.path_to_coefficients)
 
-        log_coefficients(
-            config=config,
-            pipe=pipe,
-            path_to_coefficients=config.paths.path_to_coefficients,
-        )
-
+        
         # Generate predictions for Kaggle test.csv.
         print_section('Kaggle Submission')
 
-        if not use_fold_ensemble:
-            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline(
-                kaggle_test_df,
-                pipe,
-            )
+        if is_torch_model:
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_neural_network_ensemble(kaggle_test_df, fold_models, config)
+
+        elif not use_fold_ensemble:
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline(kaggle_test_df, pipe)
 
         elif use_early_stopping:
-            kaggle_test_preds, kaggle_test_probabilities = predict_with_early_stopping_ensemble(
-                kaggle_test_df,
-                fold_models,
-            )
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_early_stopping_ensemble(kaggle_test_df, fold_models)
 
         else:
-            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline_ensemble(
-                kaggle_test_df,
-                fold_models,
-            )
+            kaggle_test_preds, kaggle_test_probabilities = predict_with_pipeline_ensemble(kaggle_test_df, fold_models)
 
         print(f'Number of prediction models: {ensemble_size}')
         print(f'Mean predicted survival probability: {np.mean(kaggle_test_probabilities):.4f}')

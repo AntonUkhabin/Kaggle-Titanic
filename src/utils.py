@@ -1,16 +1,19 @@
 import random
 import numpy as np
-
-
-def set_seed(seed: int) -> None:
-    '''Fix random seed for reproducible results.'''
-    
-    random.seed(seed)
-    np.random.seed(seed)
-
+import torch
 
 import sys
 from pathlib import Path
+
+
+def set_seed(seed: int) -> None:
+    '''Fix random seeds for reproducible results.'''
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.use_deterministic_algorithms(True)
+
 
 
 class TeeLogger:

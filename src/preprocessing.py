@@ -33,7 +33,34 @@ def build_preprocessor(config):
     if active_model == 'xgboost':
         return build_tree_preprocessor()
 
+    if active_model == 'dnn':
+        return build_dnn_preprocessor()
+
     raise ValueError(f'Unknown preprocessor for model: {active_model}')
+
+
+def build_dnn_preprocessor() -> ColumnTransformer:
+    '''Build dense preprocessing pipeline for PyTorch neural networks.'''
+
+    numerical_features = ['Age', 'Fare', 'FamilySize', 'IsAlone', 'CabinKnown']
+    categorical_features = ['Pclass', 'Sex', 'Title', 'Deck', 'Embarked']
+
+    numerical_pipeline = Pipeline([
+        ('imputer', SimpleImputer(strategy='median')),
+        ('scaler', StandardScaler()),
+    ])
+
+    categorical_pipeline = Pipeline([
+        ('imputer', SimpleImputer(strategy='most_frequent')),
+        ('encoder', OneHotEncoder(handle_unknown='ignore', sparse_output=False)),
+    ])
+
+    preprocessor = ColumnTransformer([
+        ('numerical', numerical_pipeline, numerical_features),
+        ('categorical', categorical_pipeline, categorical_features),
+    ])
+
+    return preprocessor
 
 
 def build_logistic_regression_preprocessor() -> ColumnTransformer:

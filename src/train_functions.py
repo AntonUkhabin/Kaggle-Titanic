@@ -50,16 +50,13 @@ def build_model(config, categorical_features=None):
     raise ValueError(f'Unknown model name: {active_model}')
 
 
-def build_pipeline(config) -> Pipeline:
-    '''Build full machine learning pipeline.'''
+
+def build_feature_pipeline(config) -> Pipeline:
+    '''Build feature engineering and preprocessing pipeline without a model.'''
 
     preprocessor = build_preprocessor(config)
 
-    categorical_features = getattr(preprocessor,'categorical_features', None)
-
-    model = build_model(config, categorical_features=categorical_features)
-
-    pipe = Pipeline([
+    feature_pipeline = Pipeline([
         ('title_extractor', TitleExtractor()),
         ('title_median_age_imputer', TitleMedianAgeImputer()),
         ('family_size_creator', FamilySizeCreator()),
@@ -67,8 +64,20 @@ def build_pipeline(config) -> Pipeline:
         ('cabin_known_creator', CabinKnownCreator()),
         ('deck_extractor', DeckExtractor()),
         ('preprocessor', preprocessor),
-        ('model', model),
     ])
+
+    return feature_pipeline
+
+
+def build_pipeline(config) -> Pipeline:
+    '''Build full machine learning pipeline.'''
+
+    feature_pipeline = build_feature_pipeline(config)
+    preprocessor = feature_pipeline.named_steps['preprocessor']
+    categorical_features = getattr(preprocessor, 'categorical_features', None)
+    model = build_model(config, categorical_features=categorical_features)
+
+    pipe = Pipeline(feature_pipeline.steps + [('model', model)])
 
     return pipe
 

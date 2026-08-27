@@ -3,10 +3,12 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '293_xgboost_optuna_trial_31',
+        'experiment_name': '296_dnn_baseline',
     },
     'logging': {
         'save_tree_plot': True,
+        'save_torch_plots': True,
+        'torch_log_interval': 10, # Уменьшить количество выводимых эпох в терминале. 10 - выводить каждые 10 эпох
     },
     'paths': {
         'path_to_csv':                  './data/train.csv',
@@ -17,12 +19,14 @@ config = {
         'path_to_logs':                 './outputs/logs',
         'path_to_oof':                  './outputs/oof',
         'path_to_tree_plots':           './outputs/tree_plots',
+        'path_to_checkpoints':          './outputs/checkpoints',
+        'path_to_torch_plots':          './outputs/torch_plots',
 
-        'path_to_optuna_trials': './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials.csv',
-        'path_to_optuna_best_params': './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials_best_params.yaml',
+        'path_to_optuna_trials':        './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials.csv',
+        'path_to_optuna_best_params':   './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials_best_params.yaml',
     },
     'training': {
-        'early_stopping_rounds': 500,
+        'early_stopping_rounds': 500, # Classic models
         'fold_seed': 0xC0FFEE,
 
         'model_profiles': {
@@ -74,9 +78,19 @@ config = {
         },
     },
     'model': {
-        'active': 'xgboost',
+        'active': 'dnn',
 
         'models': {
+
+            'dnn': {
+                'epochs': 200,
+                'batch_size': 32,
+                'learning_rate': 0.0003,
+                'early_stopping_rounds': 10,
+                'min_delta': 1e-4,
+                'num_workers': 0,
+            },
+
             'logistic_regression': {
                 'solver': 'saga',
                 'l1_ratio': 0.5,

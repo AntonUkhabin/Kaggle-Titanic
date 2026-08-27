@@ -382,3 +382,53 @@ def save_oof_predictions(train_cv_df, oof_probabilities, experiment_name, output
 
     print(f'OOF predictions saved: {oof_output_path}')
     print(f'OOF errors saved: {errors_output_path}')
+
+
+def save_torch_training_plots(histories, best_epochs, experiment_name, output_dir):
+    '''Save loss and accuracy curves for every PyTorch fold.'''
+
+    if not histories:
+        return None
+
+    n_folds = len(histories)
+    figure, axes = plt.subplots(n_folds, 2, figsize=(14, 4 * n_folds), squeeze=False)
+
+    for fold, (history, best_epoch) in enumerate(zip(histories, best_epochs)):
+        epochs = np.arange(1, len(history['train_loss']) + 1)
+
+        loss_axis = axes[fold, 0]
+        loss_axis.plot(epochs, history['train_loss'], label='Train loss')
+        loss_axis.plot(epochs, history['val_loss'], label='Validation loss')
+        loss_axis.axvline(best_epoch, color='red', linestyle='--', alpha=0.7, label=f'Best epoch: {best_epoch}')
+        loss_axis.set_title(f'Fold {fold} — Loss')
+        loss_axis.set_xlabel('Epoch')
+        loss_axis.set_ylabel('Loss')
+        loss_axis.set_ylim(bottom=0)
+        loss_axis.grid(alpha=0.3)
+        loss_axis.legend()
+
+        accuracy_axis = axes[fold, 1]
+        accuracy_axis.plot(epochs, history['train_accuracy'], label='Train accuracy')
+        accuracy_axis.plot(epochs, history['val_accuracy'], label='Validation accuracy')
+        accuracy_axis.axvline(best_epoch, color='red', linestyle='--', alpha=0.7, label=f'Best epoch: {best_epoch}')
+        accuracy_axis.set_title(f'Fold {fold} — Accuracy')
+        accuracy_axis.set_xlabel('Epoch')
+        accuracy_axis.set_ylabel('Accuracy')
+        accuracy_axis.set_ylim(0, 1)
+        accuracy_axis.grid(alpha=0.3)
+        accuracy_axis.legend()
+
+    figure.suptitle(f'PyTorch training history — {experiment_name}', fontsize=16)
+    figure.tight_layout(rect=[0, 0, 1, 0.98])
+
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    output_path = output_dir / f'{experiment_name}.png'
+
+    figure.savefig(output_path, dpi=150, bbox_inches='tight')
+    plt.close(figure)
+
+    print(f'PyTorch training plots saved: {output_path}')
+
+    return output_path
