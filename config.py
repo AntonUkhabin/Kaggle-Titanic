@@ -3,12 +3,12 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '296_dnn_baseline',
+        'experiment_name': '309_dnn_64_32_16_lr_0_001',
     },
     'logging': {
         'save_tree_plot': True,
         'save_torch_plots': True,
-        'torch_log_interval': 10, # Уменьшить количество выводимых эпох в терминале. 10 - выводить каждые 10 эпох
+        'torch_log_interval': 1, # Уменьшить количество выводимых эпох в терминале. 10 - выводить каждые 10 эпох
     },
     'paths': {
         'path_to_csv':                  './data/train.csv',
@@ -85,8 +85,8 @@ config = {
             'dnn': {
                 'epochs': 200,
                 'batch_size': 32,
-                'learning_rate': 0.0003,
-                'early_stopping_rounds': 10,
+                'learning_rate': 0.001,
+                'early_stopping_rounds': 15,
                 'min_delta': 1e-4,
                 'num_workers': 0,
             },

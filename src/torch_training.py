@@ -98,7 +98,7 @@ def validate_one_epoch(model, data_loader, loss_function, device):
     return mean_loss, accuracy
 
 
-def train_fold(model, train_loader, val_loader, loss_function, optimizer, device, epochs, early_stopping_rounds, min_delta, checkpoint_path, fold, log_interval):
+def train_fold(model, train_loader, val_loader, loss_function, optimizer, device, epochs, early_stopping_rounds, min_delta, checkpoint_path, fold, log_interval, scheduler=None):
     '''Train one fold with mandatory early stopping.'''
 
     if log_interval < 1:
@@ -147,6 +147,12 @@ def train_fold(model, train_loader, val_loader, loss_function, optimizer, device
         else:
             epochs_without_improvement += 1
             improvement_marker = ''
+
+        # Scheduler обновляется после валидации
+        if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+            scheduler.step(val_loss)
+        elif scheduler is not None:
+            scheduler.step()
 
         should_stop = epochs_without_improvement >= early_stopping_rounds
         should_log = epoch == 0 or (epoch + 1) % log_interval == 0 or epoch == epochs - 1 or should_stop
@@ -232,10 +238,25 @@ def cross_validate_neural_network(train_cv_df, target_col, config):
         model = build_torch_model(model_name, input_size=features_train_processed.shape[1]).to(device)
         loss_function = nn.BCEWithLogitsLoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=model_params.learning_rate)
+        scheduler = None
+        # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        #     optimizer,
+        #     T_max=30,
+        #     eta_min=1e-6,
+        # )
+        # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        #     optimizer,
+        #     mode='min',
+        #     factor=0.5,
+        #     patience=4,
+        #     threshold=1e-5,
+        #     threshold_mode='abs',
+        #     min_lr=1e-7,
+        # )
 
         checkpoint_path = Path(config.paths.path_to_checkpoints) / config.general.experiment_name / f'fold_{fold}.pt'
 
-        model, history, best_epoch, best_val_loss = train_fold(model, train_loader, val_loader, loss_function, optimizer, device, model_params.epochs, model_params.early_stopping_rounds, model_params.min_delta, checkpoint_path, fold, config.logging.torch_log_interval)
+        model, history, best_epoch, best_val_loss = train_fold(model, train_loader, val_loader, loss_function, optimizer, device, model_params.epochs, model_params.early_stopping_rounds, model_params.min_delta, checkpoint_path, fold, config.logging.torch_log_interval, scheduler)
 
         validation_probabilities = predict_probabilities(model, val_loader, device)
         validation_predictions = (validation_probabilities >= 0.5).astype(int)

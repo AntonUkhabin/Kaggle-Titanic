@@ -8,15 +8,19 @@ class DNN(nn.Module):
         super().__init__()
 
         self.mlp = nn.Sequential(
-            nn.Linear(input_size, 32),
+            nn.Linear(input_size, 64),
             nn.ReLU(),
             nn.Dropout(0.2),
 
-            nn.Linear(32, 32),
+            nn.Linear(64, 32),
             nn.ReLU(),
             nn.Dropout(0.2),
 
-            nn.Linear(32, 1),
+            nn.Linear(32, 16),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+
+            nn.Linear(16, 1),
         )
 
     def forward(self, features):
