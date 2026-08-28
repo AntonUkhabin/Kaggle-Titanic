@@ -1,0 +1,296 @@
+
+======================================================================
+Experiment: 133_decision_tree_optuna_tuning
+======================================================================
+
+======================================================================
+Optuna Study
+======================================================================
+Study name: decision_tree_tuning
+Direction: maximize
+Number of trials: 5
+CV folds: 5
+Holdout evaluation: disabled during tuning
+  0%|          | 0/5 [00:00<?, ?it/s]--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 23, in emit
+    msg = self.format(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 999, in format
+    return fmt.format(record)
+           ~~~~~~~~~~^^^^^^^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 715, in format
+    s = self.formatMessage(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 133, in formatMessage
+    escapes = self._escape_code_map(record.levelname)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 149, in _escape_code_map
+    if not self._colorize():
+           ~~~~~~~~~~~~~~^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 161, in _colorize
+    if self.stream is not None and not self.stream.isatty():
+                                       ^^^^^^^^^^^^^^^^^^
+AttributeError: 'TeeLogger' object has no attribute 'isatty'
+Call stack:
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 105, in <module>
+    main()
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 58, in main
+    study = run_optuna_study(
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\src\optuna_tuning.py", line 138, in run_optuna_study
+    study.optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 516, in optimize
+    _optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 68, in _optimize
+    _optimize_sequential(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 165, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 234, in _run_trial
+    study._log_completed_trial(values, trial.number, trial.params)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 1187, in _log_completed_trial
+    _logger.info(message)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1520, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 29, in emit
+    self.handleError(record)
+Message: "Trial 0 finished with value: 0.8075445681079485 and parameters: {'criterion': 'log_loss', 'max_depth': 3, 'min_samples_split': 9, 'min_samples_leaf': 15, 'max_leaf_nodes': 15, 'ccp_alpha': 0.0015}. Best is trial 0 with value: 0.8075445681079485."
+Arguments: ()
+Best trial: 0. Best value: 0.807545:   0%|          | 0/5 [00:00<?, ?it/s]Best trial: 0. Best value: 0.807545:  20%|##        | 1/5 [00:00<00:01,  3.92it/s]--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 23, in emit
+    msg = self.format(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 999, in format
+    return fmt.format(record)
+           ~~~~~~~~~~^^^^^^^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 715, in format
+    s = self.formatMessage(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 133, in formatMessage
+    escapes = self._escape_code_map(record.levelname)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 149, in _escape_code_map
+    if not self._colorize():
+           ~~~~~~~~~~~~~~^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 161, in _colorize
+    if self.stream is not None and not self.stream.isatty():
+                                       ^^^^^^^^^^^^^^^^^^
+AttributeError: 'TeeLogger' object has no attribute 'isatty'
+Call stack:
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 105, in <module>
+    main()
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 58, in main
+    study = run_optuna_study(
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\src\optuna_tuning.py", line 138, in run_optuna_study
+    study.optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 516, in optimize
+    _optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 68, in _optimize
+    _optimize_sequential(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 165, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 234, in _run_trial
+    study._log_completed_trial(values, trial.number, trial.params)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 1187, in _log_completed_trial
+    _logger.info(message)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1520, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 29, in emit
+    self.handleError(record)
+Message: "Trial 1 finished with value: 0.8188023244361272 and parameters: {'criterion': 'log_loss', 'max_depth': 6, 'min_samples_split': 20, 'min_samples_leaf': 4, 'max_leaf_nodes': 10, 'ccp_alpha': 0.003}. Best is trial 1 with value: 0.8188023244361272."
+Arguments: ()
+Best trial: 1. Best value: 0.818802:  20%|##        | 1/5 [00:00<00:01,  3.92it/s]Best trial: 1. Best value: 0.818802:  40%|####      | 2/5 [00:00<00:00,  3.96it/s]--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 23, in emit
+    msg = self.format(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 999, in format
+    return fmt.format(record)
+           ~~~~~~~~~~^^^^^^^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 715, in format
+    s = self.formatMessage(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 133, in formatMessage
+    escapes = self._escape_code_map(record.levelname)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 149, in _escape_code_map
+    if not self._colorize():
+           ~~~~~~~~~~~~~~^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 161, in _colorize
+    if self.stream is not None and not self.stream.isatty():
+                                       ^^^^^^^^^^^^^^^^^^
+AttributeError: 'TeeLogger' object has no attribute 'isatty'
+Call stack:
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 105, in <module>
+    main()
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 58, in main
+    study = run_optuna_study(
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\src\optuna_tuning.py", line 138, in run_optuna_study
+    study.optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 516, in optimize
+    _optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 68, in _optimize
+    _optimize_sequential(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 165, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 234, in _run_trial
+    study._log_completed_trial(values, trial.number, trial.params)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 1187, in _log_completed_trial
+    _logger.info(message)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1520, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 29, in emit
+    self.handleError(record)
+Message: "Trial 2 finished with value: 0.7822220033487639 and parameters: {'criterion': 'gini', 'max_depth': 7, 'min_samples_split': 26, 'min_samples_leaf': 9, 'max_leaf_nodes': 15, 'ccp_alpha': 0.0005}. Best is trial 1 with value: 0.8188023244361272."
+Arguments: ()
+Best trial: 1. Best value: 0.818802:  40%|####      | 2/5 [00:00<00:00,  3.96it/s]Best trial: 1. Best value: 0.818802:  60%|######    | 3/5 [00:00<00:00,  4.16it/s]--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 23, in emit
+    msg = self.format(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 999, in format
+    return fmt.format(record)
+           ~~~~~~~~~~^^^^^^^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 715, in format
+    s = self.formatMessage(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 133, in formatMessage
+    escapes = self._escape_code_map(record.levelname)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 149, in _escape_code_map
+    if not self._colorize():
+           ~~~~~~~~~~~~~~^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 161, in _colorize
+    if self.stream is not None and not self.stream.isatty():
+                                       ^^^^^^^^^^^^^^^^^^
+AttributeError: 'TeeLogger' object has no attribute 'isatty'
+Call stack:
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 105, in <module>
+    main()
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 58, in main
+    study = run_optuna_study(
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\src\optuna_tuning.py", line 138, in run_optuna_study
+    study.optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 516, in optimize
+    _optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 68, in _optimize
+    _optimize_sequential(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 165, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 234, in _run_trial
+    study._log_completed_trial(values, trial.number, trial.params)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 1187, in _log_completed_trial
+    _logger.info(message)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1520, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 29, in emit
+    self.handleError(record)
+Message: "Trial 3 finished with value: 0.8117699202206244 and parameters: {'criterion': 'log_loss', 'max_depth': 5, 'min_samples_split': 26, 'min_samples_leaf': 5, 'max_leaf_nodes': 10, 'ccp_alpha': 0.01}. Best is trial 1 with value: 0.8188023244361272."
+Arguments: ()
+Best trial: 1. Best value: 0.818802:  60%|######    | 3/5 [00:00<00:00,  4.16it/s]Best trial: 1. Best value: 0.818802:  80%|########  | 4/5 [00:00<00:00,  4.24it/s]--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 23, in emit
+    msg = self.format(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 999, in format
+    return fmt.format(record)
+           ~~~~~~~~~~^^^^^^^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 715, in format
+    s = self.formatMessage(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 133, in formatMessage
+    escapes = self._escape_code_map(record.levelname)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 149, in _escape_code_map
+    if not self._colorize():
+           ~~~~~~~~~~~~~~^^
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\colorlog\formatter.py", line 161, in _colorize
+    if self.stream is not None and not self.stream.isatty():
+                                       ^^^^^^^^^^^^^^^^^^
+AttributeError: 'TeeLogger' object has no attribute 'isatty'
+Call stack:
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 105, in <module>
+    main()
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\main_optuna.py", line 58, in main
+    study = run_optuna_study(
+  File "C:\Users\aukha\Python Practicum\Titanic_kaggle\src\optuna_tuning.py", line 138, in run_optuna_study
+    study.optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 516, in optimize
+    _optimize(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 68, in _optimize
+    _optimize_sequential(
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 165, in _optimize_sequential
+    frozen_trial_id = _run_trial(study, func, catch)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py", line 234, in _run_trial
+    study._log_completed_trial(values, trial.number, trial.params)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\study.py", line 1187, in _log_completed_trial
+    _logger.info(message)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1520, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1665, in _log
+    self.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1681, in handle
+    self.callHandlers(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1737, in callHandlers
+    hdlr.handle(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\logging\__init__.py", line 1027, in handle
+    self.emit(record)
+  File "C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\progress_bar.py", line 29, in emit
+    self.handleError(record)
+Message: "Trial 4 finished with value: 0.8004826159755737 and parameters: {'criterion': 'log_loss', 'max_depth': 9, 'min_samples_split': 19, 'min_samples_leaf': 15, 'max_leaf_nodes': 20, 'ccp_alpha': 0.01}. Best is trial 1 with value: 0.8188023244361272."
+Arguments: ()
+Best trial: 1. Best value: 0.818802:  80%|########  | 4/5 [00:01<00:00,  4.24it/s]Best trial: 1. Best value: 0.818802: 100%|##########| 5/5 [00:01<00:00,  4.28it/s]Best trial: 1. Best value: 0.818802: 100%|##########| 5/5 [00:01<00:00,  4.20it/s]
+
+======================================================================
+Saving Optuna Results
+======================================================================
+Trials saved to: ./outputs/optuna/decision_tree_trials.csv
+Best parameters saved to: ./outputs/optuna/decision_tree_best_params.yaml
+
+======================================================================
+Optuna Results
+======================================================================
+
+Best trial:
+Trial number: 1
+CV Accuracy: 0.8188
+CV STD: 0.0085
+Fold scores:
+Fold 0: 0.8182
+Fold 1: 0.8322
+Fold 2: 0.8239
+Fold 3: 0.8099
+Fold 4: 0.8099
+
+Best parameters:
+criterion: log_loss
+max_depth: 6
+min_samples_split: 20
+min_samples_leaf: 4
+max_leaf_nodes: 10
+ccp_alpha: 0.003
+
+Top 5 trials:
+ trial_number  cv_score   cv_std params_criterion  params_max_depth  params_min_samples_split  params_min_samples_leaf  params_max_leaf_nodes  params_ccp_alpha
+            1  0.818802 0.008549         log_loss                 6                        20                        4                     10            0.0030
+            3  0.811770 0.009838         log_loss                 5                        26                        5                     10            0.0100
+            0  0.807545 0.012028         log_loss                 3                         9                       15                     15            0.0015
+            4  0.800483 0.033603         log_loss                 9                        19                       15                     20            0.0100
+            2  0.782222 0.028699             gini                 7                        26                        9                     15            0.0005

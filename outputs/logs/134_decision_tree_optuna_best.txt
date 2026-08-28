@@ -1,0 +1,107 @@
+
+======================================================================
+Experiment: 134_decision_tree_optuna_best
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.0s finished
+Fold: 0
+Fold Accuracy: 0.8182
+Fold: 1
+Fold Accuracy: 0.8322
+Fold: 2
+Fold Accuracy: 0.8239
+Fold: 3
+Fold Accuracy: 0.8099
+Fold: 4
+Fold Accuracy: 0.8099
+
+Mean CV Accuracy: 0.8188
+CV STD: 0.0085
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(ccp_alpha=0.003, criterion='log_loss', max_depth=6,
+                       max_leaf_nodes=10, min_samples_leaf=4,
+                       min_samples_split=20, random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: log_loss
+Max depth: 6
+Depth: 5
+Leaves: 10
+Nodes: 19
+
+======================================================================
+Feature Importance
+======================================================================
+               feature  importance
+         cat__Title_Mr      0.5165
+            cont__Fare      0.1764
+         ord__Pclass_3      0.1578
+      cat__Title_Other      0.0890
+         ord__Pclass_2      0.0232
+disc_count__FamilySize      0.0193
+             cont__Age      0.0179
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Title_Mr <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cat__Title_Other <= 0.50
+|   |   |   |--- cont__Fare <= 28.86
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Fare >  28.86
+|   |   |   |   |--- class: 1
+|   |   |--- cat__Title_Other >  0.50
+|   |   |   |--- class: 0
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- class: 1
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- class: 0
+|--- cat__Title_Mr >  0.50
+|   |--- cont__Fare <= 26.27
+|   |   |--- class: 0
+|   |--- cont__Fare >  26.27
+|   |   |--- ord__Pclass_2 <= 0.50
+|   |   |   |--- disc_count__FamilySize <= 4.50
+|   |   |   |   |--- cont__Age <= 52.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Age >  52.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- disc_count__FamilySize >  4.50
+|   |   |   |   |--- class: 0
+|   |   |--- ord__Pclass_2 >  0.50
+|   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\134_decision_tree_optuna_best.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8380
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

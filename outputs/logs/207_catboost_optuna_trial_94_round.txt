@@ -1,0 +1,83 @@
+
+======================================================================
+Experiment: 207_catboost_optuna_trial_94_round
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: catboost
+CatBoostClassifier(allow_writing_files=False, bootstrap_type='MVS', cat_features=['Pclass', 'Sex', 'Title', 'Deck', 'Embarked'], custom_metric=['Logloss'], depth=5, eval_metric='Accuracy', iterations=2000, l2_leaf_reg=3.12, learning_rate=0.1, loss_function='Logloss', nan_mode='Min', random_seed=12648430, random_strength=0.24, thread_count=8, verbose=0)
+No model specific logging available.
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Accuracy at best Logloss: 0.8671
+Best Accuracy: 0.8671
+Best Accuracy iteration: 88
+Best Logloss iteration: 88
+Best validation Logloss: 0.3824
+Iterations actually run: 188
+Trees retained: 88
+Fold: 1
+Accuracy at best Logloss: 0.8531
+Best Accuracy: 0.8531
+Best Accuracy iteration: 35
+Best Logloss iteration: 35
+Best validation Logloss: 0.3865
+Iterations actually run: 135
+Trees retained: 35
+Fold: 2
+Accuracy at best Logloss: 0.8521
+Best Accuracy: 0.8521
+Best Accuracy iteration: 55
+Best Logloss iteration: 55
+Best validation Logloss: 0.4030
+Iterations actually run: 155
+Trees retained: 55
+Fold: 3
+Accuracy at best Logloss: 0.8803
+Best Accuracy: 0.8803
+Best Accuracy iteration: 203
+Best Logloss iteration: 203
+Best validation Logloss: 0.3284
+Iterations actually run: 303
+Trees retained: 203
+Fold: 4
+Accuracy at best Logloss: 0.8239
+Best Accuracy: 0.8239
+Best Accuracy iteration: 2
+Best Logloss iteration: 2
+Best validation Logloss: 0.4645
+Iterations actually run: 102
+Trees retained: 2
+
+Mean CV Accuracy: 0.8553
+CV STD: 0.0188
+OOF Accuracy: 0.8553
+OOF predictions saved: outputs\oof\207_catboost_optuna_trial_94_round.csv
+OOF errors saved: outputs\oof\207_catboost_optuna_trial_94_round_errors.csv
+Best iterations: [88, 35, 55, 203, 2]
+Median best iteration: 55
+Number of fold models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Ensemble Holdout Accuracy: 0.8436
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of ensemble models: 5
+Mean predicted survival probability: 0.4081
+
+Submission file saved successfully.

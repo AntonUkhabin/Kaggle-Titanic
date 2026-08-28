@@ -1,0 +1,137 @@
+
+======================================================================
+Experiment: 130_decision_tree_remove_familysize
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.0s finished
+Fold: 0
+Fold Accuracy: 0.8392
+Fold: 1
+Fold Accuracy: 0.8322
+Fold: 2
+Fold Accuracy: 0.8028
+Fold: 3
+Fold Accuracy: 0.8169
+Fold: 4
+Fold Accuracy: 0.7394
+
+Mean CV Accuracy: 0.8061
+CV STD: 0.0356
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(ccp_alpha=0, max_depth=8, max_leaf_nodes=20,
+                       min_samples_leaf=5, random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: gini
+Max depth: 8
+Depth: 8
+Leaves: 20
+Nodes: 39
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Sex_male      0.5201
+          ord__Pclass_3      0.1483
+             cont__Fare      0.1479
+              cont__Age      0.1041
+disc_binary__CabinKnown      0.0508
+        cat__Embarked_Q      0.0129
+            cat__Deck_E      0.0082
+         cat__Title_Mrs      0.0079
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Sex_male <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- class: 1
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- cont__Age <= 36.50
+|   |   |   |   |--- cont__Fare <= 7.90
+|   |   |   |   |   |--- cont__Age <= 18.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Age >  18.50
+|   |   |   |   |   |   |--- cont__Age <= 24.00
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cont__Age >  24.00
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  7.90
+|   |   |   |   |   |--- cont__Age <= 6.50
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Age >  6.50
+|   |   |   |   |   |   |--- cat__Title_Mrs <= 0.50
+|   |   |   |   |   |   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cat__Title_Mrs >  0.50
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  36.50
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- class: 0
+|--- cat__Sex_male >  0.50
+|   |--- disc_binary__CabinKnown <= 0.50
+|   |   |--- cont__Age <= 13.00
+|   |   |   |--- cont__Fare <= 20.80
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Fare >  20.80
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Age >  13.00
+|   |   |   |--- class: 0
+|   |--- disc_binary__CabinKnown >  0.50
+|   |   |--- cont__Age <= 18.00
+|   |   |   |--- class: 1
+|   |   |--- cont__Age >  18.00
+|   |   |   |--- cont__Age <= 53.00
+|   |   |   |   |--- cont__Fare <= 26.14
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  26.14
+|   |   |   |   |   |--- cont__Fare <= 32.51
+|   |   |   |   |   |   |--- cat__Deck_E <= 0.50
+|   |   |   |   |   |   |   |--- cont__Fare <= 29.85
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  29.85
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cat__Deck_E >  0.50
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Fare >  32.51
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Age >  53.00
+|   |   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\130_decision_tree_remove_familysize.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8156
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

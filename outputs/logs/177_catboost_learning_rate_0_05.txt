@@ -1,0 +1,76 @@
+
+======================================================================
+Experiment: 177_catboost_learning_rate_0_05
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Accuracy at best Logloss: 0.8531
+Best Accuracy: 0.8531
+Best Accuracy iteration: 87
+Best Logloss iteration: 87
+Best validation Logloss: 0.3861
+Iterations actually run: 187
+Trees retained: 87
+Fold: 1
+Accuracy at best Logloss: 0.8462
+Best Accuracy: 0.8462
+Best Accuracy iteration: 40
+Best Logloss iteration: 40
+Best validation Logloss: 0.4110
+Iterations actually run: 140
+Trees retained: 40
+Fold: 2
+Accuracy at best Logloss: 0.8380
+Best Accuracy: 0.8380
+Best Accuracy iteration: 26
+Best Logloss iteration: 26
+Best validation Logloss: 0.4243
+Iterations actually run: 126
+Trees retained: 26
+Fold: 3
+Accuracy at best Logloss: 0.8451
+Best Accuracy: 0.8451
+Best Accuracy iteration: 3
+Best Logloss iteration: 3
+Best validation Logloss: 0.3492
+Iterations actually run: 103
+Trees retained: 3
+Fold: 4
+Accuracy at best Logloss: 0.8099
+Best Accuracy: 0.8099
+Best Accuracy iteration: 69
+Best Logloss iteration: 69
+Best validation Logloss: 0.4786
+Iterations actually run: 169
+Trees retained: 69
+
+Mean CV Accuracy: 0.8385
+CV STD: 0.0151
+OOF Accuracy: 0.8385
+OOF predictions saved: outputs\oof\177_catboost_learning_rate_0_05.csv
+OOF errors saved: outputs\oof\177_catboost_learning_rate_0_05_errors.csv
+Best iterations: [87, 40, 26, 3, 69]
+Median best iteration: 40
+Number of fold models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Ensemble Holdout Accuracy: 0.8380
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of ensemble models: 5
+Mean predicted survival probability: 0.4155
+
+Submission file saved successfully.

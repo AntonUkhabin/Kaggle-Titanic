@@ -1,0 +1,69 @@
+study_name: lightgbm_tuning_3_seeds
+trial_number: 92
+cv_score: 0.8530089628681178
+seed_cv_std: 0.0043259947297894195
+cv_std: 0.024469953137580717
+seed_results:
+- fold_seed: 12648430
+  cv_score: 0.855294001772875
+  cv_std: 0.03185400962836156
+  best_iterations:
+  - 197
+  - 229
+  - 35
+  - 161
+  - 31
+- fold_seed: 42
+  cv_score: 0.8469516399093864
+  cv_std: 0.020226200792405058
+  best_iterations:
+  - 15
+  - 31
+  - 22
+  - 40
+  - 138
+- fold_seed: 2026
+  cv_score: 0.8567812469220921
+  cv_std: 0.017788085916175877
+  best_iterations:
+  - 44
+  - 46
+  - 101
+  - 198
+  - 116
+fold_scores:
+- 0.8671328671328671
+- 0.8741258741258742
+- 0.8380281690140845
+- 0.8943661971830986
+- 0.8028169014084507
+- 0.8181818181818182
+- 0.8461538461538461
+- 0.8802816901408451
+- 0.8380281690140845
+- 0.852112676056338
+- 0.8391608391608392
+- 0.8461538461538461
+- 0.8450704225352113
+- 0.8873239436619719
+- 0.8661971830985915
+mean_best_iteration: 93.6
+median_best_iteration: 46.0
+params:
+  max_depth: 7
+  subsample_freq: 1
+  learning_rate: 0.14543029929604373
+  num_leaves: 16
+  min_child_samples: 35
+  min_child_weight: 1.1441588080348284
+  min_split_gain: 0.07074078669716788
+  colsample_bytree: 0.9406386213591118
+  reg_alpha: 0.5
+  reg_lambda: 0.05
+  cat_smooth: 14.759011982530762
+  cat_l2: 6.985602579442557
+  min_data_per_group: 30
+  max_cat_to_onehot: 10
+  max_cat_threshold: 32
+  max_bin: 63
+  subsample: 0.7290275330628179

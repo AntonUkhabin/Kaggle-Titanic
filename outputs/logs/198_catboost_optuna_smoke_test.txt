@@ -1,0 +1,52 @@
+
+======================================================================
+Experiment: 198_catboost_optuna_smoke_test
+======================================================================
+
+======================================================================
+Optuna Study
+======================================================================
+Study name: catboost_tuning
+Direction: maximize
+Number of trials: 100
+CV folds: 5
+Holdout evaluation: disabled during tuning
+  0%|          | 0/100 [00:00<?, ?it/s]                                       [33m[W 2026-07-20 14:17:09,723][0m Trial 0 failed with parameters: {'depth': 7, 'learning_rate': 0.05, 'l2_leaf_reg': 3.0, 'random_strength': 0} because of the following error: KeyboardInterrupt('').[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\optuna\study\_optimize.py"[0m, line [35m206[0m, in [35m_run_trial[0m
+    value_or_values = func(trial)
+  File [35m"c:\Users\aukha\Python Practicum\Titanic_kaggle\src\optuna_tuning.py"[0m, line [35m195[0m, in [35mobjective[0m
+    [31mmodel.fit[0m[1;31m([0m
+    [31m~~~~~~~~~[0m[1;31m^[0m
+        [1;31mfeatures_train_transformed,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    ...<3 lines>...
+        [1;31muse_best_model=True,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\catboost\core.py"[0m, line [35m5547[0m, in [35mfit[0m
+    [31mself._fit[0m[1;31m(X, y, cat_features, text_features, embedding_features, None, graph, sample_weight, None, None, None, None, baseline, use_best_model,[0m
+    [31m~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+              [1;31meval_set, verbose, logging_level, plot, plot_file, column_description, verbose_eval, metric_period,[0m
+              [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+              [1;31msilent, early_stopping_rounds, save_snapshot, snapshot_file, snapshot_interval, init_model, callbacks, log_cout, log_cerr)[0m
+              [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File [35m"C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\catboost\core.py"[0m, line [35m2716[0m, in [35m_fit[0m
+    [31mself._train[0m[1;31m([0m
+    [31m~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31mtrain_pool,[0m
+        [1;31m^^^^^^^^^^^[0m
+    ...<3 lines>...
+        [1;31mtrain_params["init_model"][0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"C:\Users\aukha\anaconda3\envs\final_project\Lib\site-packages\catboost\core.py"[0m, line [35m1824[0m, in [35m_train[0m
+    [31mself._object._train[0m[1;31m(train_pool, test_pool, params, allow_clear_pool, init_model._object if init_model else None)[0m
+    [31m~~~~~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File [35m"_catboost.pyx"[0m, line [35m5430[0m, in [35m_catboost._CatBoost._train[0m
+  File [35m"_catboost.pyx"[0m, line [35m5479[0m, in [35m_catboost._CatBoost._train[0m
+[1;35mKeyboardInterrupt[0m
+  0%|          | 0/100 [00:02<?, ?it/s]                                       [33m[W 2026-07-20 14:17:09,727][0m Trial 0 failed with value None.[0m
+  0%|          | 0/100 [00:02<?, ?it/s]  0%|          | 0/100 [00:02<?, ?it/s]

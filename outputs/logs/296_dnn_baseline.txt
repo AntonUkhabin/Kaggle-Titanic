@@ -1,0 +1,138 @@
+
+======================================================================
+Experiment: 296_dnn_baseline
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+
+Fold 1/5
+Fold 0 | 001/200 | loss: 0.7090/0.7043 | acc: 0.3849/0.3846 | lr: 0.00030000 *
+Fold 0 | 010/200 | loss: 0.5844/0.5573 | acc: 0.7452/0.7762 | lr: 0.00030000 *
+Fold 0 | 020/200 | loss: 0.4677/0.4346 | acc: 0.8067/0.8252 | lr: 0.00030000 *
+Fold 0 | 030/200 | loss: 0.4325/0.4074 | acc: 0.8137/0.8322 | lr: 0.00030000 *
+Fold 0 | 040/200 | loss: 0.4237/0.3939 | acc: 0.8330/0.8392 | lr: 0.00030000 *
+Fold 0 | 050/200 | loss: 0.4034/0.3860 | acc: 0.8366/0.8531 | lr: 0.00030000 *
+Fold 0 | 060/200 | loss: 0.4168/0.3807 | acc: 0.8278/0.8462 | lr: 0.00030000 *
+Fold 0 | 070/200 | loss: 0.3965/0.3784 | acc: 0.8506/0.8462 | lr: 0.00030000 *
+Fold 0 | 080/200 | loss: 0.3860/0.3758 | acc: 0.8436/0.8462 | lr: 0.00030000 
+Fold 0 | 090/200 | loss: 0.3773/0.3727 | acc: 0.8506/0.8392 | lr: 0.00030000 *
+Fold 0 | 100/200 | loss: 0.3906/0.3730 | acc: 0.8436/0.8462 | lr: 0.00030000 
+Fold 0 | Early stopping on epoch 100
+Fold 0 | 090/200 | loss: 0.3773/0.3727 | acc: 0.8506/0.8392 | lr: 0.00030000
+Fold 0 | Best epoch: 90 | Best validation loss: 0.3727
+Fold 0 | Accuracy: 0.8392 | Best epoch: 90 | Best loss: 0.3727
+
+Fold 2/5
+Fold 1 | 001/200 | loss: 0.7194/0.7112 | acc: 0.3814/0.3846 | lr: 0.00030000 *
+Fold 1 | 010/200 | loss: 0.5992/0.5869 | acc: 0.7293/0.7343 | lr: 0.00030000 *
+Fold 1 | 020/200 | loss: 0.4679/0.4591 | acc: 0.8014/0.8182 | lr: 0.00030000 *
+Fold 1 | 030/200 | loss: 0.4219/0.4236 | acc: 0.8207/0.8182 | lr: 0.00030000 *
+Fold 1 | 040/200 | loss: 0.4009/0.4163 | acc: 0.8366/0.8252 | lr: 0.00030000 
+Fold 1 | 050/200 | loss: 0.3801/0.4168 | acc: 0.8383/0.8112 | lr: 0.00030000 
+Fold 1 | 060/200 | loss: 0.3922/0.4162 | acc: 0.8436/0.8042 | lr: 0.00030000 
+Fold 1 | 065/200 | loss: 0.3907/0.4170 | acc: 0.8418/0.8112 | lr: 0.00030000 
+Fold 1 | Early stopping on epoch 65
+Fold 1 | 055/200 | loss: 0.3921/0.4144 | acc: 0.8418/0.8112 | lr: 0.00030000
+Fold 1 | Best epoch: 55 | Best validation loss: 0.4144
+Fold 1 | Accuracy: 0.8112 | Best epoch: 55 | Best loss: 0.4144
+
+Fold 3/5
+Fold 2 | 001/200 | loss: 0.7186/0.7114 | acc: 0.3842/0.3873 | lr: 0.00030000 *
+Fold 2 | 010/200 | loss: 0.5929/0.5889 | acc: 0.7368/0.7183 | lr: 0.00030000 *
+Fold 2 | 020/200 | loss: 0.4708/0.4688 | acc: 0.8000/0.8169 | lr: 0.00030000 *
+Fold 2 | 030/200 | loss: 0.4111/0.4346 | acc: 0.8263/0.8310 | lr: 0.00030000 
+Fold 2 | 040/200 | loss: 0.4176/0.4290 | acc: 0.8211/0.8310 | lr: 0.00030000 
+Fold 2 | 050/200 | loss: 0.3861/0.4282 | acc: 0.8456/0.8451 | lr: 0.00030000 
+Fold 2 | 060/200 | loss: 0.3880/0.4290 | acc: 0.8421/0.8592 | lr: 0.00030000 
+Fold 2 | 067/200 | loss: 0.3802/0.4286 | acc: 0.8474/0.8592 | lr: 0.00030000 
+Fold 2 | Early stopping on epoch 67
+Fold 2 | 057/200 | loss: 0.3820/0.4264 | acc: 0.8333/0.8662 | lr: 0.00030000
+Fold 2 | Best epoch: 57 | Best validation loss: 0.4264
+Fold 2 | Accuracy: 0.8662 | Best epoch: 57 | Best loss: 0.4264
+
+Fold 4/5
+Fold 3 | 001/200 | loss: 0.7199/0.7117 | acc: 0.3842/0.3803 | lr: 0.00030000 *
+Fold 3 | 010/200 | loss: 0.5983/0.5853 | acc: 0.7386/0.7113 | lr: 0.00030000 *
+Fold 3 | 020/200 | loss: 0.4781/0.4401 | acc: 0.8070/0.8099 | lr: 0.00030000 *
+Fold 3 | 030/200 | loss: 0.4343/0.3884 | acc: 0.8228/0.8169 | lr: 0.00030000 *
+Fold 3 | 040/200 | loss: 0.4246/0.3682 | acc: 0.8404/0.8380 | lr: 0.00030000 *
+Fold 3 | 050/200 | loss: 0.4259/0.3555 | acc: 0.8263/0.8451 | lr: 0.00030000 *
+Fold 3 | 060/200 | loss: 0.4167/0.3493 | acc: 0.8368/0.8451 | lr: 0.00030000 
+Fold 3 | 070/200 | loss: 0.3998/0.3428 | acc: 0.8333/0.8521 | lr: 0.00030000 
+Fold 3 | 080/200 | loss: 0.3998/0.3398 | acc: 0.8351/0.8662 | lr: 0.00030000 
+Fold 3 | 090/200 | loss: 0.3900/0.3376 | acc: 0.8421/0.8732 | lr: 0.00030000 
+Fold 3 | 095/200 | loss: 0.3813/0.3369 | acc: 0.8386/0.8732 | lr: 0.00030000 
+Fold 3 | Early stopping on epoch 95
+Fold 3 | 085/200 | loss: 0.3956/0.3365 | acc: 0.8386/0.8732 | lr: 0.00030000
+Fold 3 | Best epoch: 85 | Best validation loss: 0.3365
+Fold 3 | Accuracy: 0.8732 | Best epoch: 85 | Best loss: 0.3365
+
+Fold 5/5
+Fold 4 | 001/200 | loss: 0.7181/0.7132 | acc: 0.3842/0.3803 | lr: 0.00030000 *
+Fold 4 | 010/200 | loss: 0.5904/0.5909 | acc: 0.7333/0.7254 | lr: 0.00030000 *
+Fold 4 | 020/200 | loss: 0.4573/0.4972 | acc: 0.8193/0.7535 | lr: 0.00030000 *
+Fold 4 | 030/200 | loss: 0.4032/0.4797 | acc: 0.8386/0.7746 | lr: 0.00030000 *
+Fold 4 | 040/200 | loss: 0.3923/0.4753 | acc: 0.8474/0.7887 | lr: 0.00030000 
+Fold 4 | 050/200 | loss: 0.3586/0.4758 | acc: 0.8544/0.7887 | lr: 0.00030000 
+Fold 4 | 053/200 | loss: 0.3751/0.4767 | acc: 0.8474/0.7887 | lr: 0.00030000 
+Fold 4 | Early stopping on epoch 53
+Fold 4 | 043/200 | loss: 0.3854/0.4736 | acc: 0.8526/0.7887 | lr: 0.00030000
+Fold 4 | Best epoch: 43 | Best validation loss: 0.4736
+Fold 4 | Accuracy: 0.7887 | Best epoch: 43 | Best loss: 0.4736
+PyTorch training plots saved: outputs\torch_plots\296_dnn_baseline.png
+
+======================================================================
+Model Information
+======================================================================
+Active model: dnn
+DNN(
+  (mlp): Sequential(
+    (0): Linear(in_features=26, out_features=32, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=32, out_features=32, bias=True)
+    (4): ReLU()
+    (5): Dropout(p=0.2, inplace=False)
+    (6): Linear(in_features=32, out_features=1, bias=True)
+  )
+)
+
+Mean CV Accuracy: 0.8357
+CV STD: 0.0321
+OOF Accuracy: 0.8357
+OOF Precision: 0.8171
+OOF Recall: 0.7363
+OOF F1: 0.7746
+OOF ROC-AUC: 0.8656
+OOF PR-AUC: 0.8473
+OOF Logloss: 0.4047
+OOF Brier: 0.1248
+OOF Confusion Matrix: TN=394, FP=45, FN=72, TP=201
+OOF predictions saved: outputs\oof\296_dnn_baseline.csv
+OOF errors saved: outputs\oof\296_dnn_baseline_errors.csv
+Best epochs: [90, 55, 57, 85, 43]
+Median best epoch: 57
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8492
+Holdout Precision: 0.8750
+Holdout Recall: 0.7101
+Holdout F1: 0.7840
+Holdout ROC-AUC: 0.8881
+Holdout PR-AUC: 0.8631
+Holdout Logloss: 0.3970
+Holdout Brier: 0.1197
+Holdout Confusion Matrix: TN=103, FP=7, FN=20, TP=49
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.3913
+
+Submission file saved successfully.

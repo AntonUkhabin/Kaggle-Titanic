@@ -1,0 +1,133 @@
+
+======================================================================
+Experiment: 136_decision_tree_optuna_final
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.1s finished
+Fold: 0
+Fold Accuracy: 0.8392
+Fold: 1
+Fold Accuracy: 0.8531
+Fold: 2
+Fold Accuracy: 0.8239
+Fold: 3
+Fold Accuracy: 0.8310
+Fold: 4
+Fold Accuracy: 0.7958
+
+Mean CV Accuracy: 0.8286
+CV STD: 0.0191
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(ccp_alpha=0, criterion='log_loss', max_depth=11,
+                       max_leaf_nodes=18, min_samples_leaf=3,
+                       min_samples_split=10, random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: log_loss
+Max depth: 11
+Depth: 8
+Leaves: 18
+Nodes: 35
+
+======================================================================
+Feature Importance
+======================================================================
+               feature  importance
+         cat__Title_Mr      0.4558
+            cont__Fare      0.1766
+         ord__Pclass_3      0.1393
+      cat__Title_Other      0.0785
+             cont__Age      0.0642
+disc_count__FamilySize      0.0284
+     cat__Deck_Unknown      0.0245
+         ord__Pclass_2      0.0205
+       cat__Embarked_Q      0.0123
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Title_Mr <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cat__Title_Other <= 0.50
+|   |   |   |--- cont__Fare <= 28.86
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Fare >  28.86
+|   |   |   |   |--- cont__Age <= 2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Age >  2.50
+|   |   |   |   |   |--- class: 1
+|   |   |--- cat__Title_Other >  0.50
+|   |   |   |--- cat__Deck_Unknown <= 0.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- cat__Deck_Unknown >  0.50
+|   |   |   |   |--- class: 0
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- cont__Age <= 36.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  36.50
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- disc_count__FamilySize <= 6.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- disc_count__FamilySize >  6.50
+|   |   |   |   |--- class: 0
+|--- cat__Title_Mr >  0.50
+|   |--- cont__Fare <= 26.27
+|   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |--- class: 0
+|   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |--- class: 0
+|   |--- cont__Fare >  26.27
+|   |   |--- ord__Pclass_2 <= 0.50
+|   |   |   |--- disc_count__FamilySize <= 4.50
+|   |   |   |   |--- cont__Age <= 52.50
+|   |   |   |   |   |--- cont__Fare <= 27.14
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Fare >  27.14
+|   |   |   |   |   |   |--- cont__Age <= 41.00
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  41.00
+|   |   |   |   |   |   |   |--- cont__Age <= 47.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  47.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Age >  52.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- disc_count__FamilySize >  4.50
+|   |   |   |   |--- class: 0
+|   |   |--- ord__Pclass_2 >  0.50
+|   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\136_decision_tree_optuna_final.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8547
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

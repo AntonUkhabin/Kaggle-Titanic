@@ -1,0 +1,217 @@
+
+======================================================================
+Experiment: 109_decision_tree_criterion_entropy
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.1s finished
+Fold: 0
+Fold Accuracy: 0.8252
+Fold: 1
+Fold Accuracy: 0.8182
+Fold: 2
+Fold Accuracy: 0.7958
+Fold: 3
+Fold Accuracy: 0.8239
+Fold: 4
+Fold Accuracy: 0.7746
+
+Mean CV Accuracy: 0.8075
+CV STD: 0.0196
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(criterion='entropy', max_depth=8, min_samples_leaf=5,
+                       random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: entropy
+Max depth: 8
+Depth: 8
+Leaves: 45
+Nodes: 89
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Title_Mr      0.3811
+             cont__Fare      0.2082
+              cont__Age      0.1324
+          ord__Pclass_3      0.1164
+       cat__Title_Other      0.0657
+ disc_count__FamilySize      0.0390
+disc_binary__CabinKnown      0.0205
+          ord__Pclass_2      0.0171
+        cat__Embarked_Q      0.0102
+   disc_binary__IsAlone      0.0038
+            cat__Deck_E      0.0027
+      cat__Deck_Unknown      0.0018
+        cat__Embarked_S      0.0012
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Title_Mr <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cat__Title_Other <= 0.50
+|   |   |   |--- cont__Fare <= 28.86
+|   |   |   |   |--- cont__Age <= 23.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Age >  23.50
+|   |   |   |   |   |--- cont__Age <= 27.50
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Age >  27.50
+|   |   |   |   |   |   |--- cont__Age <= 37.00
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cont__Age >  37.00
+|   |   |   |   |   |   |   |--- cat__Deck_Unknown <= 0.50
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |   |--- cat__Deck_Unknown >  0.50
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |--- cont__Fare >  28.86
+|   |   |   |   |--- cont__Age <= 5.00
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Age >  5.00
+|   |   |   |   |   |--- class: 1
+|   |   |--- cat__Title_Other >  0.50
+|   |   |   |--- disc_binary__CabinKnown <= 0.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- disc_binary__CabinKnown >  0.50
+|   |   |   |   |--- class: 1
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- cont__Age <= 36.50
+|   |   |   |   |--- disc_count__FamilySize <= 4.50
+|   |   |   |   |   |--- cont__Age <= 7.00
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Age >  7.00
+|   |   |   |   |   |   |--- cont__Fare <= 19.12
+|   |   |   |   |   |   |   |--- cont__Fare <= 7.90
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |   |--- cont__Fare >  7.90
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Fare >  19.12
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |--- disc_count__FamilySize >  4.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Age >  36.50
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- disc_count__FamilySize <= 6.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- disc_count__FamilySize >  6.50
+|   |   |   |   |--- disc_count__FamilySize <= 7.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- disc_count__FamilySize >  7.50
+|   |   |   |   |   |--- class: 0
+|--- cat__Title_Mr >  0.50
+|   |--- cont__Fare <= 26.27
+|   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |--- cont__Fare <= 13.25
+|   |   |   |   |--- cont__Age <= 23.75
+|   |   |   |   |   |--- cont__Fare <= 8.18
+|   |   |   |   |   |   |--- cont__Fare <= 7.99
+|   |   |   |   |   |   |   |--- cont__Age <= 20.75
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  20.75
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Fare >  7.99
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Fare >  8.18
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Age >  23.75
+|   |   |   |   |   |--- cont__Age <= 32.50
+|   |   |   |   |   |   |--- cont__Age <= 30.75
+|   |   |   |   |   |   |   |--- cont__Fare <= 7.83
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  7.83
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  30.75
+|   |   |   |   |   |   |   |--- cont__Fare <= 7.99
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  7.99
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Age >  32.50
+|   |   |   |   |   |   |--- cont__Fare <= 7.91
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Fare >  7.91
+|   |   |   |   |   |   |   |--- cont__Age <= 38.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  38.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Fare >  13.25
+|   |   |   |   |--- disc_binary__IsAlone <= 0.50
+|   |   |   |   |   |--- cont__Age <= 32.50
+|   |   |   |   |   |   |--- cat__Embarked_S <= 0.50
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cat__Embarked_S >  0.50
+|   |   |   |   |   |   |   |--- cont__Fare <= 22.01
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  22.01
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Age >  32.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- disc_binary__IsAlone >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |--- class: 0
+|   |--- cont__Fare >  26.27
+|   |   |--- ord__Pclass_2 <= 0.50
+|   |   |   |--- disc_count__FamilySize <= 4.50
+|   |   |   |   |--- cont__Age <= 52.50
+|   |   |   |   |   |--- cont__Fare <= 27.14
+|   |   |   |   |   |   |--- cat__Deck_E <= 0.50
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cat__Deck_E >  0.50
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Fare >  27.14
+|   |   |   |   |   |   |--- cont__Age <= 41.00
+|   |   |   |   |   |   |   |--- cont__Age <= 31.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  31.50
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cont__Age >  41.00
+|   |   |   |   |   |   |   |--- cont__Age <= 47.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  47.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Age >  52.50
+|   |   |   |   |   |--- cont__Age <= 61.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Age >  61.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |--- disc_count__FamilySize >  4.50
+|   |   |   |   |--- class: 0
+|   |   |--- ord__Pclass_2 >  0.50
+|   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\109_decision_tree_criterion_entropy.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8492
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

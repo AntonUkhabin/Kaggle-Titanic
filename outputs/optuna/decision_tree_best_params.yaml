@@ -1,0 +1,17 @@
+study_name: decision_tree_tuning
+trial_number: 1
+cv_score: 0.8188023244361272
+cv_std: 0.008548868208595803
+fold_scores:
+- 0.8181818181818182
+- 0.8321678321678322
+- 0.823943661971831
+- 0.8098591549295775
+- 0.8098591549295775
+params:
+  criterion: log_loss
+  max_depth: 6
+  min_samples_split: 20
+  min_samples_leaf: 4
+  max_leaf_nodes: 10
+  ccp_alpha: 0.003

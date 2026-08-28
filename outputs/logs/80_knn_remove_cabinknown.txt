@@ -1,0 +1,27 @@
+Experiment: 80_knn_remove_cabinknown
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    3.5s finished
+Fold: 0
+Fold Accuracy: 0.8462
+Fold: 1
+Fold Accuracy: 0.7832
+Fold: 2
+Fold Accuracy: 0.8169
+Fold: 3
+Fold Accuracy: 0.8310
+Fold: 4
+Fold Accuracy: 0.8239
+
+Cross-validation finished!
+CV Accuracy: 0.8202 ± 0.0209
+
+Active model: knn
+KNeighborsClassifier(n_neighbors=6)
+n_neighbors: 6
+weights: uniform
+metric: minkowski
+p: 2
+
+Holdout Accuracy: 0.8492
+Model has no coefficients. Skipping coefficient logging.
+
+Submission file saved successfully.

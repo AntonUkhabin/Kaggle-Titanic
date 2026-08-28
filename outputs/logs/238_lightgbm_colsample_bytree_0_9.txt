@@ -1,0 +1,99 @@
+
+======================================================================
+Experiment: 238_lightgbm_colsample_bytree_0_9
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8462
+Early stopping metric: binary_error
+Best validation binary_error: 0.1538
+Best binary_error iteration: 4
+Iterations actually run: 104
+Trees retained: 4
+Fold: 1
+Fold Accuracy: 0.8671
+Early stopping metric: binary_error
+Best validation binary_error: 0.1329
+Best binary_error iteration: 172
+Iterations actually run: 272
+Trees retained: 172
+Fold: 2
+Fold Accuracy: 0.8521
+Early stopping metric: binary_error
+Best validation binary_error: 0.1479
+Best binary_error iteration: 82
+Iterations actually run: 182
+Trees retained: 82
+Fold: 3
+Fold Accuracy: 0.8732
+Early stopping metric: binary_error
+Best validation binary_error: 0.1268
+Best binary_error iteration: 74
+Iterations actually run: 174
+Trees retained: 74
+Fold: 4
+Fold Accuracy: 0.8169
+Early stopping metric: binary_error
+Best validation binary_error: 0.1831
+Best binary_error iteration: 74
+Iterations actually run: 174
+Trees retained: 74
+
+======================================================================
+Model Information
+======================================================================
+Active model: lightgbm
+LGBMClassifier(cat_l2=10.0, cat_smooth=10.0, colsample_bytree=0.9,
+               deterministic=True, force_row_wise=True, max_cat_threshold=32,
+               max_cat_to_onehot=4, max_depth=4, metric='binary_error',
+               min_child_weight=1, min_data_per_group=100, n_estimators=2000,
+               n_jobs=15, num_leaves=7, objective='binary',
+               random_state=12648430, verbosity=-1)
+No model specific logging available.
+
+Mean CV Accuracy: 0.8511
+CV STD: 0.0197
+OOF Accuracy: 0.8511
+OOF Precision: 0.8646
+OOF Recall: 0.7253
+OOF F1: 0.7888
+OOF ROC-AUC: 0.8738
+OOF PR-AUC: 0.8325
+OOF Logloss: 0.4285
+OOF Brier: 0.1321
+OOF Confusion Matrix: TN=408, FP=31, FN=75, TP=198
+OOF predictions saved: outputs\oof\238_lightgbm_colsample_bytree_0_9.csv
+OOF errors saved: outputs\oof\238_lightgbm_colsample_bytree_0_9_errors.csv
+Best iterations: [4, 172, 82, 74, 74]
+Median best iteration: 74
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8659
+Holdout Precision: 0.8947
+Holdout Recall: 0.7391
+Holdout F1: 0.8095
+Holdout ROC-AUC: 0.8681
+Holdout PR-AUC: 0.8651
+Holdout Logloss: 0.4025
+Holdout Brier: 0.1193
+Holdout Confusion Matrix: TN=104, FP=6, FN=18, TP=51
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.3914
+
+Submission file saved successfully.

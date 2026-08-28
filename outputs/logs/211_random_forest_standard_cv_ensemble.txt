@@ -1,0 +1,115 @@
+
+======================================================================
+Experiment: 211_random_forest_standard_cv_ensemble
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8601
+Fold: 1
+Fold Accuracy: 0.8392
+Fold: 2
+Fold Accuracy: 0.8521
+Fold: 3
+Fold Accuracy: 0.8662
+Fold: 4
+Fold Accuracy: 0.8028
+
+======================================================================
+Model Information
+======================================================================
+Active model: random_forest
+RandomForestClassifier(max_depth=13, max_features='log2', min_samples_leaf=3,
+                       min_samples_split=5, n_estimators=300, n_jobs=-1,
+                       oob_score=True, random_state=12648430)
+
+======================================================================
+Random Forest Summary
+======================================================================
+Number of trees: 300
+Criterion: gini
+Max depth: 13
+Min samples split: 5
+Min samples leaf: 3
+Max features: log2
+Bootstrap: True
+OOB Accuracy: 0.8172
+Mean tree depth: 11.64
+Min tree depth: 7
+Max tree depth: 13
+Mean leaves per tree: 44.70
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Title_Mr      0.1494
+             cont__Fare      0.1309
+          cat__Sex_male      0.1229
+        cat__Sex_female      0.1186
+              cont__Age      0.1016
+ disc_count__FamilySize      0.0606
+          ord__Pclass_3      0.0500
+        cat__Title_Miss      0.0393
+         cat__Title_Mrs      0.0352
+          ord__Pclass_1      0.0322
+disc_binary__CabinKnown      0.0291
+      cat__Deck_Unknown      0.0264
+   disc_binary__IsAlone      0.0176
+          ord__Pclass_2      0.0168
+      cat__Title_Master      0.0152
+        cat__Embarked_S      0.0151
+        cat__Embarked_C      0.0085
+        cat__Embarked_Q      0.0064
+       cat__Title_Other      0.0063
+            cat__Deck_B      0.0057
+            cat__Deck_E      0.0043
+            cat__Deck_C      0.0035
+            cat__Deck_D      0.0021
+            cat__Deck_A      0.0019
+            cat__Deck_F      0.0002
+            cat__Deck_G      0.0001
+
+Mean CV Accuracy: 0.8441
+CV STD: 0.0225
+OOF Accuracy: 0.8441
+OOF Precision: 0.8432
+OOF Recall: 0.7289
+OOF F1: 0.7819
+OOF ROC-AUC: 0.8775
+OOF PR-AUC: 0.8483
+OOF Logloss: 0.4120
+OOF Brier: 0.1268
+OOF Confusion Matrix: TN=402, FP=37, FN=74, TP=199
+OOF predictions saved: outputs\oof\211_random_forest_standard_cv_ensemble.csv
+OOF errors saved: outputs\oof\211_random_forest_standard_cv_ensemble_errors.csv
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8547
+Holdout Precision: 0.9057
+Holdout Recall: 0.6957
+Holdout F1: 0.7869
+Holdout ROC-AUC: 0.8723
+Holdout PR-AUC: 0.8618
+Holdout Logloss: 0.4133
+Holdout Brier: 0.1219
+Holdout Confusion Matrix: TN=105, FP=5, FN=21, TP=48
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.3926
+
+Submission file saved successfully.

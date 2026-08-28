@@ -1,0 +1,123 @@
+﻿PassengerId;Survived;Pclass;Sex;Age;Fare;SibSp;Parch;Embarked;Name;Cabin;Ticket;oof_probability;oof_prediction;is_correct;prediction_type;confidence;distance_to_threshold
+262;1;3;male;3.0;31.3875;4;2;S;Asplund, Master. Edvin Rojj Felix;;347077;0.0;0;False;false_negative;1.0;0.5
+87;0;3;male;16.0;34.375;1;3;S;Ford, Mr. William Neal;;W./C. 6608;1.0;1;False;false_positive;1.0;0.5
+743;1;1;female;21.0;262.375;2;2;C;"Ryerson, Miss. Susan Parker ""Suzette""";B57 B59 B63 B66;PC 17608;0.0;0;False;false_negative;1.0;0.5
+798;1;3;female;31.0;8.6833;0;0;S;Osman, Mrs. Mara;;349244;0.0;0;False;false_negative;1.0;0.5
+655;0;3;female;18.0;6.75;0;0;Q;"Hegarty, Miss. Hanora ""Nora""";;365226;1.0;1;False;false_positive;1.0;0.5
+767;0;1;male;;39.6;0;0;C;Brewe, Dr. Arthur Jackson;;112379;1.0;1;False;false_positive;1.0;0.5
+252;0;3;female;29.0;10.4625;1;1;S;Strom, Mrs. Wilhelm (Elna Matilda Persson);G6;347054;1.0;1;False;false_positive;1.0;0.5
+298;0;1;female;2.0;151.55;1;2;S;Allison, Miss. Helen Loraine;C22 C26;113781;1.0;1;False;false_positive;1.0;0.5
+712;0;1;male;;26.55;0;0;S;Klaber, Mr. Herman;C124;113028;1.0;1;False;false_positive;1.0;0.5
+98;1;1;male;23.0;63.3583;0;1;C;Greenfield, Mr. William Bertram;D10 D12;PC 17759;0.0;0;False;false_negative;1.0;0.5
+378;0;1;male;27.0;211.5;0;2;C;Widener, Mr. Harry Elkins;C82;113503;1.0;1;False;false_positive;1.0;0.5
+783;0;1;male;29.0;30.0;0;0;S;Long, Mr. Milton Clyde;D6;113501;1.0;1;False;false_positive;1.0;0.5
+797;1;1;female;49.0;25.9292;0;0;S;Leader, Dr. Alice (Farnham);D17;17465;0.0;0;False;false_negative;1.0;0.5
+853;0;3;female;9.0;15.2458;1;1;C;Boulos, Miss. Nourelain;;2678;1.0;1;False;false_positive;1.0;0.5
+16;1;2;female;55.0;16.0;0;0;S;Hewlett, Mrs. (Mary D Kingcome) ;;248706;0.0;0;False;false_negative;1.0;0.5
+12;1;1;female;58.0;26.55;0;0;S;Bonnell, Miss. Elizabeth;C103;113783;0.0;0;False;false_negative;1.0;0.5
+484;1;3;female;63.0;9.5875;0;0;S;Turkula, Mrs. (Hedwig);;4134;0.0;0;False;false_negative;1.0;0.5
+178;0;1;female;50.0;28.7125;0;0;C;Isham, Miss. Ann Elizabeth;C49;PC 17595;1.0;1;False;false_positive;1.0;0.5
+840;1;1;male;;29.7;0;0;C;Marechal, Mr. Pierre;C47;11774;0.0;0;False;false_negative;1.0;0.5
+631;1;1;male;80.0;30.0;0;0;S;Barkworth, Mr. Algernon Henry Wilson;A23;27042;0.0;0;False;false_negative;1.0;0.5
+205;1;3;male;18.0;8.05;0;0;S;"Cohen, Mr. Gurshon ""Gus""";;A/5 3540;0.031746031746031744;0;False;false_negative;0.9682539682539683;0.46825396825396826
+128;1;3;male;24.0;7.1417;0;0;S;Madsen, Mr. Fridtjof Arne;;C 17369;0.031746031746031744;0;False;false_negative;0.9682539682539683;0.46825396825396826
+392;1;3;male;21.0;7.7958;0;0;S;Jansson, Mr. Carl Olof;;350034;0.031746031746031744;0;False;false_negative;0.9682539682539683;0.46825396825396826
+623;1;3;male;20.0;15.7417;1;1;C;Nakid, Mr. Sahid;;2653;0.031746031746031744;0;False;false_negative;0.9682539682539683;0.46825396825396826
+544;1;2;male;32.0;26.0;1;0;S;Beane, Mr. Edward;;2908;0.03333333333333333;0;False;false_negative;0.9666666666666667;0.4666666666666667
+234;1;3;female;5.0;31.3875;4;2;S;Asplund, Miss. Lillian Gertrud;;347077;0.05263157894736842;0;False;false_negative;0.9473684210526316;0.4473684210526316
+26;1;3;female;38.0;31.3875;1;5;S;Asplund, Mrs. Carl Oscar (Selma Augusta Emilia Johansson);;347077;0.058823529411764705;0;False;false_negative;0.9411764705882353;0.4411764705882353
+773;0;2;female;57.0;10.5;0;0;S;Mack, Mrs. (Mary);E77;S.O./P.P. 3;0.9333333333333333;1;False;false_positive;0.9333333333333333;0.43333333333333335
+855;0;2;female;44.0;26.0;1;0;S;Carter, Mrs. Ernest Courtenay (Lilian Hughes);;244252;0.9333333333333333;1;False;false_positive;0.9333333333333333;0.43333333333333335
+200;0;2;female;24.0;13.0;0;0;S;"Yrois, Miss. Henriette (""Mrs Harbeck"")";;248747;0.9333333333333333;1;False;false_positive;0.9333333333333333;0.43333333333333335
+358;0;2;female;38.0;13.0;0;0;S;Funk, Miss. Annie Clemmer;;237671;0.9333333333333333;1;False;false_positive;0.9333333333333333;0.43333333333333335
+415;1;3;male;44.0;7.925;0;0;S;Sundman, Mr. Johan Julian;;STON/O 2. 3101269;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+268;1;3;male;25.0;7.775;1;0;S;Persson, Mr. Ernst Ulrik;;347083;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+401;1;3;male;39.0;7.925;0;0;S;Niskanen, Mr. Juha;;STON/O 2. 3101289;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+822;1;3;male;27.0;8.6625;0;0;S;Lulic, Mr. Nikola;;315098;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+674;1;2;male;31.0;13.0;0;0;S;Wilhelms, Mr. Charles;;244270;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+147;1;3;male;27.0;7.7958;0;0;S;"Andersson, Mr. August Edvard (""Wennerstrom"")";;350043;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+456;1;3;male;29.0;7.8958;0;0;C;Jalsevac, Mr. Ivan;;349240;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+554;1;3;male;22.0;7.225;0;0;C;"Leeni, Mr. Fahim (""Philip Zenni"")";;2620;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+430;1;3;male;32.0;8.05;0;0;S;Pickard, Mr. Berk (Berk Trembisky);E10;SOTON/O.Q. 392078;0.0851063829787234;0;False;false_negative;0.9148936170212766;0.4148936170212766
+468;0;1;male;56.0;26.55;0;0;S;Smart, Mr. John Montgomery;;113792;0.9;1;False;false_positive;0.9;0.4
+246;0;1;male;44.0;90.0;2;0;Q;Minahan, Dr. William Edward;C78;19928;0.8888888888888888;1;False;false_positive;0.8888888888888888;0.38888888888888884
+126;1;3;male;12.0;11.2417;1;0;C;Nicola-Yarred, Master. Elias;;2651;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+188;1;1;male;45.0;26.55;0;0;S;"Romaine, Mr. Charles Hallace (""Mr C Rolmane"")";;111428;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+605;1;1;male;35.0;26.55;0;0;C;"Homer, Mr. Harry (""Mr E Haven"")";;111426;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+108;1;3;male;;7.775;0;0;S;Moss, Mr. Albert Johan;;312991;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+805;1;3;male;27.0;6.975;0;0;S;Hedman, Mr. Oskar Arvid;;347089;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+445;1;3;male;;8.1125;0;0;S;Johannesen-Bratthammer, Mr. Bernt;;65306;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+287;1;3;male;30.0;9.5;0;0;S;de Mulder, Mr. Theodore;;345774;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+448;1;1;male;34.0;26.55;0;0;S;Seward, Mr. Frederic Kimber;;113794;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+82;1;3;male;29.0;9.5;0;0;S;Sheerlinck, Mr. Jan Baptist;;345779;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+580;1;3;male;32.0;7.925;0;0;S;Jussila, Mr. Eiriik;;STON/O 2. 3101286;0.11155378486055777;0;False;false_negative;0.8884462151394422;0.3884462151394422
+839;1;3;male;32.0;56.4958;0;0;S;Chip, Mr. Chang;;1601;0.12033195020746888;0;False;false_negative;0.8796680497925311;0.3796680497925311
+693;1;3;male;;56.4958;0;0;S;Lam, Mr. Ali;;1601;0.12033195020746888;0;False;false_negative;0.8796680497925311;0.3796680497925311
+571;1;2;male;62.0;10.5;0;0;S;Harris, Mr. George;;S.W./PP 752;0.12033195020746888;0;False;false_negative;0.8796680497925311;0.3796680497925311
+221;1;3;male;16.0;8.05;0;0;S;Sunderland, Mr. Victor Francis;;SOTON/OQ 392089;0.12033195020746888;0;False;false_negative;0.8796680497925311;0.3796680497925311
+313;0;2;female;26.0;26.0;1;1;S;Lahtinen, Mrs. William (Anna Sylfven);;250651;0.8775510204081632;1;False;false_positive;0.8775510204081632;0.37755102040816324
+272;1;3;male;25.0;0.0;0;0;S;Tornquist, Mr. William Henry;;LINE;0.12359550561797752;0;False;false_negative;0.8764044943820225;0.3764044943820225
+339;1;3;male;45.0;8.05;0;0;S;Dahl, Mr. Karl Edwart;;7598;0.12359550561797752;0;False;false_negative;0.8764044943820225;0.3764044943820225
+18;1;2;male;;13.0;0;0;S;Williams, Mr. Charles Eugene;;244373;0.12359550561797752;0;False;false_negative;0.8764044943820225;0.3764044943820225
+42;0;2;female;27.0;21.0;1;0;S;Turpin, Mrs. William John Robert (Dorothy Ann Wonnacott);;11668;0.875;1;False;false_positive;0.875;0.375
+502;0;3;female;21.0;7.75;0;0;Q;Canavan, Miss. Mary;;364846;0.8695652173913043;1;False;false_positive;0.8695652173913043;0.3695652173913043
+808;0;3;female;18.0;7.775;0;0;S;Pettersson, Miss. Ellen Natalia;;347087;0.8695652173913043;1;False;false_positive;0.8695652173913043;0.3695652173913043
+594;0;3;female;;7.75;0;2;Q;Bourke, Miss. Mary;;364848;0.8695652173913043;1;False;false_positive;0.8695652173913043;0.3695652173913043
+678;1;3;female;18.0;9.8417;0;0;S;Turja, Miss. Anna Sofia;;4138;0.13333333333333333;0;False;false_negative;0.8666666666666667;0.3666666666666667
+40;1;3;female;14.0;11.2417;1;0;C;Nicola-Yarred, Miss. Jamila;;2651;0.13333333333333333;0;False;false_negative;0.8666666666666667;0.3666666666666667
+570;1;3;male;32.0;7.8542;0;0;S;Jonsson, Mr. Carl;;350417;0.14516129032258066;0;False;false_negative;0.8548387096774194;0.3548387096774194
+37;1;3;male;;7.2292;0;0;C;Mamee, Mr. Hanna;;2677;0.14516129032258066;0;False;false_negative;0.8548387096774194;0.3548387096774194
+289;1;2;male;42.0;13.0;0;0;S;Hosono, Mr. Masabumi;;237798;0.14516129032258066;0;False;false_negative;0.8548387096774194;0.3548387096774194
+745;1;3;male;31.0;7.925;0;0;S;Stranden, Mr. Juho;;STON/O 2. 3101288;0.14516129032258066;0;False;false_negative;0.8548387096774194;0.3548387096774194
+858;1;1;male;51.0;26.55;0;0;S;Daly, Mr. Peter Denis ;E17;113055;0.20689655172413793;0;False;false_negative;0.7931034482758621;0.2931034482758621
+708;1;1;male;42.0;26.2875;0;0;S;Calderhead, Mr. Edward Pennington;E24;PC 17476;0.20689655172413793;0;False;false_negative;0.7931034482758621;0.2931034482758621
+454;1;1;male;49.0;89.1042;1;0;C;Goldenberg, Mr. Samuel L;C92;17453;0.20689655172413793;0;False;false_negative;0.7931034482758621;0.2931034482758621
+277;0;3;female;45.0;7.75;0;0;S;Lindblom, Miss. Augusta Charlotta;;347073;0.7777777777777778;1;False;false_positive;0.7777777777777778;0.2777777777777778
+503;0;3;female;;7.6292;0;0;Q;O'Sullivan, Miss. Bridget Mary;;330909;0.7777777777777778;1;False;false_positive;0.7777777777777778;0.2777777777777778
+397;0;3;female;31.0;7.8542;0;0;S;Olsson, Miss. Elina;;350407;0.7777777777777778;1;False;false_positive;0.7777777777777778;0.2777777777777778
+247;0;3;female;25.0;7.775;0;0;S;Lindahl, Miss. Agda Thorilda Viktoria;;347071;0.7777777777777778;1;False;false_positive;0.7777777777777778;0.2777777777777778
+15;0;3;female;14.0;7.8542;0;0;S;Vestrom, Miss. Hulda Amanda Adolfina;;350406;0.7352941176470589;1;False;false_positive;0.7352941176470589;0.23529411764705888
+817;0;3;female;23.0;7.925;0;0;S;Heininen, Miss. Wendla Maria;;STON/O2. 3101290;0.7352941176470589;1;False;false_positive;0.7352941176470589;0.23529411764705888
+24;1;1;male;28.0;35.5;0;0;S;Sloper, Mr. William Thompson;A6;113788;0.3125;0;False;false_negative;0.6875;0.1875
+551;1;1;male;17.0;110.8833;0;2;C;Thayer, Mr. John Borland Jr;C70;17421;0.3125;0;False;false_negative;0.6875;0.1875
+738;1;1;male;35.0;512.3292;0;0;C;Lesurer, Mr. Gustave J;B101;PC 17755;0.3125;0;False;false_negative;0.6875;0.1875
+485;1;1;male;25.0;91.0792;1;0;C;Bishop, Mr. Dickinson H;B49;11967;0.3125;0;False;false_negative;0.6875;0.1875
+329;1;3;female;31.0;20.525;1;1;S;Goldsmith, Mrs. Frank John (Emily Alice Brown);;363291;0.3409090909090909;0;False;false_negative;0.6590909090909092;0.15909090909090912
+107;1;3;female;21.0;7.65;0;0;S;Salkjelsvik, Miss. Anna Kristine;;343120;0.3409090909090909;0;False;false_negative;0.6590909090909092;0.15909090909090912
+193;1;3;female;19.0;7.8542;1;0;S;Andersen-Jensen, Miss. Carla Christine Nielsine;;350046;0.3409090909090909;0;False;false_negative;0.6590909090909092;0.15909090909090912
+86;1;3;female;33.0;15.85;3;0;S;Backstrom, Mrs. Karl Alfred (Maria Mathilda Gustafsson);;3101278;0.3409090909090909;0;False;false_negative;0.6590909090909092;0.15909090909090912
+69;1;3;female;17.0;7.925;4;2;S;Andersson, Miss. Erna Alexandra;;3101281;0.3409090909090909;0;False;false_negative;0.6590909090909092;0.15909090909090912
+644;1;3;male;;56.4958;0;0;S;Foo, Mr. Choong;;1601;0.35294117647058826;0;False;false_negative;0.6470588235294117;0.14705882352941174
+508;1;1;male;;26.55;0;0;S;"Bradley, Mr. George (""George Arthur Brayton"")";;111427;0.35294117647058826;0;False;false_negative;0.6470588235294117;0.14705882352941174
+75;1;3;male;32.0;56.4958;0;0;S;Bing, Mr. Lee;;1601;0.35294117647058826;0;False;false_negative;0.6470588235294117;0.14705882352941174
+363;0;3;female;45.0;14.4542;0;1;C;Barbara, Mrs. (Catherine David);;2691;0.6363636363636364;1;False;false_positive;0.6363636363636364;0.13636363636363635
+41;0;3;female;40.0;9.475;1;0;S;Ahlin, Mrs. Johan (Johanna Persdotter Larsson);;7546;0.6363636363636364;1;False;false_positive;0.6363636363636364;0.13636363636363635
+579;0;3;female;;14.4583;1;0;C;Caram, Mrs. Joseph (Maria Elias);;2689;0.6363636363636364;1;False;false_positive;0.6363636363636364;0.13636363636363635
+658;0;3;female;32.0;15.5;1;1;Q;Bourke, Mrs. John (Catherine);;364849;0.6363636363636364;1;False;false_positive;0.6363636363636364;0.13636363636363635
+50;0;3;female;18.0;17.8;1;0;S;Arnold-Franchi, Mrs. Josef (Josefine Franchi);;349237;0.6363636363636364;1;False;false_positive;0.6363636363636364;0.13636363636363635
+249;1;1;male;37.0;52.5542;1;1;S;Beckwith, Mr. Richard Leonard;D35;11751;0.36666666666666664;0;False;false_negative;0.6333333333333333;0.13333333333333336
+890;1;1;male;26.0;30.0;0;0;C;Behr, Mr. Karl Howell;C148;111369;0.36666666666666664;0;False;false_negative;0.6333333333333333;0.13333333333333336
+725;1;1;male;27.0;53.1;1;0;S;Chambers, Mr. Norman Campbell;E8;113806;0.36666666666666664;0;False;false_negative;0.6333333333333333;0.13333333333333336
+391;1;1;male;36.0;120.0;1;2;S;Carter, Mr. William Ernest;B96 B98;113760;0.37777777777777777;0;False;false_negative;0.6222222222222222;0.12222222222222223
+56;1;1;male;;35.5;0;0;S;Woolner, Mr. Hugh;C52;19947;0.37777777777777777;0;False;false_negative;0.6222222222222222;0.12222222222222223
+225;1;1;male;38.0;90.0;1;0;S;Hoyt, Mr. Frederick Maxfield;C93;19943;0.37777777777777777;0;False;false_negative;0.6222222222222222;0.12222222222222223
+713;1;1;male;48.0;52.0;1;0;S;Taylor, Mr. Elmer Zebley;C126;19996;0.4090909090909091;0;False;false_negative;0.5909090909090908;0.09090909090909088
+680;1;1;male;36.0;512.3292;0;1;C;Cardeza, Mr. Thomas Drake Martinez;B51 B53 B55;PC 17755;0.4090909090909091;0;False;false_negative;0.5909090909090908;0.09090909090909088
+573;1;1;male;36.0;26.3875;0;0;S;"Flynn, Mr. John Irwin (""Irving"")";E25;PC 17474;0.4090909090909091;0;False;false_negative;0.5909090909090908;0.09090909090909088
+535;0;3;female;30.0;8.6625;0;0;S;Cacic, Miss. Marija;;315084;0.5833333333333334;1;False;false_positive;0.5833333333333334;0.08333333333333337
+416;0;3;female;;8.05;0;0;S;Meek, Mrs. Thomas (Annie Louise Rowley);;343095;0.5833333333333334;1;False;false_positive;0.5833333333333334;0.08333333333333337
+768;0;3;female;30.5;7.75;0;0;Q;Mangan, Miss. Mary;;364850;0.5833333333333334;1;False;false_positive;0.5833333333333334;0.08333333333333337
+19;0;3;female;31.0;18.0;1;0;S;Vander Planke, Mrs. Julius (Emelia Maria Vandemoortele);;345763;0.5833333333333334;1;False;false_positive;0.5833333333333334;0.08333333333333337
+112;0;3;female;14.5;14.4542;1;0;C;Zabour, Miss. Hileni;;2665;0.5833333333333334;1;False;false_positive;0.5833333333333334;0.08333333333333337
+114;0;3;female;20.0;9.825;1;0;S;Jussila, Miss. Katriina;;4136;0.5757575757575758;1;False;false_positive;0.5757575757575758;0.0757575757575758
+475;0;3;female;22.0;9.8375;0;0;S;Strandberg, Miss. Ida Sofia;;7553;0.5757575757575758;1;False;false_positive;0.5757575757575758;0.0757575757575758
+115;0;3;female;17.0;14.4583;0;0;C;Attalah, Miss. Malake;;2627;0.5757575757575758;1;False;false_positive;0.5757575757575758;0.0757575757575758
+141;0;3;female;;15.2458;0;2;C;Boulos, Mrs. Joseph (Sultana);;2678;0.5757575757575758;1;False;false_positive;0.5757575757575758;0.0757575757575758
+241;0;3;female;;14.4542;1;0;C;Zabour, Miss. Thamine;;2665;0.5757575757575758;1;False;false_positive;0.5757575757575758;0.0757575757575758
+3;1;3;female;26.0;7.925;0;0;S;Heikkinen, Miss. Laina;;STON/O2. 3101282;0.4782608695652174;0;False;false_negative;0.5217391304347826;0.021739130434782594
+242;1;3;female;;15.5;1;0;Q;"Murphy, Miss. Katherine ""Kate""";;367230;0.4782608695652174;0;False;false_negative;0.5217391304347826;0.021739130434782594
+187;1;3;female;;15.5;1;0;Q;"O'Brien, Mrs. Thomas (Johanna ""Hannah"" Godfrey)";;370365;0.4782608695652174;0;False;false_negative;0.5217391304347826;0.021739130434782594
+331;1;3;female;;23.25;2;0;Q;McCoy, Miss. Agnes;;367226;0.4782608695652174;0;False;false_negative;0.5217391304347826;0.021739130434782594
+210;1;1;male;40.0;31.0;0;0;C;Blank, Mr. Henry;A31;112277;0.5;0;False;false_negative;0.5;0.0
+450;1;1;male;52.0;30.5;0;0;S;Peuchen, Major. Arthur Godfrey;C104;113786;0.5;0;False;false_negative;0.5;0.0
+608;1;1;male;27.0;30.5;0;0;S;Daniel, Mr. Robert Williams;;113804;0.5;0;False;false_negative;0.5;0.0

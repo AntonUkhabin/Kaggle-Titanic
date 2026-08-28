@@ -1,0 +1,55 @@
+Experiment: 48_l1_ratio_saga = 0.5, С=0.7
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.3s finished
+Fold: 0
+Fold Accuracy: 0.8462
+Fold: 1
+Fold Accuracy: 0.8252
+Fold: 2
+Fold Accuracy: 0.8592
+Fold: 3
+Fold Accuracy: 0.8451
+Fold: 4
+Fold Accuracy: 0.8028
+
+Cross-validation finished!
+CV Accuracy: 0.8357 ± 0.0197
+
+Active model: logistic_regression
+LogisticRegression(C=0.7, l1_ratio=0.5, max_iter=1000, random_state=12648430,
+                   solver='saga')
+Number of iterations: 264
+Total coefficients: 27
+Zero coefficients: 9
+Non-zero coefficients: 18
+                    feature      coef  abs_coef
+10        cat__Title_Master  1.529643  1.529643
+12            cat__Title_Mr -1.126122  1.126122
+7             ord__Pclass_3 -0.890970  0.890970
+8           cat__Sex_female  0.844361  0.844361
+9             cat__Sex_male -0.813563  0.813563
+13           cat__Title_Mrs  0.744694  0.744694
+4    disc_count__FamilySize -0.737379  0.737379
+19              cat__Deck_E  0.632783  0.632783
+14         cat__Title_Other -0.562933  0.562933
+5             ord__Pclass_1  0.508905  0.508905
+0                 cont__Age -0.366414  0.366414
+2   disc_binary__CabinKnown  0.300185  0.300185
+24          cat__Embarked_C  0.203486  0.203486
+1                cont__Fare  0.170622  0.170622
+17              cat__Deck_C -0.110394  0.110394
+3      disc_binary__IsAlone -0.054798  0.054798
+26          cat__Embarked_S -0.035962  0.035962
+18              cat__Deck_D  0.035284  0.035284
+6             ord__Pclass_2  0.000000  0.000000
+15              cat__Deck_A  0.000000  0.000000
+16              cat__Deck_B  0.000000  0.000000
+11          cat__Title_Miss  0.000000  0.000000
+20              cat__Deck_F  0.000000  0.000000
+22              cat__Deck_T  0.000000  0.000000
+21              cat__Deck_G  0.000000  0.000000
+23        cat__Deck_Unknown  0.000000  0.000000
+25          cat__Embarked_Q  0.000000  0.000000
+
+Holdout Accuracy: 0.8380
+
+Submission file saved successfully.

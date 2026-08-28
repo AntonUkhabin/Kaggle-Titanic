@@ -1,0 +1,227 @@
+
+======================================================================
+Experiment: 108_decision_tree_min_samples_split_None
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.1s finished
+Fold: 0
+Fold Accuracy: 0.8392
+Fold: 1
+Fold Accuracy: 0.8182
+Fold: 2
+Fold Accuracy: 0.8169
+Fold: 3
+Fold Accuracy: 0.8099
+Fold: 4
+Fold Accuracy: 0.7746
+
+Mean CV Accuracy: 0.8118
+CV STD: 0.0210
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(max_depth=8, min_samples_leaf=5, random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: gini
+Max depth: 8
+Depth: 8
+Leaves: 49
+Nodes: 97
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Sex_male      0.4571
+              cont__Age      0.1437
+          ord__Pclass_3      0.1303
+             cont__Fare      0.1137
+ disc_count__FamilySize      0.0609
+disc_binary__CabinKnown      0.0447
+   disc_binary__IsAlone      0.0139
+        cat__Embarked_Q      0.0138
+            cat__Deck_E      0.0072
+        cat__Title_Miss      0.0069
+            cat__Deck_C      0.0068
+          ord__Pclass_1      0.0009
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Sex_male <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cont__Fare <= 28.86
+|   |   |   |--- cont__Age <= 37.00
+|   |   |   |   |--- cont__Age <= 27.50
+|   |   |   |   |   |--- cont__Age <= 23.50
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Age >  23.50
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Age >  27.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  37.00
+|   |   |   |   |--- cont__Fare <= 13.25
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Fare >  13.25
+|   |   |   |   |   |--- cont__Fare <= 25.96
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Fare >  25.96
+|   |   |   |   |   |   |--- class: 1
+|   |   |--- cont__Fare >  28.86
+|   |   |   |--- cont__Age <= 14.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  14.50
+|   |   |   |   |--- class: 1
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- cont__Age <= 36.50
+|   |   |   |   |--- cont__Fare <= 7.90
+|   |   |   |   |   |--- cont__Age <= 18.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Age >  18.50
+|   |   |   |   |   |   |--- cont__Age <= 24.00
+|   |   |   |   |   |   |   |--- cont__Fare <= 7.76
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |   |--- cont__Fare >  7.76
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cont__Age >  24.00
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  7.90
+|   |   |   |   |   |--- cont__Age <= 6.50
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Age >  6.50
+|   |   |   |   |   |   |--- cat__Title_Miss <= 0.50
+|   |   |   |   |   |   |   |--- cont__Age <= 28.00
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |   |--- cont__Age >  28.00
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cat__Title_Miss >  0.50
+|   |   |   |   |   |   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  36.50
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- cont__Fare <= 31.33
+|   |   |   |   |--- class: 0
+|   |   |   |--- cont__Fare >  31.33
+|   |   |   |   |--- cont__Fare <= 37.03
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  37.03
+|   |   |   |   |   |--- class: 0
+|--- cat__Sex_male >  0.50
+|   |--- disc_binary__CabinKnown <= 0.50
+|   |   |--- cont__Age <= 13.00
+|   |   |   |--- disc_count__FamilySize <= 4.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- disc_count__FamilySize >  4.00
+|   |   |   |   |--- disc_count__FamilySize <= 6.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- disc_count__FamilySize >  6.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- cont__Age >  13.00
+|   |   |   |--- cont__Fare <= 26.40
+|   |   |   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |   |   |--- cont__Fare <= 13.25
+|   |   |   |   |   |   |--- cont__Age <= 23.75
+|   |   |   |   |   |   |   |--- cont__Fare <= 8.18
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  8.18
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  23.75
+|   |   |   |   |   |   |   |--- cont__Age <= 27.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  27.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Fare >  13.25
+|   |   |   |   |   |   |--- cont__Age <= 21.50
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  21.50
+|   |   |   |   |   |   |   |--- cont__Fare <= 25.96
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  25.96
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Fare >  26.40
+|   |   |   |   |--- disc_binary__IsAlone <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- disc_binary__IsAlone >  0.50
+|   |   |   |   |   |--- cont__Age <= 46.50
+|   |   |   |   |   |   |--- cont__Age <= 31.00
+|   |   |   |   |   |   |   |--- cont__Age <= 29.00
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  29.00
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  31.00
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Age >  46.50
+|   |   |   |   |   |   |--- class: 0
+|   |--- disc_binary__CabinKnown >  0.50
+|   |   |--- cont__Age <= 18.00
+|   |   |   |--- class: 1
+|   |   |--- cont__Age >  18.00
+|   |   |   |--- cont__Age <= 53.00
+|   |   |   |   |--- cont__Fare <= 26.14
+|   |   |   |   |   |--- ord__Pclass_1 <= 0.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- ord__Pclass_1 >  0.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  26.14
+|   |   |   |   |   |--- cont__Fare <= 32.51
+|   |   |   |   |   |   |--- cat__Deck_E <= 0.50
+|   |   |   |   |   |   |   |--- cont__Fare <= 29.85
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  29.85
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cat__Deck_E >  0.50
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Fare >  32.51
+|   |   |   |   |   |   |--- disc_count__FamilySize <= 1.50
+|   |   |   |   |   |   |   |--- cont__Age <= 35.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  35.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- disc_count__FamilySize >  1.50
+|   |   |   |   |   |   |   |--- cat__Deck_C <= 0.50
+|   |   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |   |--- cat__Deck_C >  0.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Age >  53.00
+|   |   |   |   |--- cont__Age <= 63.00
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Age >  63.00
+|   |   |   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\108_decision_tree_min_samples_split_None.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8212
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

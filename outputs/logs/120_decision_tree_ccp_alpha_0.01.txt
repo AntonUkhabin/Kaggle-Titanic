@@ -1,0 +1,96 @@
+
+======================================================================
+Experiment: 120_decision_tree_ccp_alpha_0.01
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.1s finished
+Fold: 0
+Fold Accuracy: 0.8252
+Fold: 1
+Fold Accuracy: 0.8322
+Fold: 2
+Fold Accuracy: 0.8239
+Fold: 3
+Fold Accuracy: 0.7958
+Fold: 4
+Fold Accuracy: 0.7746
+
+Mean CV Accuracy: 0.8103
+CV STD: 0.0218
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(ccp_alpha=0.01, max_depth=8, max_leaf_nodes=20,
+                       min_samples_leaf=5, random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: gini
+Max depth: 8
+Depth: 4
+Leaves: 7
+Nodes: 13
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Sex_male      0.5992
+          ord__Pclass_3      0.1708
+ disc_count__FamilySize      0.0738
+disc_binary__CabinKnown      0.0586
+             cont__Fare      0.0575
+              cont__Age      0.0401
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Sex_male <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- class: 1
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- class: 1
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- class: 0
+|--- cat__Sex_male >  0.50
+|   |--- disc_binary__CabinKnown <= 0.50
+|   |   |--- cont__Age <= 13.00
+|   |   |   |--- disc_count__FamilySize <= 4.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- disc_count__FamilySize >  4.00
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Age >  13.00
+|   |   |   |--- class: 0
+|   |--- disc_binary__CabinKnown >  0.50
+|   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\120_decision_tree_ccp_alpha_0.01.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8156
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

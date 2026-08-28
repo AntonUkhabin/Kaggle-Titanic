@@ -1,0 +1,168 @@
+
+======================================================================
+Experiment: 106_decision_tree_min_samples_split_30
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.1s finished
+Fold: 0
+Fold Accuracy: 0.8182
+Fold: 1
+Fold Accuracy: 0.8112
+Fold: 2
+Fold Accuracy: 0.7746
+Fold: 3
+Fold Accuracy: 0.8169
+Fold: 4
+Fold Accuracy: 0.7535
+
+Mean CV Accuracy: 0.7949
+CV STD: 0.0261
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(max_depth=8, min_samples_leaf=5, min_samples_split=30,
+                       random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: gini
+Max depth: 8
+Depth: 8
+Leaves: 30
+Nodes: 59
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Sex_male      0.5384
+          ord__Pclass_3      0.1535
+             cont__Fare      0.1016
+              cont__Age      0.0861
+disc_binary__CabinKnown      0.0526
+      cat__Title_Master      0.0361
+   disc_binary__IsAlone      0.0207
+        cat__Title_Miss      0.0082
+        cat__Embarked_Q      0.0029
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Sex_male <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cont__Fare <= 28.86
+|   |   |   |--- cont__Age <= 37.00
+|   |   |   |   |--- cont__Age <= 27.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Age >  27.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  37.00
+|   |   |   |   |--- class: 1
+|   |   |--- cont__Fare >  28.86
+|   |   |   |--- cont__Age <= 14.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  14.50
+|   |   |   |   |--- class: 1
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- cont__Age <= 36.50
+|   |   |   |   |--- cont__Fare <= 7.90
+|   |   |   |   |   |--- cont__Age <= 18.50
+|   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Age >  18.50
+|   |   |   |   |   |   |--- cont__Age <= 24.00
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cont__Age >  24.00
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  7.90
+|   |   |   |   |   |--- cont__Age <= 6.50
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Age >  6.50
+|   |   |   |   |   |   |--- cat__Title_Miss <= 0.50
+|   |   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |   |--- cat__Title_Miss >  0.50
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Age >  36.50
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- class: 0
+|--- cat__Sex_male >  0.50
+|   |--- disc_binary__CabinKnown <= 0.50
+|   |   |--- cat__Title_Master <= 0.50
+|   |   |   |--- cont__Fare <= 26.40
+|   |   |   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |   |   |--- cont__Fare <= 13.25
+|   |   |   |   |   |   |--- cont__Age <= 23.75
+|   |   |   |   |   |   |   |--- cont__Fare <= 8.18
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  8.18
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  23.75
+|   |   |   |   |   |   |   |--- cont__Age <= 27.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  27.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |--- cont__Fare >  13.25
+|   |   |   |   |   |   |--- cont__Age <= 21.50
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  21.50
+|   |   |   |   |   |   |   |--- cont__Fare <= 25.96
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Fare >  25.96
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Fare >  26.40
+|   |   |   |   |--- disc_binary__IsAlone <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- disc_binary__IsAlone >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- cat__Title_Master >  0.50
+|   |   |   |--- class: 0
+|   |--- disc_binary__CabinKnown >  0.50
+|   |   |--- cont__Age <= 18.00
+|   |   |   |--- class: 1
+|   |   |--- cont__Age >  18.00
+|   |   |   |--- cont__Age <= 53.00
+|   |   |   |   |--- cont__Fare <= 26.14
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  26.14
+|   |   |   |   |   |--- cont__Fare <= 32.51
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Fare >  32.51
+|   |   |   |   |   |   |--- disc_binary__IsAlone <= 0.50
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- disc_binary__IsAlone >  0.50
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Age >  53.00
+|   |   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\106_decision_tree_min_samples_split_30.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8156
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

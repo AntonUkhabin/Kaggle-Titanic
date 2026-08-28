@@ -1,0 +1,104 @@
+
+======================================================================
+Experiment: 290_xgboost_subsample_0_9_fold_seed_42
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8182
+Early stopping metric: error
+Best validation error: 0.1818
+Best error iteration: 467
+Iterations actually run: 967
+Trees used for prediction: 467
+Fold: 1
+Fold Accuracy: 0.8392
+Early stopping metric: error
+Best validation error: 0.1608
+Best error iteration: 59
+Iterations actually run: 559
+Trees used for prediction: 59
+Fold: 2
+Fold Accuracy: 0.8521
+Early stopping metric: error
+Best validation error: 0.1479
+Best error iteration: 20
+Iterations actually run: 520
+Trees used for prediction: 20
+Fold: 3
+Fold Accuracy: 0.8310
+Early stopping metric: error
+Best validation error: 0.1690
+Best error iteration: 72
+Iterations actually run: 572
+Trees used for prediction: 72
+Fold: 4
+Fold Accuracy: 0.8451
+Early stopping metric: error
+Best validation error: 0.1549
+Best error iteration: 512
+Iterations actually run: 1012
+Trees used for prediction: 512
+
+======================================================================
+Model Information
+======================================================================
+Active model: xgboost
+XGBClassifier(base_score=None, booster=None, callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=1.0, device=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric='error', feature_types=None,
+              feature_weights=None, gamma=0.0, grow_policy=None,
+              importance_type=None, interaction_constraints=None,
+              learning_rate=0.1, max_bin=None, max_cat_threshold=None,
+              max_cat_to_onehot=None, max_delta_step=None, max_depth=3,
+              max_leaves=None, min_child_weight=1.0, missing=nan,
+              monotone_constraints=None, multi_strategy=None, n_estimators=2000,
+              n_jobs=15, num_parallel_tree=None, ...)
+No model specific logging available.
+
+Mean CV Accuracy: 0.8371
+CV STD: 0.0117
+OOF Accuracy: 0.8371
+OOF Precision: 0.8230
+OOF Recall: 0.7326
+OOF F1: 0.7752
+OOF ROC-AUC: 0.8661
+OOF PR-AUC: 0.8147
+OOF Logloss: 0.4456
+OOF Brier: 0.1344
+OOF Confusion Matrix: TN=396, FP=43, FN=73, TP=200
+OOF predictions saved: outputs\oof\290_xgboost_subsample_0_9_fold_seed_42.csv
+OOF errors saved: outputs\oof\290_xgboost_subsample_0_9_fold_seed_42_errors.csv
+Best iterations: [467, 59, 20, 72, 512]
+Median best iteration: 72
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8659
+Holdout Precision: 0.9091
+Holdout Recall: 0.7246
+Holdout F1: 0.8065
+Holdout ROC-AUC: 0.8646
+Holdout PR-AUC: 0.8675
+Holdout Logloss: 0.3934
+Holdout Brier: 0.1160
+Holdout Confusion Matrix: TN=105, FP=5, FN=19, TP=50
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.3920
+
+Submission file saved successfully.

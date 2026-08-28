@@ -1,0 +1,98 @@
+
+======================================================================
+Experiment: 86_decision_tree_max_depth_3
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.1s finished
+Fold: 0
+Fold Accuracy: 0.8182
+Fold: 1
+Fold Accuracy: 0.8042
+Fold: 2
+Fold Accuracy: 0.8028
+Fold: 3
+Fold Accuracy: 0.7817
+Fold: 4
+Fold Accuracy: 0.7324
+
+Mean CV Accuracy: 0.7879
+CV STD: 0.0301
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(max_depth=3, min_samples_leaf=5, min_samples_split=10,
+                       random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: gini
+Max depth: 3
+Depth: 3
+Leaves: 8
+Nodes: 15
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Sex_male      0.6278
+          ord__Pclass_3      0.1790
+              cont__Age      0.0664
+             cont__Fare      0.0654
+disc_binary__CabinKnown      0.0614
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Sex_male <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cont__Fare <= 28.86
+|   |   |   |--- class: 1
+|   |   |--- cont__Fare >  28.86
+|   |   |   |--- class: 1
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- class: 1
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- class: 0
+|--- cat__Sex_male >  0.50
+|   |--- disc_binary__CabinKnown <= 0.50
+|   |   |--- cont__Age <= 13.00
+|   |   |   |--- class: 0
+|   |   |--- cont__Age >  13.00
+|   |   |   |--- class: 0
+|   |--- disc_binary__CabinKnown >  0.50
+|   |   |--- cont__Age <= 18.00
+|   |   |   |--- class: 1
+|   |   |--- cont__Age >  18.00
+|   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\86_decision_tree_max_depth_3.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8156
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

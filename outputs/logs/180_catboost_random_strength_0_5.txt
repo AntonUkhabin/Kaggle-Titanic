@@ -1,0 +1,78 @@
+
+======================================================================
+Experiment: 180_catboost_random_strength_0_5
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Accuracy at best Logloss: 0.8462
+Best Accuracy: 0.8462
+Best Accuracy iteration: 69
+Best Logloss iteration: 69
+Best validation Logloss: 0.3899
+Iterations actually run: 169
+Trees retained: 69
+Fold: 1
+Accuracy at best Logloss: 0.8531
+Best Accuracy: 0.8531
+Best Accuracy iteration: 3
+Best Logloss iteration: 3
+Best validation Logloss: 0.3995
+Iterations actually run: 103
+Trees retained: 3
+Fold: 2
+Accuracy at best Logloss: 0.8380
+Best Accuracy: 0.8380
+Best Accuracy iteration: 9
+Best Logloss iteration: 9
+Best validation Logloss: 0.4254
+Iterations actually run: 109
+Trees retained: 9
+Fold: 3
+Accuracy at best Logloss: 0.8944
+Best Accuracy: 0.8944
+Best Accuracy iteration: 59
+Best Logloss iteration: 59
+Best validation Logloss: 0.3381
+Iterations actually run: 159
+Trees retained: 59
+Fold: 4
+Accuracy at best Logloss: 0.8239
+Best Accuracy: 0.8239
+Best Accuracy iteration: 40
+Best Logloss iteration: 40
+Best validation Logloss: 0.4663
+Iterations actually run: 140
+Trees retained: 40
+
+Mean CV Accuracy: 0.8511
+CV STD: 0.0237
+OOF Accuracy: 0.8511
+OOF predictions saved: outputs\oof\180_catboost_random_strength_0_5.csv
+OOF errors saved: outputs\oof\180_catboost_random_strength_0_5_errors.csv
+Best iterations: [69, 3, 9, 59, 40]
+Median best iteration: 40
+Number of fold models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Bootstrap type: MVS
+Ensemble Holdout Accuracy: 0.8268
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Bootstrap type: MVS
+Number of ensemble models: 5
+Mean predicted survival probability: 0.4263
+
+Submission file saved successfully.

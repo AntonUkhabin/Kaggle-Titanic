@@ -1,0 +1,70 @@
+
+======================================================================
+Experiment: 216_knn_full_fit_82
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8601
+Fold: 1
+Fold Accuracy: 0.8042
+Fold: 2
+Fold Accuracy: 0.8380
+Fold: 3
+Fold Accuracy: 0.8662
+Fold: 4
+Fold Accuracy: 0.8099
+
+======================================================================
+Model Information
+======================================================================
+Active model: knn
+KNeighborsClassifier(n_neighbors=6)
+n_neighbors: 6
+weights: uniform
+metric: minkowski
+p: 2
+
+Mean CV Accuracy: 0.8357
+CV STD: 0.0253
+OOF Accuracy: 0.8357
+OOF Precision: 0.8611
+OOF Recall: 0.6813
+OOF F1: 0.7607
+OOF ROC-AUC: 0.8592
+OOF PR-AUC: 0.7929
+OOF Logloss: 1.9025
+OOF Brier: 0.1367
+OOF Confusion Matrix: TN=409, FP=30, FN=87, TP=186
+OOF predictions saved: outputs\oof\216_knn_full_fit_82.csv
+OOF errors saved: outputs\oof\216_knn_full_fit_82_errors.csv
+Number of prediction models: 1
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8324
+Holdout Precision: 0.9149
+Holdout Recall: 0.6232
+Holdout F1: 0.7414
+Holdout ROC-AUC: 0.8725
+Holdout PR-AUC: 0.8016
+Holdout Logloss: 1.8802
+Holdout Brier: 0.1324
+Holdout Confusion Matrix: TN=106, FP=4, FN=26, TP=43
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 1
+Mean predicted survival probability: 0.4039
+
+Submission file saved successfully.

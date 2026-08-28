@@ -1,0 +1,36 @@
+study_name: lightgbm_tuning
+trial_number: 216
+cv_score: 0.863754555303851
+cv_std: 0.0304242101338407
+fold_scores:
+- 0.8531468531468531
+- 0.8811188811188811
+- 0.8591549295774648
+- 0.9084507042253521
+- 0.8169014084507042
+params:
+  max_depth: 7
+  subsample_freq: 1
+  learning_rate: 0.11784745281602944
+  num_leaves: 4
+  min_child_samples: 10
+  min_child_weight: 0.43511604559295053
+  min_split_gain: 0.08776787070217627
+  colsample_bytree: 0.8869339873610533
+  reg_alpha: 0.001
+  reg_lambda: 0.05
+  cat_smooth: 28.83549369109806
+  cat_l2: 7.399983164441014
+  min_data_per_group: 60
+  max_cat_to_onehot: 10
+  max_cat_threshold: 8
+  max_bin: 127
+  subsample: 0.9696707640811784
+best_iterations:
+- 176
+- 315
+- 80
+- 289
+- 139
+mean_best_iteration: 199.8
+median_best_iteration: 176.0

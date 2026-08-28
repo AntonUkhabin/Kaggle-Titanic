@@ -8,7 +8,7 @@ config = {
     'logging': {
         'save_tree_plot': True,
         'save_torch_plots': True,
-        'torch_log_interval': 1, # Уменьшить количество выводимых эпох в терминале. 10 - выводить каждые 10 эпох
+        'torch_log_interval': 1, # Уменьшить количество выводимых эпох в терминале. 10 - выводить каждые 10 эпох, 1 - все эпохи
     },
     'paths': {
         'path_to_csv':                  './data/train.csv',
@@ -26,7 +26,7 @@ config = {
         'path_to_optuna_best_params':   './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials_best_params.yaml',
     },
     'training': {
-        'early_stopping_rounds': 500, # Classic models
+        'early_stopping_rounds': 500, # For Classic models
         'fold_seed': 0xC0FFEE,
 
         'model_profiles': {

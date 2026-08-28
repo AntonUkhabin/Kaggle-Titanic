@@ -1,0 +1,27 @@
+Experiment: 82_knn_remove_embarked_isalone
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    3.4s finished
+Fold: 0
+Fold Accuracy: 0.8601
+Fold: 1
+Fold Accuracy: 0.8042
+Fold: 2
+Fold Accuracy: 0.8380
+Fold: 3
+Fold Accuracy: 0.8662
+Fold: 4
+Fold Accuracy: 0.8099
+
+Cross-validation finished!
+CV Accuracy: 0.8357 ± 0.0253
+
+Active model: knn
+KNeighborsClassifier(n_neighbors=6)
+n_neighbors: 6
+weights: uniform
+metric: minkowski
+p: 2
+
+Holdout Accuracy: 0.8324
+Model has no coefficients. Skipping coefficient logging.
+
+Submission file saved successfully.

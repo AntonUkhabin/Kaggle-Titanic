@@ -1,0 +1,149 @@
+
+======================================================================
+Experiment: 212_decision_tree_full_fit_136
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8392
+Fold: 1
+Fold Accuracy: 0.8531
+Fold: 2
+Fold Accuracy: 0.8239
+Fold: 3
+Fold Accuracy: 0.8310
+Fold: 4
+Fold Accuracy: 0.7958
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(ccp_alpha=0, criterion='log_loss', max_depth=11,
+                       max_leaf_nodes=18, min_samples_leaf=3,
+                       min_samples_split=10, random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: log_loss
+Max depth: 11
+Depth: 8
+Leaves: 18
+Nodes: 35
+
+======================================================================
+Feature Importance
+======================================================================
+               feature  importance
+         cat__Title_Mr      0.4558
+            cont__Fare      0.1766
+         ord__Pclass_3      0.1393
+      cat__Title_Other      0.0785
+             cont__Age      0.0642
+disc_count__FamilySize      0.0284
+     cat__Deck_Unknown      0.0245
+         ord__Pclass_2      0.0205
+       cat__Embarked_Q      0.0123
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Title_Mr <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cat__Title_Other <= 0.50
+|   |   |   |--- cont__Fare <= 28.86
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Fare >  28.86
+|   |   |   |   |--- cont__Age <= 2.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Age >  2.50
+|   |   |   |   |   |--- class: 1
+|   |   |--- cat__Title_Other >  0.50
+|   |   |   |--- cat__Deck_Unknown <= 0.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- cat__Deck_Unknown >  0.50
+|   |   |   |   |--- class: 0
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- cont__Age <= 36.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  36.50
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- disc_count__FamilySize <= 6.50
+|   |   |   |   |--- class: 0
+|   |   |   |--- disc_count__FamilySize >  6.50
+|   |   |   |   |--- class: 0
+|--- cat__Title_Mr >  0.50
+|   |--- cont__Fare <= 26.27
+|   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |--- class: 0
+|   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |--- class: 0
+|   |--- cont__Fare >  26.27
+|   |   |--- ord__Pclass_2 <= 0.50
+|   |   |   |--- disc_count__FamilySize <= 4.50
+|   |   |   |   |--- cont__Age <= 52.50
+|   |   |   |   |   |--- cont__Fare <= 27.14
+|   |   |   |   |   |   |--- class: 1
+|   |   |   |   |   |--- cont__Fare >  27.14
+|   |   |   |   |   |   |--- cont__Age <= 41.00
+|   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |--- cont__Age >  41.00
+|   |   |   |   |   |   |   |--- cont__Age <= 47.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |   |   |   |--- cont__Age >  47.50
+|   |   |   |   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Age >  52.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- disc_count__FamilySize >  4.50
+|   |   |   |   |--- class: 0
+|   |   |--- ord__Pclass_2 >  0.50
+|   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\212_decision_tree_full_fit_136.png
+
+Mean CV Accuracy: 0.8286
+CV STD: 0.0191
+OOF Accuracy: 0.8287
+OOF Precision: 0.8213
+OOF Recall: 0.7070
+OOF F1: 0.7598
+OOF ROC-AUC: 0.8387
+OOF PR-AUC: 0.7890
+OOF Logloss: 1.3771
+OOF Brier: 0.1408
+OOF Confusion Matrix: TN=397, FP=42, FN=80, TP=193
+OOF predictions saved: outputs\oof\212_decision_tree_full_fit_136.csv
+OOF errors saved: outputs\oof\212_decision_tree_full_fit_136_errors.csv
+Number of prediction models: 1
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8547
+Holdout Precision: 0.8644
+Holdout Recall: 0.7391
+Holdout F1: 0.7969
+Holdout ROC-AUC: 0.8389
+Holdout PR-AUC: 0.8128
+Holdout Logloss: 1.6989
+Holdout Brier: 0.1254
+Holdout Confusion Matrix: TN=102, FP=8, FN=18, TP=51
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 1
+Mean predicted survival probability: 0.3887
+
+Submission file saved successfully.

@@ -1,0 +1,98 @@
+
+======================================================================
+Experiment: 150_random_forest_max_features_log2
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    2.1s finished
+Fold: 0
+Fold Accuracy: 0.8392
+Fold: 1
+Fold Accuracy: 0.8322
+Fold: 2
+Fold Accuracy: 0.8521
+Fold: 3
+Fold Accuracy: 0.8380
+Fold: 4
+Fold Accuracy: 0.8028
+
+Mean CV Accuracy: 0.8329
+CV STD: 0.0164
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: random_forest
+RandomForestClassifier(max_depth=10, max_features='log2', min_samples_leaf=4,
+                       n_estimators=300, n_jobs=-1, oob_score=True,
+                       random_state=12648430)
+
+======================================================================
+Random Forest Summary
+======================================================================
+Number of trees: 300
+Criterion: gini
+Max depth: 10
+Min samples split: 2
+Min samples leaf: 4
+Max features: log2
+Bootstrap: True
+OOB Accuracy: 0.8244
+Mean tree depth: 9.63
+Min tree depth: 7
+Max tree depth: 10
+Mean leaves per tree: 37.29
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Title_Mr      0.1597
+        cat__Sex_female      0.1326
+          cat__Sex_male      0.1295
+             cont__Fare      0.0944
+              cont__Age      0.0706
+          ord__Pclass_3      0.0652
+ disc_count__FamilySize      0.0550
+         cat__Title_Mrs      0.0480
+        cat__Title_Miss      0.0468
+      cat__Deck_Unknown      0.0362
+disc_binary__CabinKnown      0.0326
+          ord__Pclass_1      0.0322
+          ord__Pclass_2      0.0206
+   disc_binary__IsAlone      0.0137
+        cat__Embarked_S      0.0115
+      cat__Title_Master      0.0100
+        cat__Embarked_Q      0.0098
+        cat__Embarked_C      0.0079
+            cat__Deck_E      0.0074
+       cat__Title_Other      0.0050
+            cat__Deck_B      0.0040
+            cat__Deck_C      0.0037
+            cat__Deck_D      0.0022
+            cat__Deck_A      0.0015
+            cat__Deck_F      0.0002
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8547
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

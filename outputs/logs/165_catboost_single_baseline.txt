@@ -1,0 +1,83 @@
+
+======================================================================
+Experiment: 165_catboost_single_baseline
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Accuracy at best Logloss: 0.8462
+Best Accuracy: 0.8462
+Best Accuracy iteration: 5
+Best Logloss iteration: 5
+Best validation Logloss: 0.3922
+Iterations actually run: 105
+Trees retained: 5
+Fold: 1
+Accuracy at best Logloss: 0.8322
+Best Accuracy: 0.8322
+Best Accuracy iteration: 115
+Best Logloss iteration: 115
+Best validation Logloss: 0.3977
+Iterations actually run: 215
+Trees retained: 115
+Fold: 2
+Accuracy at best Logloss: 0.8310
+Best Accuracy: 0.8310
+Best Accuracy iteration: 149
+Best Logloss iteration: 149
+Best validation Logloss: 0.4251
+Iterations actually run: 249
+Trees retained: 149
+Fold: 3
+Accuracy at best Logloss: 0.8451
+Best Accuracy: 0.8451
+Best Accuracy iteration: 3
+Best Logloss iteration: 3
+Best validation Logloss: 0.3701
+Iterations actually run: 103
+Trees retained: 3
+Fold: 4
+Accuracy at best Logloss: 0.8099
+Best Accuracy: 0.8099
+Best Accuracy iteration: 76
+Best Logloss iteration: 76
+Best validation Logloss: 0.4791
+Iterations actually run: 176
+Trees retained: 76
+
+Mean CV Accuracy: 0.8328
+CV STD: 0.0131
+Best iterations: [5, 115, 149, 3, 76]
+Median best iteration: 76
+Final number of iterations: 76
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: catboost
+CatBoostClassifier(allow_writing_files=False, cat_features=['Pclass', 'Sex', 'Title', 'Deck', 'Embarked'], custom_metric=['Logloss'], depth=6, eval_metric='Accuracy', iterations=76, learning_rate=0.03, loss_function='Logloss', nan_mode='Min', random_seed=12648430, verbose=0)
+No model specific logging available.
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8324
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

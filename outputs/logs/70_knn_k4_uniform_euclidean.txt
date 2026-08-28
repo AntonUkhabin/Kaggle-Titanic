@@ -1,0 +1,27 @@
+Experiment: 70_knn_k4_uniform_euclidean
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    3.6s finished
+Fold: 0
+Fold Accuracy: 0.8392
+Fold: 1
+Fold Accuracy: 0.7762
+Fold: 2
+Fold Accuracy: 0.7958
+Fold: 3
+Fold Accuracy: 0.8028
+Fold: 4
+Fold Accuracy: 0.8099
+
+Cross-validation finished!
+CV Accuracy: 0.8048 ± 0.0205
+
+Active model: knn
+KNeighborsClassifier(n_neighbors=4)
+n_neighbors: 4
+weights: uniform
+metric: minkowski
+p: 2
+
+Holdout Accuracy: 0.8156
+Model has no coefficients. Skipping coefficient logging.
+
+Submission file saved successfully.

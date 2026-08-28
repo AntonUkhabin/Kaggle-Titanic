@@ -1,0 +1,102 @@
+
+======================================================================
+Experiment: 215_logistic_regression_fold_ensemble_48
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8462
+Fold: 1
+Fold Accuracy: 0.8252
+Fold: 2
+Fold Accuracy: 0.8592
+Fold: 3
+Fold Accuracy: 0.8451
+Fold: 4
+Fold Accuracy: 0.8028
+
+======================================================================
+Model Information
+======================================================================
+Active model: logistic_regression
+LogisticRegression(C=0.7, l1_ratio=0.5, max_iter=1000, random_state=12648430,
+                   solver='saga')
+
+Number of iterations: 250
+Total coefficients: 26
+Zero coefficients: 9
+Non-zero coefficients: 17
+                feature      coef  abs_coef
+      cat__Title_Master  1.626218  1.626218
+          cat__Title_Mr -1.148966  1.148966
+          ord__Pclass_3 -0.864353  0.864353
+        cat__Sex_female  0.861460  0.861460
+          cat__Sex_male -0.826617  0.826617
+       cat__Title_Other -0.826470  0.826470
+          ord__Pclass_1  0.736071  0.736071
+         cat__Title_Mrs  0.696056  0.696056
+ disc_count__FamilySize -0.688157  0.688157
+              cont__Age -0.368169  0.368169
+disc_binary__CabinKnown  0.251869  0.251869
+            cat__Deck_E  0.215091  0.215091
+             cont__Fare  0.141821  0.141821
+        cat__Embarked_C  0.122347  0.122347
+        cat__Embarked_S -0.089201  0.089201
+            cat__Deck_C -0.028460  0.028460
+   disc_binary__IsAlone -0.010666  0.010666
+          ord__Pclass_2  0.000000  0.000000
+            cat__Deck_B  0.000000  0.000000
+            cat__Deck_A  0.000000  0.000000
+        cat__Title_Miss  0.000000  0.000000
+            cat__Deck_D  0.000000  0.000000
+            cat__Deck_G  0.000000  0.000000
+            cat__Deck_F  0.000000  0.000000
+      cat__Deck_Unknown  0.000000  0.000000
+        cat__Embarked_Q  0.000000  0.000000
+
+Mean CV Accuracy: 0.8357
+CV STD: 0.0197
+OOF Accuracy: 0.8357
+OOF Precision: 0.7932
+OOF Recall: 0.7729
+OOF F1: 0.7829
+OOF ROC-AUC: 0.8679
+OOF PR-AUC: 0.8442
+OOF Logloss: 0.4206
+OOF Brier: 0.1304
+OOF Confusion Matrix: TN=384, FP=55, FN=62, TP=211
+OOF predictions saved: outputs\oof\215_logistic_regression_fold_ensemble_48.csv
+OOF errors saved: outputs\oof\215_logistic_regression_fold_ensemble_48_errors.csv
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8380
+Holdout Precision: 0.8333
+Holdout Recall: 0.7246
+Holdout F1: 0.7752
+Holdout ROC-AUC: 0.8879
+Holdout PR-AUC: 0.8567
+Holdout Logloss: 0.4022
+Holdout Brier: 0.1233
+Holdout Confusion Matrix: TN=100, FP=10, FN=19, TP=50
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+
+======================================================================
+Saving Coefficients
+======================================================================
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.3970
+
+Submission file saved successfully.

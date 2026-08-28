@@ -1,0 +1,149 @@
+
+======================================================================
+Experiment: 88_decision_tree_max_depth_5
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    0.1s finished
+Fold: 0
+Fold Accuracy: 0.8392
+Fold: 1
+Fold Accuracy: 0.8112
+Fold: 2
+Fold Accuracy: 0.7887
+Fold: 3
+Fold Accuracy: 0.8239
+Fold: 4
+Fold Accuracy: 0.7254
+
+Mean CV Accuracy: 0.7977
+CV STD: 0.0398
+
+======================================================================
+Model Training
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: decision_tree
+DecisionTreeClassifier(max_depth=5, min_samples_leaf=5, min_samples_split=10,
+                       random_state=12648430)
+
+======================================================================
+Tree Summary
+======================================================================
+Criterion: gini
+Max depth: 5
+Depth: 5
+Leaves: 24
+Nodes: 47
+
+======================================================================
+Feature Importance
+======================================================================
+                feature  importance
+          cat__Sex_male      0.5294
+          ord__Pclass_3      0.1509
+             cont__Fare      0.0939
+              cont__Age      0.0888
+ disc_count__FamilySize      0.0664
+disc_binary__CabinKnown      0.0517
+   disc_binary__IsAlone      0.0161
+        cat__Embarked_Q      0.0028
+
+======================================================================
+Tree Structure
+======================================================================
+|--- cat__Sex_male <= 0.50
+|   |--- ord__Pclass_3 <= 0.50
+|   |   |--- cont__Fare <= 28.86
+|   |   |   |--- cont__Age <= 37.00
+|   |   |   |   |--- cont__Age <= 27.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Age >  27.50
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  37.00
+|   |   |   |   |--- cont__Fare <= 13.25
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Fare >  13.25
+|   |   |   |   |   |--- class: 1
+|   |   |--- cont__Fare >  28.86
+|   |   |   |--- cont__Age <= 14.50
+|   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  14.50
+|   |   |   |   |--- class: 1
+|   |--- ord__Pclass_3 >  0.50
+|   |   |--- cont__Fare <= 23.35
+|   |   |   |--- cont__Age <= 36.50
+|   |   |   |   |--- cont__Fare <= 7.90
+|   |   |   |   |   |--- class: 1
+|   |   |   |   |--- cont__Fare >  7.90
+|   |   |   |   |   |--- class: 1
+|   |   |   |--- cont__Age >  36.50
+|   |   |   |   |--- class: 0
+|   |   |--- cont__Fare >  23.35
+|   |   |   |--- cont__Fare <= 31.33
+|   |   |   |   |--- class: 0
+|   |   |   |--- cont__Fare >  31.33
+|   |   |   |   |--- cont__Fare <= 37.03
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  37.03
+|   |   |   |   |   |--- class: 0
+|--- cat__Sex_male >  0.50
+|   |--- disc_binary__CabinKnown <= 0.50
+|   |   |--- cont__Age <= 13.00
+|   |   |   |--- disc_count__FamilySize <= 4.00
+|   |   |   |   |--- class: 1
+|   |   |   |--- disc_count__FamilySize >  4.00
+|   |   |   |   |--- disc_count__FamilySize <= 6.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- disc_count__FamilySize >  6.50
+|   |   |   |   |   |--- class: 0
+|   |   |--- cont__Age >  13.00
+|   |   |   |--- cont__Fare <= 26.40
+|   |   |   |   |--- cat__Embarked_Q <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cat__Embarked_Q >  0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Fare >  26.40
+|   |   |   |   |--- disc_binary__IsAlone <= 0.50
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- disc_binary__IsAlone >  0.50
+|   |   |   |   |   |--- class: 0
+|   |--- disc_binary__CabinKnown >  0.50
+|   |   |--- cont__Age <= 18.00
+|   |   |   |--- class: 1
+|   |   |--- cont__Age >  18.00
+|   |   |   |--- cont__Age <= 53.00
+|   |   |   |   |--- cont__Fare <= 26.14
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  26.14
+|   |   |   |   |   |--- class: 0
+|   |   |   |--- cont__Age >  53.00
+|   |   |   |   |--- cont__Fare <= 34.08
+|   |   |   |   |   |--- class: 0
+|   |   |   |   |--- cont__Fare >  34.08
+|   |   |   |   |   |--- class: 0
+
+Tree plot saved: outputs\tree_plots\88_decision_tree_max_depth_5.png
+
+======================================================================
+Holdout Evaluation
+======================================================================
+
+Holdout Accuracy: 0.8268
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+
+Submission file saved successfully.

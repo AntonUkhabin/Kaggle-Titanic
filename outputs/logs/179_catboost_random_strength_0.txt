@@ -1,0 +1,83 @@
+
+======================================================================
+Experiment: 179_catboost_random_strength_0
+======================================================================
+
+======================================================================
+Model Information
+======================================================================
+Active model: catboost
+CatBoostClassifier(allow_writing_files=False, bootstrap_type='MVS', cat_features=['Pclass', 'Sex', 'Title', 'Deck', 'Embarked'], custom_metric=['Logloss'], depth=7, eval_metric='Accuracy', iterations=2000, learning_rate=0.05, loss_function='Logloss', nan_mode='Min', random_seed=12648430, random_strength=0, verbose=0)
+No model specific logging available.
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Accuracy at best Logloss: 0.8531
+Best Accuracy: 0.8531
+Best Accuracy iteration: 18
+Best Logloss iteration: 18
+Best validation Logloss: 0.3851
+Iterations actually run: 118
+Trees retained: 18
+Fold: 1
+Accuracy at best Logloss: 0.8741
+Best Accuracy: 0.8741
+Best Accuracy iteration: 171
+Best Logloss iteration: 171
+Best validation Logloss: 0.3772
+Iterations actually run: 271
+Trees retained: 171
+Fold: 2
+Accuracy at best Logloss: 0.8592
+Best Accuracy: 0.8592
+Best Accuracy iteration: 65
+Best Logloss iteration: 65
+Best validation Logloss: 0.4011
+Iterations actually run: 165
+Trees retained: 65
+Fold: 3
+Accuracy at best Logloss: 0.8662
+Best Accuracy: 0.8662
+Best Accuracy iteration: 117
+Best Logloss iteration: 117
+Best validation Logloss: 0.3429
+Iterations actually run: 217
+Trees retained: 117
+Fold: 4
+Accuracy at best Logloss: 0.8169
+Best Accuracy: 0.8169
+Best Accuracy iteration: 24
+Best Logloss iteration: 24
+Best validation Logloss: 0.4682
+Iterations actually run: 124
+Trees retained: 24
+
+Mean CV Accuracy: 0.8539
+CV STD: 0.0198
+OOF Accuracy: 0.8539
+OOF predictions saved: outputs\oof\179_catboost_random_strength_0.csv
+OOF errors saved: outputs\oof\179_catboost_random_strength_0_errors.csv
+Best iterations: [18, 171, 65, 117, 24]
+Median best iteration: 65
+Number of fold models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Ensemble Holdout Accuracy: 0.8436
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of ensemble models: 5
+Mean predicted survival probability: 0.4028
+
+Submission file saved successfully.

@@ -1,0 +1,99 @@
+
+======================================================================
+Experiment: 221_lightgbm_early_stopping_logloss
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8252
+Early stopping metric: binary_logloss
+Best validation binary_logloss: 0.3920
+Best binary_logloss iteration: 96
+Iterations actually run: 196
+Trees retained: 96
+Fold: 1
+Fold Accuracy: 0.8462
+Early stopping metric: binary_logloss
+Best validation binary_logloss: 0.3461
+Best binary_logloss iteration: 478
+Iterations actually run: 578
+Trees retained: 478
+Fold: 2
+Fold Accuracy: 0.8239
+Early stopping metric: binary_logloss
+Best validation binary_logloss: 0.4009
+Best binary_logloss iteration: 336
+Iterations actually run: 436
+Trees retained: 336
+Fold: 3
+Fold Accuracy: 0.8732
+Early stopping metric: binary_logloss
+Best validation binary_logloss: 0.3378
+Best binary_logloss iteration: 188
+Iterations actually run: 288
+Trees retained: 188
+Fold: 4
+Fold Accuracy: 0.7958
+Early stopping metric: binary_logloss
+Best validation binary_logloss: 0.4710
+Best binary_logloss iteration: 71
+Iterations actually run: 171
+Trees retained: 71
+
+======================================================================
+Model Information
+======================================================================
+Active model: lightgbm
+LGBMClassifier(cat_l2=10.0, cat_smooth=10.0, deterministic=True,
+               force_row_wise=True, learning_rate=0.03, max_cat_threshold=32,
+               max_cat_to_onehot=4, max_depth=4, metric='binary_logloss',
+               min_child_samples=10, min_data_per_group=100, n_estimators=2000,
+               n_jobs=15, num_leaves=15, objective='binary',
+               random_state=12648430, verbosity=-1)
+No model specific logging available.
+
+Mean CV Accuracy: 0.8329
+CV STD: 0.0258
+OOF Accuracy: 0.8329
+OOF Precision: 0.8130
+OOF Recall: 0.7326
+OOF F1: 0.7707
+OOF ROC-AUC: 0.8878
+OOF PR-AUC: 0.8587
+OOF Logloss: 0.3895
+OOF Brier: 0.1198
+OOF Confusion Matrix: TN=393, FP=46, FN=73, TP=200
+OOF predictions saved: outputs\oof\221_lightgbm_early_stopping_logloss.csv
+OOF errors saved: outputs\oof\221_lightgbm_early_stopping_logloss_errors.csv
+Best iterations: [96, 478, 336, 188, 71]
+Median best iteration: 188
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8547
+Holdout Precision: 0.8644
+Holdout Recall: 0.7391
+Holdout F1: 0.7969
+Holdout ROC-AUC: 0.8520
+Holdout PR-AUC: 0.8541
+Holdout Logloss: 0.4109
+Holdout Brier: 0.1211
+Holdout Confusion Matrix: TN=102, FP=8, FN=18, TP=51
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.3967
+
+Submission file saved successfully.

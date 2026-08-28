@@ -1,0 +1,103 @@
+
+======================================================================
+Experiment: 258_lightgbm_optuna_trial_216_seed_42
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.7972
+Early stopping metric: binary_error
+Best validation binary_error: 0.2028
+Best binary_error iteration: 3
+Iterations actually run: 203
+Trees retained: 3
+Fold: 1
+Fold Accuracy: 0.8392
+Early stopping metric: binary_error
+Best validation binary_error: 0.1608
+Best binary_error iteration: 30
+Iterations actually run: 230
+Trees retained: 30
+Fold: 2
+Fold Accuracy: 0.8732
+Early stopping metric: binary_error
+Best validation binary_error: 0.1268
+Best binary_error iteration: 15
+Iterations actually run: 215
+Trees retained: 15
+Fold: 3
+Fold Accuracy: 0.8451
+Early stopping metric: binary_error
+Best validation binary_error: 0.1549
+Best binary_error iteration: 66
+Iterations actually run: 266
+Trees retained: 66
+Fold: 4
+Fold Accuracy: 0.8521
+Early stopping metric: binary_error
+Best validation binary_error: 0.1479
+Best binary_error iteration: 34
+Iterations actually run: 234
+Trees retained: 34
+
+======================================================================
+Model Information
+======================================================================
+Active model: lightgbm
+LGBMClassifier(cat_l2=7.399983164441014, cat_smooth=28.83549369109806,
+               colsample_bytree=0.8869339873610533, deterministic=True,
+               force_row_wise=True, learning_rate=0.11784745281602944,
+               max_bin=127, max_cat_threshold=8, max_cat_to_onehot=10,
+               max_depth=7, metric='binary_error', min_child_samples=10,
+               min_child_weight=0.43511604559295053, min_data_per_group=60,
+               min_split_gain=0.08776787070217627, n_estimators=2000, n_jobs=15,
+               num_leaves=4, objective='binary', random_state=12648430,
+               reg_alpha=0.001, reg_lambda=0.05, subsample=0.9696707640811784,
+               subsample_freq=1, verbosity=-1)
+No model specific logging available.
+
+Mean CV Accuracy: 0.8414
+CV STD: 0.0249
+OOF Accuracy: 0.8413
+OOF Precision: 0.8361
+OOF Recall: 0.7289
+OOF F1: 0.7789
+OOF ROC-AUC: 0.8681
+OOF PR-AUC: 0.8383
+OOF Logloss: 0.4411
+OOF Brier: 0.1379
+OOF Confusion Matrix: TN=400, FP=39, FN=74, TP=199
+OOF predictions saved: outputs\oof\258_lightgbm_optuna_trial_216_seed_42.csv
+OOF errors saved: outputs\oof\258_lightgbm_optuna_trial_216_seed_42_errors.csv
+Best iterations: [3, 30, 15, 66, 34]
+Median best iteration: 30
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8436
+Holdout Precision: 0.8596
+Holdout Recall: 0.7101
+Holdout F1: 0.7778
+Holdout ROC-AUC: 0.8921
+Holdout PR-AUC: 0.8652
+Holdout Logloss: 0.4172
+Holdout Brier: 0.1260
+Holdout Confusion Matrix: TN=102, FP=8, FN=20, TP=49
+
+======================================================================
+Experiment Logging
+======================================================================
+Experiment results saved.
+Model has no coefficients. Skipping coefficient logging.
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.3901
+
+Submission file saved successfully.
