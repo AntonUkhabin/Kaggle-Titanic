@@ -53,8 +53,7 @@ class TitleMedianAgeImputer(BaseEstimator, TransformerMixin):
         # Fill missing Age with Title-specific median.
         # Fallback to global median if an unseen Title appears.
         features.loc[missing_age_mask, 'Age'] = (
-            features
-            .loc[missing_age_mask, 'Title']
+            features.loc[missing_age_mask, 'Title']
             .map(self.age_medians_)
             .fillna(self.global_median_)
         )
@@ -71,9 +70,7 @@ class FamilySizeCreator(BaseEstimator, TransformerMixin):
     def transform(self, features):
         features = features.copy()
 
-        features['FamilySize'] = (
-            features['SibSp'] + features['Parch'] + 1
-        )
+        features['FamilySize'] = (features['SibSp'] + features['Parch'] + 1)
 
         return features
 
@@ -89,9 +86,7 @@ class IsAloneCreator(BaseEstimator, TransformerMixin):
 
         # Create binary feature: True  -> passenger travels alone; False -> passenger travels with family
         # Convert bool values to 0/1 because ML models usually work with numeric features.
-        features['IsAlone'] = (
-            features['FamilySize'] == 1
-        ).astype(int)
+        features['IsAlone'] = (features['FamilySize'] == 1).astype(int)
 
         return features
 
@@ -99,16 +94,14 @@ class IsAloneCreator(BaseEstimator, TransformerMixin):
 class CabinKnownCreator(BaseEstimator, TransformerMixin):
     '''Create CabinKnown from Cabin column.'''
 
-    def fit(self,features, labels=None):
+    def fit(self, features, labels=None):
         return self
 
     def transform(self, features):
         features = features.copy()
 
         # Create binary feature: 1 -> Cabin value is known; 0 -> Cabin value is missing
-        features['CabinKnown'] = (
-            features['Cabin'].notna()
-        ).astype(int)
+        features['CabinKnown'] = (features['Cabin'].notna()).astype(int)
 
         return features
 
@@ -124,10 +117,6 @@ class DeckExtractor(BaseEstimator, TransformerMixin):
 
         # Extract the first letter from Cabin.
         # Example: 'C85' -> 'C', missing Cabin -> 'Unknown'.
-        features['Deck'] = (
-            features['Cabin']
-            .str[0]
-            .fillna('Unknown')
-        )
+        features['Deck'] = (features['Cabin'].str[0].fillna('Unknown'))
 
         return features

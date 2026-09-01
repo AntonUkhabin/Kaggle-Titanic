@@ -1,0 +1,44 @@
+
+======================================================================
+Experiment: 312_decision_tree_optuna_check
+======================================================================
+
+======================================================================
+Optuna Study
+======================================================================
+Study name: 312_decision_tree_optuna_check
+Direction: maximize
+Number of trials: 2
+CV folds: 5
+Holdout evaluation: disabled during tuning
+  0%|          | 0/2 [00:00<?, ?it/s]                                     [32m[I 2026-09-01 13:04:28,892][0m Trial 0 finished with value: 0.8075445681079485 and parameters: {'criterion': 'log_loss', 'max_depth': 3, 'min_samples_split': 9, 'min_samples_leaf': 15, 'max_leaf_nodes': 15, 'ccp_alpha': 0.0015}. Best is trial 0 with value: 0.8075445681079485.[0m
+  0%|          | 0/2 [00:00<?, ?it/s]Best trial: 0. Best value: 0.807545:   0%|          | 0/2 [00:00<?, ?it/s]Best trial: 0. Best value: 0.807545:  50%|#####     | 1/2 [00:00<00:00,  3.33it/s]                                                                                  [32m[I 2026-09-01 13:04:29,196][0m Trial 1 finished with value: 0.8188023244361272 and parameters: {'criterion': 'log_loss', 'max_depth': 6, 'min_samples_split': 20, 'min_samples_leaf': 4, 'max_leaf_nodes': 10, 'ccp_alpha': 0.003}. Best is trial 1 with value: 0.8188023244361272.[0m
+Best trial: 0. Best value: 0.807545:  50%|#####     | 1/2 [00:00<00:00,  3.33it/s]Best trial: 1. Best value: 0.818802:  50%|#####     | 1/2 [00:00<00:00,  3.33it/s]Best trial: 1. Best value: 0.818802: 100%|##########| 2/2 [00:00<00:00,  3.18it/s]Best trial: 1. Best value: 0.818802: 100%|##########| 2/2 [00:00<00:00,  3.20it/s]
+
+======================================================================
+Saving Optuna Results
+======================================================================
+Trials saved to: ./outputs/optuna/312_decision_tree_optuna_check.csv
+Best parameters saved to: ./outputs/optuna/312_decision_tree_optuna_check_best_params.yaml
+
+======================================================================
+Optuna Results
+======================================================================
+
+Best trial:
+Trial number: 1
+CV Accuracy: 0.8188
+Fold scores STD: 0.0085
+
+Best parameters:
+criterion: log_loss
+max_depth: 6
+min_samples_split: 20
+min_samples_leaf: 4
+max_leaf_nodes: 10
+ccp_alpha: 0.003
+
+Top 2 trials:
+ trial_number  cv_score   cv_std  params_ccp_alpha params_criterion  params_max_depth  params_max_leaf_nodes  params_min_samples_leaf  params_min_samples_split
+            1  0.818802 0.008549            0.0030         log_loss                 6                     10                        4                        20
+            0  0.807545 0.012028            0.0015         log_loss                 3                     15                       15                         9

@@ -1,5 +1,3 @@
-from config                     import config
-
 from sklearn.compose            import ColumnTransformer
 from sklearn.impute             import SimpleImputer
 from sklearn.pipeline           import Pipeline
@@ -18,10 +16,7 @@ def build_preprocessor(config):
     if active_model == 'knn':
         return build_knn_preprocessor()
 
-    if active_model == 'decision_tree':
-        return build_tree_preprocessor()
-
-    if active_model == 'random_forest':
+    if active_model in ('decision_tree', 'random_forest', 'xgboost'):
         return build_tree_preprocessor()
 
     if active_model == 'catboost':
@@ -29,9 +24,6 @@ def build_preprocessor(config):
 
     if active_model == 'lightgbm':
         return build_lightgbm_preprocessor()
-
-    if active_model == 'xgboost':
-        return build_tree_preprocessor()
 
     if active_model == 'dnn':
         return build_dnn_preprocessor()
@@ -192,21 +184,8 @@ def build_lightgbm_preprocessor():
 class CatBoostPreprocessor(BaseEstimator, TransformerMixin):
     '''Prepare Titanic features for native CatBoost processing.'''
 
-    numeric_features = (
-        'Age',
-        'Fare',
-        'FamilySize',
-        'IsAlone',
-        'CabinKnown',
-    )
-
-    categorical_features = (
-        'Pclass',
-        'Sex',
-        'Title',
-        'Deck',
-        'Embarked',
-    )
+    numeric_features = ('Age', 'Fare', 'FamilySize', 'IsAlone', 'CabinKnown')
+    categorical_features = ('Pclass', 'Sex', 'Title', 'Deck', 'Embarked')
 
     def fit(self, features, labels=None):
         self.is_fitted_ = True
@@ -232,21 +211,8 @@ class CatBoostPreprocessor(BaseEstimator, TransformerMixin):
 class LightGBMPreprocessor(BaseEstimator, TransformerMixin):
     '''Prepare Titanic features for native LightGBM processing.'''
 
-    numeric_features = (
-        'Age',
-        'Fare',
-        'FamilySize',
-        'IsAlone',
-        'CabinKnown',
-    )
-
-    categorical_features = (
-        'Pclass',
-        'Sex',
-        'Title',
-        'Deck',
-        'Embarked',
-    )
+    numeric_features = ('Age', 'Fare', 'FamilySize', 'IsAlone', 'CabinKnown')
+    categorical_features = ('Pclass', 'Sex', 'Title', 'Deck', 'Embarked')
 
     def fit(self, features, labels=None):
         self.is_fitted_ = True

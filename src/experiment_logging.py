@@ -1,11 +1,9 @@
-import pandas as pd
-import numpy as np
+from pathlib import Path
+
 import matplotlib.pyplot as plt
-
-from sklearn.tree               import export_text, plot_tree
-
-from config                     import config
-from pathlib                    import Path
+import numpy as np
+import pandas as pd
+from sklearn.tree import export_text, plot_tree
 
 
 def print_section(title: str) -> None:
@@ -63,10 +61,7 @@ def print_logistic_regression_info(pipe) -> None:
 
     print(f'\nNumber of iterations: {model.n_iter_[0]}')
 
-    feature_names = (
-        pipe.named_steps['preprocessor']
-        .get_feature_names_out()
-    )
+    feature_names = pipe.named_steps['preprocessor'].get_feature_names_out()
 
     coef = model.coef_[0]
 
@@ -103,10 +98,7 @@ def print_decision_tree_info(pipe, config) -> None:
 
     model = pipe.named_steps['model']
 
-    feature_names = (
-        pipe.named_steps['preprocessor']
-        .get_feature_names_out()
-    )
+    feature_names = pipe.named_steps['preprocessor'].get_feature_names_out()
 
     print_tree_summary(model)
     print_feature_importance(model, feature_names)
@@ -119,20 +111,10 @@ def print_random_forest_info(pipe) -> None:
 
     model = pipe.named_steps['model']
 
-    feature_names = (
-        pipe.named_steps['preprocessor']
-        .get_feature_names_out()
-    )
+    feature_names = pipe.named_steps['preprocessor'].get_feature_names_out()
 
-    tree_depths = [
-        estimator.get_depth()
-        for estimator in model.estimators_
-    ]
-
-    tree_leaves = [
-        estimator.get_n_leaves()
-        for estimator in model.estimators_
-    ]
+    tree_depths = [estimator.get_depth() for estimator in model.estimators_]
+    tree_leaves = [estimator.get_n_leaves() for estimator in model.estimators_]
 
     print_section('Random Forest Summary')
 
@@ -213,10 +195,7 @@ def save_tree_plot(config, pipe) -> None:
 
     model = pipe.named_steps['model']
 
-    feature_names = (
-        pipe.named_steps['preprocessor']
-        .get_feature_names_out()
-    )
+    feature_names = pipe.named_steps['preprocessor'].get_feature_names_out()
 
     output_dir = Path(config.paths.path_to_tree_plots)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -241,75 +220,6 @@ def save_tree_plot(config, pipe) -> None:
     plt.close()
 
     print(f'Tree plot saved: {output_path}')
-
-
-def log_coefficients(config, pipe, path_to_coefficients) -> None:
-    '''Save model coefficients if the model has coefficients.'''
-
-    model = pipe.named_steps['model']
-
-    if not hasattr(model, 'coef_'):
-        print('Model has no coefficients. Skipping coefficient logging.')
-        return
-
-    feature_names = pipe.named_steps[
-        'preprocessor'
-    ].get_feature_names_out()
-
-    coef = model.coef_[0]
-
-    print_section('Saving Coefficients')
-
-    coefficients_df = pd.DataFrame({
-        'experiment_name': config.general.experiment_name,
-        'model_name': config.model.active,
-        'feature': feature_names,
-        'coef': coef,
-        'abs_coef': abs(coef),
-        'is_zero': coef == 0,
-    }).sort_values('abs_coef', ascending=False)
-
-    path_to_coefficients = Path(path_to_coefficients)
-
-    coefficients_df.to_csv(
-        path_to_coefficients,
-        mode='a',
-        header=not path_to_coefficients.exists(),
-        index=False,
-    )
-
-
-def log_experiment_results(config, pipe, cv_score, cv_std, holdout_score, path_to_experiments, ensemble_size=None, best_iterations=None,) -> None:
-    '''Save universal experiment results.'''
-
-    active_model = config.model.active
-    model = pipe.named_steps['model']
-    model_params = model.get_params()
-
-    experiment_data = {
-        'experiment_name': config.general.experiment_name,
-        'model_name': active_model,
-        'cv_score': cv_score,
-        'cv_std': cv_std,
-        'holdout_score': holdout_score,
-        'ensemble_size': ensemble_size,
-        'best_iterations': best_iterations,
-    }
-
-    # Save model hyperparameters as separate columns.
-    for param_name, param_value in model_params.items():
-        experiment_data[f'model__{param_name}'] = param_value
-
-    experiment_row = pd.DataFrame([experiment_data])
-
-    path_to_experiments = Path(path_to_experiments)
-
-    experiment_row.to_csv(
-        path_to_experiments,
-        mode='a',
-        header=not path_to_experiments.exists(),
-        index=False,
-    )
 
 
 def save_oof_predictions(train_cv_df, oof_probabilities, experiment_name, output_dir) -> None:

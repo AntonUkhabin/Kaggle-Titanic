@@ -56,40 +56,18 @@ def main() -> None:
 
         print_section('Saving Optuna Results')
 
-        trials_df = save_optuna_trials(
-            study=study,
-            output_path=(
-                config.paths.path_to_optuna_trials
-            ),
-        )
+        trials_df = save_optuna_trials(study=study, output_path=config.paths.path_to_optuna_trials)
+        save_best_params(study=study, output_path=config.paths.path_to_optuna_best_params)
 
-        save_best_params(
-            study=study,
-            output_path=(
-                config.paths.path_to_optuna_best_params
-            ),
-        )
-
-        print(
-            'Trials saved to: '
-            f'{config.paths.path_to_optuna_trials}'
-        )
-        print(
-            'Best parameters saved to: '
-            f'{config.paths.path_to_optuna_best_params}'
-        )
+        print(f'Trials saved to: {config.paths.path_to_optuna_trials}')
+        print(f'Best parameters saved to: {config.paths.path_to_optuna_best_params}')
 
         print_section('Optuna Results')
-
-        print_optuna_results(
-            study=study,
-            trials_df=trials_df,
-            top_n=10,
-        )
+        print_optuna_results(study=study, trials_df=trials_df, top_n=10)
 
     finally:
         sys.stdout = logger.terminal
-        sys.stderr = logger.terminal
+        sys.stderr = logger.original_stderr
         logger.close()
 
 

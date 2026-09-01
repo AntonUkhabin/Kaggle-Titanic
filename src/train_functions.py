@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-from config                     import config
 from sklearn.metrics            import accuracy_score, average_precision_score, brier_score_loss, confusion_matrix, f1_score, log_loss, precision_score, recall_score, roc_auc_score
 from sklearn.model_selection    import StratifiedKFold
 from sklearn.linear_model       import LogisticRegression
@@ -110,6 +109,8 @@ def cross_validate_standard(train_cv_df, target_col, config, keep_fold_models=Fa
         validation_probabilities = fold_pipe.predict_proba(features_val)[:, 1]
         labels_pred = fold_pipe.predict(features_val)
 
+        # Restore original row order; each prediction comes from a model
+        # that was trained without this validation fold.
         oof_probabilities[val_idx] = validation_probabilities
         score = accuracy_score(labels_val, labels_pred)
 
@@ -213,7 +214,6 @@ def report_early_stopping_results(model, score, fold, config):
     active_model = config.model.active
 
     if active_model == 'catboost':
-        best_iteration = model.get_best_iteration()
         trees_built = model.tree_count_
         evals_result = model.get_evals_result()
 
@@ -232,10 +232,10 @@ def report_early_stopping_results(model, score, fold, config):
         best_accuracy = validation_accuracy[best_accuracy_iteration]
 
         print(f'Fold: {fold}')
-        print(f'Accuracy at best Logloss: {score:.4f}')
+        print(f'Fold Accuracy: {score:.4f}')
         print(f'Best Accuracy: {best_accuracy:.4f}')
         print(f'Best Accuracy iteration: {best_accuracy_iteration + 1}')
-        print(f'Best Logloss iteration: {best_iteration + 1}')
+        print(f'Best Logloss iteration: {best_logloss_iteration + 1}')
         print(f'Best validation Logloss: {best_logloss:.4f}')
         print(f'Iterations actually run: {iterations_run}')
         print(f'Trees retained: {trees_built}')
@@ -298,9 +298,7 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
     fold_models = []
     oof_probabilities = np.zeros(len(features))
 
-    for fold, (train_idx, val_idx) in enumerate(
-        skf.split(features, labels)
-    ):
+    for fold, (train_idx, val_idx) in enumerate(skf.split(features, labels)):
         features_train = features.iloc[train_idx]
         features_val = features.iloc[val_idx]
 
@@ -315,19 +313,10 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
         model = fold_pipe.named_steps['model']
 
         # Fit feature engineering and preprocessing only on fold_train.
-        features_train_transformed = (
-            preprocessing_pipe.fit_transform(
-                features_train,
-                labels_train,
-            )
-        )
+        features_train_transformed = preprocessing_pipe.fit_transform(features_train, labels_train)
 
         # Apply the fitted transformations to fold_validation.
-        features_val_transformed = (
-            preprocessing_pipe.transform(
-                features_val,
-            )
-        )
+        features_val_transformed = preprocessing_pipe.transform(features_val)
 
         model = fit_model_with_early_stopping(
             model=model,
@@ -342,10 +331,7 @@ def cross_validate_model_with_early_stopping(train_cv_df, target_col, config):
         oof_probabilities[val_idx] = validation_probabilities
         labels_pred = model.predict(features_val_transformed)
 
-        score = accuracy_score(
-            labels_val,
-            labels_pred,
-        )
+        score = accuracy_score(labels_val, labels_pred)
 
         trees_built = report_early_stopping_results(
             model=model,
@@ -372,7 +358,7 @@ def predict_with_early_stopping_ensemble(features, fold_models, threshold=0.5):
         fold_probabilities.append(probabilities)
 
     mean_probabilities = np.mean(fold_probabilities, axis=0)
-    predictions = (mean_probabilities >= threshold).astype(int)
+    predictions = (mean_probabilities > threshold).astype(int)
 
     return predictions, mean_probabilities
 

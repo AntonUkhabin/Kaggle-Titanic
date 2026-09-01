@@ -3,61 +3,36 @@ from omegaconf import OmegaConf
 config = {
     'general': {
         'seed': 0xC0FFEE,
-        'experiment_name': '309_dnn_64_32_16_lr_0_001',
+        'experiment_name': '313_xgboost_final',
     },
     'logging': {
         'save_tree_plot': True,
         'save_torch_plots': True,
-        'torch_log_interval': 1, # Уменьшить количество выводимых эпох в терминале. 10 - выводить каждые 10 эпох, 1 - все эпохи
-    },
+        'torch_log_interval': 1,  # Print training metrics every N epochs. 10 - print every 10 epochs, 1 - print every epoch.
+        },
     'paths': {
         'path_to_csv':                  './data/train.csv',
         'path_to_kaggle_test':          './data/test.csv',
         'path_to_submission':           './outputs/submission.csv',
-        'path_to_experiments':          './outputs/experiments.csv',
-        'path_to_coefficients':         './outputs/coefficients.csv',
         'path_to_logs':                 './outputs/logs',
         'path_to_oof':                  './outputs/oof',
         'path_to_tree_plots':           './outputs/tree_plots',
         'path_to_checkpoints':          './outputs/checkpoints',
         'path_to_torch_plots':          './outputs/torch_plots',
 
-        'path_to_optuna_trials':        './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials.csv',
-        'path_to_optuna_best_params':   './outputs/optuna/292_xgboost_optuna_3_seeds_100_trials_best_params.yaml',
+        'path_to_optuna_trials': './outputs/optuna/${general.experiment_name}.csv',
+        'path_to_optuna_best_params': './outputs/optuna/${general.experiment_name}_best_params.yaml',
     },
     'training': {
-        'early_stopping_rounds': 500, # For Classic models
+        'early_stopping_rounds': 500, # Patience for gradient boosting models.
         'fold_seed': 0xC0FFEE,
 
-        'model_profiles': {
-            'logistic_regression': {
-                'early_stopping': False,
-                'fold_ensemble': False,
-            },
-            'knn': {
-                'early_stopping': False,
-                'fold_ensemble': True,
-            },
-            'decision_tree': {
-                'early_stopping': False,
-                'fold_ensemble': False,
-            },
-            'random_forest': {
-                'early_stopping': False,
-                'fold_ensemble': True,
-            },
-            'catboost': {
-                'early_stopping': True,
-                'fold_ensemble': True,
-            },
-            'lightgbm': {
-                'early_stopping': True,
-                'fold_ensemble': True,
-            },
-            'xgboost': {
-                'early_stopping': True,
-                'fold_ensemble': True,
-            },
+        # Standard models can use a single refitted model or a fold ensemble.
+        'fold_ensemble': {
+            'logistic_regression': False,
+            'knn': True,
+            'decision_tree': False,
+            'random_forest': True,
         },
     },
     'dataloader_params': {
@@ -67,18 +42,8 @@ config = {
         'n_splits': 5,
         'test_size': 0.2,
     },  
-    'loss': {
-        'name': 'log_loss',
-        'params': {
-        },  
-    },
-    'metric': {
-        'name': 'accuracy_score',
-        'params': {
-        },
-    },
     'model': {
-        'active': 'dnn',
+        'active': 'xgboost',
 
         'models': {
 
@@ -221,7 +186,7 @@ config = {
     },
 
     'optuna': {
-        'study_name': 'xgboost_tuning_3_seeds',
+        'study_name': '${general.experiment_name}',
         'direction': 'maximize',
         'n_trials': 100,
         'show_progress_bar': True,

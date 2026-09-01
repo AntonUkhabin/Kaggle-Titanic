@@ -24,6 +24,7 @@ class DNN(nn.Module):
         )
 
     def forward(self, features):
+        '''Return logits with shape (batch_size,).'''
         return self.mlp(features).squeeze(-1)
 
 

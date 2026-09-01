@@ -1,9 +1,9 @@
 import random
-import numpy as np
-import torch
-
 import sys
 from pathlib import Path
+
+import numpy as np
+import torch
 
 
 def set_seed(seed: int) -> None:
@@ -22,6 +22,8 @@ class TeeLogger:
     def __init__(self, log_path):
         # Save original terminal output stream.
         self.terminal = sys.stdout
+        self.original_stderr = sys.stderr
+
         # Open log file for writing.
         self.log_file = open(log_path, 'w', encoding='utf-8')
 

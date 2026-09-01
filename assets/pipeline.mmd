@@ -1,0 +1,50 @@
+
+%%{init: {"themeVariables": {"fontSize": "18px"}, "flowchart": {"curve": "basis", "nodeSpacing": 25, "rankSpacing": 35}}}%%
+
+flowchart LR
+    A["train.csv<br/>891 samples"] --> B["Stratified split<br/>80/20"]
+
+    B --> C["Train/CV<br/>712 samples"]
+    B --> D["Holdout<br/>179 samples"]
+
+    C --> E["5-fold<br/>Stratified CV"]
+    E --> F{"Тип модели"}
+
+    F --> G["Classic Models<br/>FE → preprocessing →<br/>model"]
+    F --> H["PyTorch Models<br/>FE → preprocessing →<br/>DataLoader → model"]
+
+    G --> I["OOF-прогнозы<br/>CV-метрики"]
+    H --> I
+
+    G --> J["Итоговая модель /<br/>fold ensemble"]
+    H --> J
+
+    D --> K["Predict<br/>Holdout"]
+    J --> K
+    K --> L["Holdout<br/>метрики"]
+
+    M["test.csv<br/>418 samples"] --> N["Predict<br/>Kaggle test"]
+    J --> N
+    N --> O["submission.csv"]
+
+    style A fill:#FFF3A6,stroke:#B89B22,color:#1F2937
+    style C fill:#FFF3A6,stroke:#B89B22,color:#1F2937
+    style D fill:#FFF3A6,stroke:#B89B22,color:#1F2937
+    style M fill:#FFF3A6,stroke:#B89B22,color:#1F2937
+
+    style B fill:#D9F29C,stroke:#789C24,color:#1F2937
+    style E fill:#D9F29C,stroke:#789C24,color:#1F2937
+    style F fill:#D9F29C,stroke:#789C24,color:#1F2937
+    style J fill:#D9F29C,stroke:#789C24,color:#1F2937
+
+    style G fill:#A9D3F5,stroke:#3979A8,color:#1F2937
+    style H fill:#D3B5E5,stroke:#8955A3,color:#1F2937
+
+    style I fill:#E7D4F3,stroke:#8D63A5,color:#1F2937
+    style L fill:#E7D4F3,stroke:#8D63A5,color:#1F2937
+
+    style K fill:#B9D98A,stroke:#648C35,color:#1F2937
+    style N fill:#B9D98A,stroke:#648C35,color:#1F2937
+    style O fill:#B9D98A,stroke:#648C35,color:#1F2937
+
+    linkStyle default stroke:#8B949E,stroke-width:1.5px

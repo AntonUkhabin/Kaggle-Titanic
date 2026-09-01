@@ -15,9 +15,7 @@ from src.train_functions        import (build_pipeline,
                                         calculate_classification_metrics,
                                         predict_with_pipeline_ensemble,
                                         )
-from src.experiment_logging     import (log_coefficients,
-                                        log_experiment_results,
-                                        print_classification_metrics,
+from src.experiment_logging     import (print_classification_metrics,
                                         print_model_info,
                                         print_section,
                                         save_oof_predictions,
@@ -48,7 +46,7 @@ def main() -> None:
         )
 
         # Build full pipeline: feature engineering + preprocessing + model.
-        is_torch_model = config.model.active in {'dnn', 'cnn'}
+        is_torch_model = config.model.active == 'dnn'
         pipe = None if is_torch_model else build_pipeline(config)
 
         print_section(f'Experiment: {config.general.experiment_name}')
@@ -56,36 +54,41 @@ def main() -> None:
         print_section('Cross Validation')
 
         if is_torch_model:
+            # DNN uses early stopping within each fold and averages fold predictions.
             scores, best_epochs, fold_models, oof_probabilities, histories = cross_validate_neural_network(train_cv_df, 'Survived', config)
 
             best_iterations = best_epochs
             use_early_stopping = True
             use_fold_ensemble = True
 
-        else:
-            training_profile = config.training.model_profiles[config.model.active]
-            use_early_stopping = training_profile.early_stopping
-            use_fold_ensemble = training_profile.fold_ensemble
+        elif config.model.active in ('catboost', 'lightgbm', 'xgboost'):
+            # Each boosting fold selects its own tree count using early stopping.
+            # Keep all fold models for ensemble prediction.
+            scores, best_iterations, fold_models, oof_probabilities = cross_validate_model_with_early_stopping(train_cv_df=train_cv_df, target_col='Survived', config=config)
+
+            use_early_stopping = True
+            use_fold_ensemble = True
             histories = None
 
-            if use_early_stopping and not use_fold_ensemble:
-                raise ValueError('Early stopping currently requires fold ensemble.')
+        else:
+            # Standard models either retain fold models or refit on all Train/CV data.
+            use_early_stopping = False
+            use_fold_ensemble = config.training.fold_ensemble[config.model.active]
 
-            if use_early_stopping:
-                scores, best_iterations, fold_models, oof_probabilities = cross_validate_model_with_early_stopping(train_cv_df=train_cv_df, target_col='Survived', config=config)
+            scores, pipe, fold_models, oof_probabilities = cross_validate_standard(train_cv_df=train_cv_df, target_col='Survived', config=config, keep_fold_models=use_fold_ensemble)
 
-            else:
-                scores, pipe, fold_models, oof_probabilities = cross_validate_standard(train_cv_df=train_cv_df, target_col='Survived', config=config, keep_fold_models=use_fold_ensemble)
-                best_iterations = None
+            best_iterations = None
+            histories = None
         
         ensemble_size = len(fold_models) if use_fold_ensemble else 1
 
         if is_torch_model and config.logging.save_torch_plots:
             save_torch_training_plots(histories, best_epochs, config.general.experiment_name, config.paths.path_to_torch_plots)
         
-        if is_torch_model:
+        if is_torch_model or use_early_stopping:
             print_section('Model Information')
             print(f'Active model: {config.model.active}')
+            print('Model from fold 0:')
             print(fold_models[0][1])
         else:
             print_model_info(pipe, config)
@@ -139,17 +142,8 @@ def main() -> None:
             holdout_preds, holdout_probabilities = predict_with_pipeline_ensemble(features_holdout, fold_models)
 
         holdout_metrics = calculate_classification_metrics(labels_holdout, holdout_preds, holdout_probabilities)
-        holdout_score = holdout_metrics['accuracy']
 
         print_classification_metrics('Holdout', holdout_metrics)
-
-        
-        
-        if not is_torch_model:
-            print_section('Experiment Logging')
-            log_experiment_results(config=config, pipe=pipe, cv_score=cv_score, cv_std=cv_std, holdout_score=holdout_score, path_to_experiments=config.paths.path_to_experiments, ensemble_size=ensemble_size, best_iterations=best_iterations)
-            print('Experiment results saved.')
-            log_coefficients(config=config, pipe=pipe, path_to_coefficients=config.paths.path_to_coefficients)
 
         
         # Generate predictions for Kaggle test.csv.
@@ -181,7 +175,7 @@ def main() -> None:
 
     finally:
         sys.stdout = logger.terminal
-        sys.stderr = logger.terminal
+        sys.stderr = logger.original_stderr
         logger.close()
 
 

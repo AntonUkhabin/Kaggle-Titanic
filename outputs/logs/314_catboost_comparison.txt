@@ -1,0 +1,93 @@
+
+======================================================================
+Experiment: 314_catboost_comparison
+======================================================================
+
+======================================================================
+Cross Validation
+======================================================================
+Fold: 0
+Fold Accuracy: 0.8671
+Best Accuracy: 0.8671
+Best Accuracy iteration: 88
+Best Logloss iteration: 92
+Best validation Logloss: 0.3824
+Iterations actually run: 588
+Trees retained: 88
+Fold: 1
+Fold Accuracy: 0.8531
+Best Accuracy: 0.8531
+Best Accuracy iteration: 35
+Best Logloss iteration: 233
+Best validation Logloss: 0.3707
+Iterations actually run: 535
+Trees retained: 35
+Fold: 2
+Fold Accuracy: 0.8521
+Best Accuracy: 0.8521
+Best Accuracy iteration: 55
+Best Logloss iteration: 64
+Best validation Logloss: 0.4030
+Iterations actually run: 555
+Trees retained: 55
+Fold: 3
+Fold Accuracy: 0.8803
+Best Accuracy: 0.8803
+Best Accuracy iteration: 203
+Best Logloss iteration: 177
+Best validation Logloss: 0.3284
+Iterations actually run: 703
+Trees retained: 203
+Fold: 4
+Fold Accuracy: 0.8239
+Best Accuracy: 0.8239
+Best Accuracy iteration: 2
+Best Logloss iteration: 18
+Best validation Logloss: 0.4645
+Iterations actually run: 502
+Trees retained: 2
+
+======================================================================
+Model Information
+======================================================================
+Active model: catboost
+Model from fold 0:
+CatBoostClassifier(allow_writing_files=False, bootstrap_type='MVS', cat_features=['Pclass', 'Sex', 'Title', 'Deck', 'Embarked'], custom_metric=['Logloss'], depth=5, eval_metric='Accuracy', iterations=2000, l2_leaf_reg=3.12, learning_rate=0.1, loss_function='Logloss', nan_mode='Min', random_seed=12648430, random_strength=0.24, thread_count=8, verbose=0)
+
+Mean CV Accuracy: 0.8553
+CV STD: 0.0188
+OOF Accuracy: 0.8553
+OOF Precision: 0.8542
+OOF Recall: 0.7509
+OOF F1: 0.7992
+OOF ROC-AUC: 0.8778
+OOF PR-AUC: 0.8538
+OOF Logloss: 0.4209
+OOF Brier: 0.1314
+OOF Confusion Matrix: TN=404, FP=35, FN=68, TP=205
+OOF predictions saved: outputs\oof\314_catboost_comparison.csv
+OOF errors saved: outputs\oof\314_catboost_comparison_errors.csv
+Best iterations: [88, 35, 55, 203, 2]
+Median best iteration: 55
+Number of prediction models: 5
+
+======================================================================
+Holdout Evaluation
+======================================================================
+Holdout Accuracy: 0.8436
+Holdout Precision: 0.8727
+Holdout Recall: 0.6957
+Holdout F1: 0.7742
+Holdout ROC-AUC: 0.8643
+Holdout PR-AUC: 0.8537
+Holdout Logloss: 0.4124
+Holdout Brier: 0.1242
+Holdout Confusion Matrix: TN=103, FP=7, FN=21, TP=48
+
+======================================================================
+Kaggle Submission
+======================================================================
+Number of prediction models: 5
+Mean predicted survival probability: 0.4081
+
+Submission file saved successfully.

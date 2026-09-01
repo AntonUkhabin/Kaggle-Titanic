@@ -366,19 +366,17 @@ def create_catboost_objective(train_cv_df, target_col, config):
             preprocessing_pipe = fold_pipe[:-1]
             model = fold_pipe.named_steps['model']
 
-            features_train_transformed = preprocessing_pipe.fit_transform(
-                features_train,
-                labels_train,
-            )
+            features_train_transformed = preprocessing_pipe.fit_transform(features_train, labels_train)
 
             features_val_transformed = preprocessing_pipe.transform(features_val)
 
-            model.fit(
-                features_train_transformed,
-                labels_train,
-                eval_set=(features_val_transformed, labels_val),
-                early_stopping_rounds=config.training.early_stopping_rounds,
-                use_best_model=True,
+            model = fit_model_with_early_stopping(
+                model=model,
+                features_train=features_train_transformed,
+                labels_train=labels_train,
+                features_val=features_val_transformed,
+                labels_val=labels_val,
+                config=config,
             )
 
             labels_pred = model.predict(features_val_transformed)
@@ -415,10 +413,7 @@ def create_lightgbm_objective(train_cv_df, target_col, config):
     def objective(trial) -> float:
         '''Evaluate one LightGBM hyperparameter combination.'''
 
-        model_params = suggest_lightgbm_params(
-            trial=trial,
-            config=config,
-        )
+        model_params = suggest_lightgbm_params(trial=trial, config=config)
 
         all_scores = []
         all_best_iterations = []
@@ -447,10 +442,7 @@ def create_lightgbm_objective(train_cv_df, target_col, config):
                 preprocessing_pipe = fold_pipe[:-1]
                 model = fold_pipe.named_steps['model']
 
-                features_train_transformed = preprocessing_pipe.fit_transform(
-                    features_train,
-                    labels_train,
-                )
+                features_train_transformed = preprocessing_pipe.fit_transform(features_train, labels_train)
                 features_val_transformed = preprocessing_pipe.transform(features_val)
 
                 model = fit_model_with_early_stopping(
@@ -516,10 +508,7 @@ def create_xgboost_objective(train_cv_df, target_col, config):
     def objective(trial) -> float:
         '''Evaluate one XGBoost hyperparameter combination.'''
 
-        model_params = suggest_xgboost_params(
-            trial=trial,
-            config=config,
-        )
+        model_params = suggest_xgboost_params(trial=trial, config=config)
 
         all_scores = []
         all_best_iterations = []
@@ -548,10 +537,7 @@ def create_xgboost_objective(train_cv_df, target_col, config):
                 preprocessing_pipe = fold_pipe[:-1]
                 model = fold_pipe.named_steps['model']
 
-                features_train_transformed = preprocessing_pipe.fit_transform(
-                    features_train,
-                    labels_train,
-                )
+                features_train_transformed = preprocessing_pipe.fit_transform(features_train, labels_train)
                 features_val_transformed = preprocessing_pipe.transform(features_val)
 
                 model = fit_model_with_early_stopping(
@@ -643,15 +629,12 @@ def create_objective(train_cv_df, target_col, base_pipe, config):
     def objective(trial) -> float:
         '''Evaluate one hyperparameter combination.'''
 
-        model_params = suggest_model_params(
-            trial=trial,
-            config=config,
-        )
+        model_params = suggest_model_params(trial=trial, config=config)
 
         # Create a fresh unfitted copy of the full pipeline for this trial.
         trial_pipe = clone(base_pipe)
 
-        # Replace only Decision Tree hyperparameters.
+        # Apply the hyperparameters suggested for this trial.
         trial_pipe.set_params(**model_params)
 
         # Evaluate the full feature engineering, preprocessing and model pipeline inside every cross-validation fold.
@@ -684,17 +667,10 @@ def create_objective(train_cv_df, target_col, base_pipe, config):
     return objective
 
 
-def run_optuna_study(
-    train_cv_df,
-    target_col,
-    base_pipe,
-    config,
-):
+def run_optuna_study(train_cv_df, target_col, base_pipe, config):
     '''Create and run an Optuna study.'''
 
-    sampler = optuna.samplers.TPESampler(
-        seed=config.general.seed,
-    )
+    sampler = optuna.samplers.TPESampler(seed=config.general.seed)
 
     study = optuna.create_study(
         study_name=config.optuna.study_name,
@@ -919,14 +895,15 @@ def save_best_params(study, output_path) -> None:
         'study_name': study.study_name,
         'trial_number': best_trial.number,
         'cv_score': float(best_trial.value),
-        'seed_cv_std': float(best_trial.user_attrs.get('seed_cv_std', 0.0)),
         'cv_std': float(best_trial.user_attrs['cv_std']),
         'seed_results': seed_results,
         'fold_scores': list(best_trial.user_attrs['fold_scores']),
-        'mean_best_iteration': float(best_trial.user_attrs['mean_best_iteration']),
-        'median_best_iteration': float(best_trial.user_attrs.get('median_best_iteration', 0.0)),
         'params': dict(best_trial.params),
     }
+
+    for metric in ('seed_cv_std', 'mean_best_iteration', 'median_best_iteration'):
+        if metric in best_trial.user_attrs:
+            best_params_data[metric] = float(best_trial.user_attrs[metric])
 
     output_path = Path(output_path)
     output_path.parent.mkdir(
@@ -949,11 +926,17 @@ def print_optuna_results(study, trials_df, top_n=10) -> None:
 
     print('\nBest trial:')
     print(f'Trial number: {best_trial.number}')
-    print(f'Multi-seed CV Accuracy: {best_trial.value:.4f}')
-    print(f'Seed CV STD: {best_trial.user_attrs.get("seed_cv_std", 0.0):.4f}')
-    print(f'All folds CV STD: {best_trial.user_attrs["cv_std"]:.4f}')
-    print(f'Mean best iteration: {best_trial.user_attrs.get("mean_best_iteration", 0.0):.1f}')
-    print(f'Median best iteration: {best_trial.user_attrs.get("median_best_iteration", 0.0):.1f}')
+    print(f'CV Accuracy: {best_trial.value:.4f}')
+    print(f'Fold scores STD: {best_trial.user_attrs["cv_std"]:.4f}')
+
+    if 'seed_cv_std' in best_trial.user_attrs:
+        print(f'Seed means STD: {best_trial.user_attrs["seed_cv_std"]:.4f}')
+
+    if 'mean_best_iteration' in best_trial.user_attrs:
+        print(f'Mean best iteration: {best_trial.user_attrs["mean_best_iteration"]:.1f}')
+
+    if 'median_best_iteration' in best_trial.user_attrs:
+        print(f'Median best iteration: {best_trial.user_attrs["median_best_iteration"]:.1f}')
 
     seed_cv_means = best_trial.user_attrs.get('seed_cv_means', [])
 

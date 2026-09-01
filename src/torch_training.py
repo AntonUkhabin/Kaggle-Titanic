@@ -1,14 +1,12 @@
+from pathlib import Path
+
 import numpy as np
 import torch
 import torch.nn as nn
-
-from torch.utils.data import DataLoader, TensorDataset
-from pathlib import Path
-
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold
+from torch.utils.data import DataLoader, TensorDataset
 
-from config import config
 from src.torch_models import build_torch_model
 from src.train_functions import build_feature_pipeline
 from src.utils import set_seed
@@ -54,7 +52,7 @@ def train_one_epoch(model, data_loader, loss_function, optimizer, device):
         optimizer.step()
 
         probabilities = torch.sigmoid(logits)
-        predictions = (probabilities >= 0.5).float()
+        predictions = (probabilities > 0.5).float()
         batch_size = features.size(0)
 
         running_loss += loss.item() * batch_size
@@ -85,7 +83,7 @@ def validate_one_epoch(model, data_loader, loss_function, device):
             loss = loss_function(logits, targets)
 
             probabilities = torch.sigmoid(logits)
-            predictions = (probabilities >= 0.5).float()
+            predictions = (probabilities > 0.5).float()
             batch_size = features.size(0)
 
             running_loss += loss.item() * batch_size
@@ -164,6 +162,10 @@ def train_fold(model, train_loader, val_loader, loss_function, optimizer, device
             print(f'Fold {fold} | Early stopping on epoch {epoch + 1}')
             break
 
+    if best_epoch == 0:
+        raise RuntimeError('No checkpoint was saved. Check validation loss for NaN or infinity.')
+    
+    # Restore the best validation-loss checkpoint, not the last training epoch.
     checkpoint = torch.load(checkpoint_path, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
@@ -217,7 +219,7 @@ def cross_validate_neural_network(train_cv_df, target_col, config):
     oof_probabilities = np.full(len(features), np.nan, dtype=float)
 
     for fold, (train_idx, val_idx) in enumerate(skf.split(features, labels)):
-        print(f'\nFold {fold + 1}/{config.split.n_splits}')
+        print(f'\nFold {fold}')
 
         set_seed(config.general.seed)
 
@@ -234,32 +236,17 @@ def cross_validate_neural_network(train_cv_df, target_col, config):
         train_loader = create_data_loader(features_train_processed, labels_train, model_params.batch_size, True, config.general.seed, model_params.num_workers)
         val_loader = create_data_loader(features_val_processed, labels_val, model_params.batch_size, False, config.general.seed, model_params.num_workers)
 
-        # Choose Loss, Optimizer. Add sheduler if need
         model = build_torch_model(model_name, input_size=features_train_processed.shape[1]).to(device)
         loss_function = nn.BCEWithLogitsLoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=model_params.learning_rate)
         scheduler = None
-        # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        #     optimizer,
-        #     T_max=30,
-        #     eta_min=1e-6,
-        # )
-        # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        #     optimizer,
-        #     mode='min',
-        #     factor=0.5,
-        #     patience=4,
-        #     threshold=1e-5,
-        #     threshold_mode='abs',
-        #     min_lr=1e-7,
-        # )
 
         checkpoint_path = Path(config.paths.path_to_checkpoints) / config.general.experiment_name / f'fold_{fold}.pt'
 
         model, history, best_epoch, best_val_loss = train_fold(model, train_loader, val_loader, loss_function, optimizer, device, model_params.epochs, model_params.early_stopping_rounds, model_params.min_delta, checkpoint_path, fold, config.logging.torch_log_interval, scheduler)
 
         validation_probabilities = predict_probabilities(model, val_loader, device)
-        validation_predictions = (validation_probabilities >= 0.5).astype(int)
+        validation_predictions = (validation_probabilities > 0.5).astype(int)
 
         oof_probabilities[val_idx] = validation_probabilities
         fold_accuracy = accuracy_score(labels_val, validation_predictions)
@@ -290,6 +277,6 @@ def predict_with_neural_network_ensemble(features, fold_models, config, threshol
         fold_probabilities.append(probabilities)
 
     mean_probabilities = np.mean(fold_probabilities, axis=0)
-    predictions = (mean_probabilities >= threshold).astype(int)
+    predictions = (mean_probabilities > threshold).astype(int)
 
     return predictions, mean_probabilities
